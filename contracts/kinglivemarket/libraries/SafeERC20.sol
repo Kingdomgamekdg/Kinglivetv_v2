@@ -1,5 +1,5 @@
 
-pragma solidity ^0.7.16;
+pragma solidity ^0.7.0;
 
 import './SafeMath.sol';
 import './Address.sol';

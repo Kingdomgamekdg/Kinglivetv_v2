@@ -1,7 +1,7 @@
 
 // File: contracts/Context.sol
 
-pragma solidity >=0.7.0;
+pragma solidity ^0.7.0;
 
 abstract contract Context {
     // Empty internal constructor, to prevent people from mistakenly deploying

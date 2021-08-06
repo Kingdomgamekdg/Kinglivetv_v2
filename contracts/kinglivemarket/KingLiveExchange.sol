@@ -1,6 +1,7 @@
 pragma solidity ^0.7.0;
 
-import './interfaces/IBSCswapRouter.sol'
+import './interfaces/IBSCswapRouter.sol';
+
 contract KingLiveExchange {
     address public bnbRouter = 0x05fF2B0DB69458A0750badebc4f9e13aDd608C7F;
     address public usdt = 0x55d398326f99059fF775485246999027B3197955;
