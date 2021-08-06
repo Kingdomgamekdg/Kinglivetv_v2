@@ -1,0 +1,245 @@
+@import '../common.scss';
+
+.upload {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+
+  height: calc(100vh - #{$footer-height} - #{$header-height});
+
+  background-color: $background-color-body;
+
+  &__progress-bar {
+    width: 100%;
+    height: 20px;
+
+    position: relative;
+
+    border-radius: 50px;
+
+    overflow: hidden;
+
+    background-color: $background-white;
+    background-image: url('../images/progressbar.png');
+
+    > span {
+      position: absolute;
+      top: 0;
+      left: 0;
+
+      height: 100%;
+      width: var(--progress);
+
+      transition: 0.3s;
+      background-color: $primary-color;
+
+      span {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+
+        color: $background-white;
+
+        border-radius: 50px;
+      }
+    }
+  }
+
+  &__form {
+    padding: 0 20px 70px;
+    width: 900px;
+    max-width: 100%;
+    margin: 0 auto;
+
+    &-label {
+      font-size: $size-4;
+      font-weight: 500;
+
+      display: block;
+      margin-bottom: 5px;
+
+      @media (max-width: $break-point-extra-extra-small) {
+        font-size: $size-6;
+      }
+    }
+
+    &-inputBox {
+      width: 100%;
+
+      input {
+        display: block;
+        width: 100%;
+        height: 50px;
+        padding: 0 15px;
+
+        border-radius: 5px;
+        border: 1px solid $primary-color;
+        color: $text-color;
+        font-size: $size-4;
+
+        &::placeholder {
+          color: $placeholder-text-color;
+        }
+
+        @media (max-width: $break-point-extra-extra-small) {
+          font-size: $size-6;
+        }
+      }
+    }
+
+    &-textareaBox {
+      width: 100%;
+
+      textarea {
+        resize: none;
+
+        display: block;
+        width: 100%;
+        height: 170px;
+        padding: 15px;
+
+        border-radius: 5px;
+        border: 1px solid $primary-color;
+        color: $text-color;
+        font-size: $size-4;
+
+        &::placeholder {
+          color: $placeholder-text-color;
+        }
+
+        &:focus {
+          outline: none;
+        }
+
+        @media (max-width: $break-point-extra-extra-small) {
+          font-size: $size-6;
+        }
+      }
+    }
+
+    &-thumbnailBox {
+      position: relative;
+
+      width: 100%;
+      height: 300px;
+      padding: 20px;
+      margin: 0 auto;
+
+      border: 1px dashed $primary-color;
+      border-radius: 10px;
+
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-direction: column;
+
+      text-align: center;
+      overflow: hidden;
+
+      input {
+        cursor: pointer;
+        user-select: none;
+
+        z-index: 2;
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        width: 100%;
+        height: 100%;
+
+        opacity: 0;
+      }
+
+      .icon {
+        font-size: 150px;
+        color: $primary-color;
+
+        z-index: 1;
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+      }
+
+      video {
+        z-index: 3;
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        width: 100%;
+        height: 100%;
+
+        background-color: #000;
+        pointer-events: none;
+      }
+
+      @media (max-width: $break-point-extra-extra-small) {
+        width: 220px;
+        height: 120px;
+
+        > .icon {
+          font-size: 70px;
+        }
+      }
+    }
+  }
+
+  &__title {
+    padding-top: 15px;
+    padding-bottom: 10px;
+
+    color: $title-color;
+    font-size: $size-2;
+    font-weight: 600;
+
+    border-bottom: $border-bottom;
+
+    @media (max-width: $break-point-extra-extra-small) {
+      font-size: $size-4;
+      font-weight: 500;
+    }
+
+    &--left {
+      > p {
+        position: relative;
+
+        display: inline-block;
+
+        &::before {
+          content: '';
+
+          position: absolute;
+          bottom: -10px;
+          left: 0;
+
+          width: 100%;
+          height: 3px;
+
+          background-color: $primary-color;
+        }
+      }
+    }
+
+    &--right {
+      font-size: $size-3;
+
+      margin-bottom: 10px;
+    }
+  }
+
+  &__status {
+    margin-top: 10px;
+
+    user-select: none;
+
+    font-size: $size-4;
+    text-align: center;
+
+    @media (max-width: $break-point-extra-extra-small) {
+      font-size: $size-6;
+    }
+  }
+}

@@ -1,0 +1,19 @@
+@import './common.scss';
+
+.test-metamask {
+  &__address {
+    margin-bottom: 20px;
+
+    color: $text-color-light;
+    font-size: 10px;
+  }
+
+  &__loading {
+    opacity: 0.5;
+    cursor: not-allowed;
+  }
+
+  &__hidden {
+    display: none;
+  }
+}

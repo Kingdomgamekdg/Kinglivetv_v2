@@ -1,0 +1,122 @@
+@import '../common.scss';
+
+.QR {
+  &__close {
+    cursor: pointer;
+
+    position: absolute;
+    top: 27px;
+    right: 27px;
+
+    > svg {
+      display: block;
+
+      font-size: 20px;
+    }
+  }
+
+  &__header {
+    color: $title-color;
+    font-size: $size-4;
+    font-weight: 600;
+    text-align: center;
+
+    padding: 26px 0;
+
+    background-color: $background-color-hover;
+  }
+
+  &__body {
+    > p:nth-child(1),
+    > p:nth-child(3) {
+      font-size: $size-6;
+
+      padding: 10px 0;
+    }
+
+    display: flex;
+    flex-flow: column;
+    align-items: center;
+  }
+
+  &__frame {
+    position: relative;
+
+    &-top-left,
+    &-top-right,
+    &-bottom-left,
+    &-bottom-right {
+      position: absolute;
+
+      width: 30px;
+      height: 30px;
+
+      border: 2px solid $primary-color;
+    }
+
+    &-top-left {
+      top: 0;
+      left: 0;
+
+      border-right: none;
+      border-bottom: none;
+    }
+
+    &-top-right {
+      top: 0;
+      right: 0;
+
+      border-left: none;
+      border-bottom: none;
+    }
+
+    &-bottom-left {
+      bottom: 0;
+      left: 0;
+
+      border-top: none;
+      border-right: none;
+    }
+
+    &-bottom-right {
+      bottom: 0;
+      right: 0;
+
+      border-top: none;
+      border-left: none;
+    }
+
+    > img[alt='QR Code'] {
+      display: block;
+    }
+
+    > img[alt='coin'] {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+    }
+  }
+
+  &__wallet {
+    cursor: pointer;
+
+    padding-bottom: 15px;
+
+    display: flex;
+    align-items: center;
+
+    > span:nth-child(1) {
+      color: $title-color;
+
+      margin-right: 5px;
+
+      max-width: 450px;
+      word-break: break-all;
+
+      @media (max-width: $break-point-small) {
+        max-width: 270px;
+      }
+    }
+  }
+}

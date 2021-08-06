@@ -1,0 +1,81 @@
+@import '../common.scss';
+
+.menuBox {
+  cursor: pointer;
+  user-select: none;
+
+  z-index: 999;
+  position: absolute;
+  top: 0;
+  right: 0;
+
+  width: 34px;
+  height: 34px;
+
+  border-radius: 50%;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  // @extend %ripple-effect;
+
+  &__icon {
+    z-index: 2;
+    position: relative;
+
+    pointer-events: none;
+
+    color: $title-color;
+    font-size: 24px;
+  }
+
+  &__menuList {
+    padding: 10px 0;
+
+    background-color: $background-white;
+
+    position: absolute;
+    top: 100%;
+    right: 0;
+
+    border-radius: 5px;
+    border: $border-bottom;
+
+    display: flex;
+    flex-flow: column nowrap;
+
+    width: max-content;
+
+    opacity: 0;
+    pointer-events: none;
+
+    &.show {
+      opacity: 1;
+      pointer-events: all;
+    }
+  }
+
+  &__menuItem {
+    cursor: pointer;
+    user-select: none;
+
+    color: $text-color;
+    font-size: $size-7;
+    line-height: 1.5;
+    font-weight: 500;
+
+    padding: 5px 10px;
+
+    display: flex;
+    align-items: center;
+
+    > .icon {
+      margin-right: 10px;
+    }
+
+    &:hover {
+      background-color: $background-color-hover;
+    }
+  }
+}

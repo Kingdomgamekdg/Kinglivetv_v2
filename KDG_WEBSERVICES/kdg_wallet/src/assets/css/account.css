@@ -1,0 +1,780 @@
+.account {
+  margin-top: 77px;
+}
+
+.account h3 {
+  color: #ffffff;
+  font-size: 22px;
+  font-weight: 500;
+}
+
+.account .ref h3 {
+  display: inline-block;
+}
+
+.account .open-reward {
+  border-radius: 25px;
+  padding: 7px 15px;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#eac35b), color-stop(#edda8b), color-stop(#a47b00), to(#c99b00));
+  background-image: linear-gradient(to bottom, #eac35b, #edda8b, #a47b00, #c99b00);
+  font-size: 16px;
+  color: #ffffff;
+  display: inline-block;
+  margin-left: 30px;
+  cursor: pointer;
+}
+
+.account .maskreward {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  opacity: 0;
+  pointer-events: none;
+}
+
+.account .maskreward.show {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.account .maskreward .popupreward {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  width: 430px;
+  max-width: 80%;
+  max-height: 80%;
+  border-radius: 5px;
+  overflow: hidden;
+}
+
+.account .maskreward .popupreward .header {
+  background-image: -webkit-gradient(linear, left top, right bottom, from(#e8bf23), color-stop(#e8bf23), color-stop(#a77b00), color-stop(#edda88), to(#d4af37));
+  background-image: linear-gradient(to bottom right, #e8bf23, #e8bf23, #a77b00, #edda88, #d4af37);
+}
+
+.account .maskreward .popupreward .header p {
+  font-size: 22px;
+  color: #283349;
+  text-align: center;
+  padding: 20px 0;
+}
+
+.account .maskreward .popupreward .body {
+  padding: 15px 20px;
+  background-color: #f1f3f4;
+}
+
+.account .maskreward .popupreward .body .count-info {
+  background-color: #fff;
+  -webkit-box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+          box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.3);
+  padding: 15px 0;
+  border-radius: 5px;
+}
+
+.account .maskreward .popupreward .body .count-info > * {
+  display: inline-block;
+  width: 100%;
+}
+
+.account .maskreward .popupreward .body .count-info .count {
+  text-align: center;
+  padding: 0 15px;
+  text-align: center;
+}
+
+.account .maskreward .popupreward .body .count-info .count + .count {
+  border-left: 1px solid #ddd9d8;
+}
+
+.account .maskreward .popupreward .body .count-info .count p {
+  font-size: 14px;
+  color: #8a8c8e;
+}
+
+.account .maskreward .popupreward .body .count-info .count p.number {
+  font-size: 20px;
+  font-weight: 600;
+  color: #fac800;
+}
+
+.account .maskreward .popupreward .body .title {
+  font-size: 16px;
+  color: #283349;
+  text-align: center;
+  padding: 18px;
+}
+
+.account .maskreward .popupreward .body .list-detail {
+  padding: 0 15px;
+  background-color: #fff;
+  border-radius: 5px;
+  max-height: 240px;
+  overflow-y: scroll;
+}
+
+.account .maskreward .popupreward .body .list-detail::-webkit-scrollbar {
+  display: none;
+}
+
+.account .maskreward .popupreward .body .list-detail table {
+  width: 100%;
+}
+
+.account .maskreward .popupreward .body .list-detail table td {
+  font-size: 13px;
+  color: #8a8c8e;
+  padding: 10px;
+  text-align: center;
+}
+
+.account .maskreward .popupreward .body .list-detail table th {
+  font-size: 13px;
+  color: #283349;
+  text-align: center;
+  padding: 13px 10px;
+}
+
+.account .maskreward .popupreward .body .list-detail table tbody tr td {
+  border-top: 1px solid #ddd9d8;
+}
+
+.account .sidebar {
+  padding: 36px 0;
+  background-color: rgba(40, 51, 73, 0.4);
+}
+
+.account .sidebar .top-sidebar .avata {
+  width: 100px;
+  height: 100px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  padding: 20px;
+  position: relative;
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+.account .sidebar .top-sidebar .avata .avata-img {
+  width: 100%;
+}
+
+.account .sidebar .top-sidebar .avata .avata-img img {
+  width: 100%;
+  -o-object-fit: contain;
+     object-fit: contain;
+}
+
+.account .sidebar .top-sidebar h3 {
+  text-align: center;
+  font-size: 22px;
+  font-weight: 500;
+  margin-top: 15px;
+  width: 100%;
+}
+
+.account .sidebar .bottom-sidebar {
+  margin-top: 40px;
+}
+
+.account .sidebar .bottom-sidebar .tab {
+  padding: 0 2px;
+}
+
+.account .sidebar .bottom-sidebar .tab .item {
+  padding: 15px 24px;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  font-size: 0;
+}
+
+.account .sidebar .bottom-sidebar .tab .item > * {
+  display: inline-block;
+  vertical-align: top;
+}
+
+.account .sidebar .bottom-sidebar .tab .item img {
+  width: 22px;
+}
+
+.account .sidebar .bottom-sidebar .tab .item .text {
+  width: calc(100% - 22px);
+  padding-left: 10px;
+}
+
+.account .sidebar .bottom-sidebar .tab .item .text h4 {
+  font-size: 16px;
+  color: #8a8c8e;
+}
+
+.account .sidebar .bottom-sidebar .tab .item .text p {
+  font-size: 14px;
+}
+
+.account .sidebar .bottom-sidebar .tab .item:hover, .account .sidebar .bottom-sidebar .tab .item.active {
+  background-image: -webkit-gradient(linear, left top, right top, from(rgba(255, 255, 255, 0)), color-stop(rgba(255, 255, 255, 0.2)), color-stop(rgba(255, 255, 255, 0.6)), color-stop(rgba(255, 255, 255, 0.2)), to(rgba(255, 255, 255, 0)));
+  background-image: linear-gradient(to right, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0.6), rgba(255, 255, 255, 0.2), rgba(255, 255, 255, 0));
+}
+
+.account .sidebar .bottom-sidebar .tab .item:hover h4, .account .sidebar .bottom-sidebar .tab .item.active h4 {
+  color: #fff;
+}
+
+.account .sidebar .bottom-sidebar .tab .item + .item {
+  border-top: 1px solid #8a8c8e;
+}
+
+.account .main {
+  background-color: rgba(40, 51, 73, 0.4);
+  padding: 32px 39px;
+  overflow-y: scroll;
+}
+
+.account .main::-webkit-scrollbar {
+  display: none;
+}
+
+.account .main form {
+  font-size: 0;
+  margin: 0 -7px;
+}
+
+.account .main form .upload {
+  margin-top: 20px;
+  text-align: center;
+}
+
+.account .main form .upload > * {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 18px;
+  color: #fac800;
+}
+
+.account .main form .upload .text {
+  width: calc(100% - 250px);
+  padding-right: 90px;
+  text-align: left;
+}
+
+.account .main form .upload .upload-block {
+  border-radius: 5px;
+  cursor: pointer;
+  padding: 0 35px;
+  padding-top: 35px;
+  padding-bottom: 10px;
+  font-size: 14px;
+  color: #8a8c8e;
+  background-color: #fff;
+  width: 250px;
+  overflow: hidden;
+  position: relative;
+}
+
+.account .main form .upload .upload-block .placeholder {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  z-index: 99;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  width: 100%;
+}
+
+.account .main form ul {
+  margin-top: 25px;
+  padding: 0 7px;
+}
+
+.account .main form ul li {
+  color: #ddd9d8;
+  font-size: 14px;
+  position: relative;
+  padding-left: 14px;
+}
+
+.account .main form ul li::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 0;
+  -webkit-transform: translate(0, -50%);
+          transform: translate(0, -50%);
+  width: 6px;
+  height: 6px;
+  background-color: #ddd9d8;
+  border-radius: 50%;
+}
+
+.account .main form .input-group {
+  position: relative;
+  margin-top: 48px;
+  display: inline-block;
+  width: 100%;
+  padding: 0 7px;
+  font-size: 16px;
+}
+
+.account .main form .input-group input[disabled] {
+  opacity: 0.5;
+  cursor: not-allowed;
+  pointer-events: none;
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.account .main form .input-group .input-password {
+  position: relative;
+}
+
+.account .main form .input-group .input-password .validate-error {
+  position: absolute;
+  top: calc(100% + 5px);
+  left: 0;
+  white-space: nowrap;
+  color: #ff0000;
+  font-size: 12px;
+  font-style: italic;
+}
+
+.account .main form .input-group .input-password input {
+  margin-top: 0;
+  padding-right: 15px;
+}
+
+.account .main form .input-group .input-password .eye {
+  position: absolute;
+  cursor: pointer;
+  top: 50%;
+  right: 10px;
+  -webkit-transform: translate(0, -50%);
+          transform: translate(0, -50%);
+  font-size: 14px;
+}
+
+.account .main form .input-group.checkbox label {
+  position: relative;
+}
+
+.account .main form .input-group.checkbox label > span {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.account .main form .input-group.checkbox label > span:last-child {
+  display: inline;
+}
+
+.account .main form .input-group.haft {
+  width: 50%;
+}
+
+.account .main form .input-group.select {
+  margin: 0;
+}
+
+.account .main form .input-group.select span {
+  position: relative;
+}
+
+.account .main form .input-group.select .title {
+  font-size: 18px;
+  color: #fff;
+  margin-bottom: 30px;
+}
+
+.account .main form .input-group.select .select-block {
+  font-size: 0;
+  cursor: pointer;
+}
+
+.account .main form .input-group.select .select-block > * {
+  display: inline-block;
+  vertical-align: middle;
+}
+
+.account .main form .input-group.select .select-block img {
+  width: 37px;
+}
+
+.account .main form .input-group.select .select-block .selected {
+  width: calc(100% - 37px - 17px);
+  margin-left: 17px;
+  font-size: 16px;
+  color: #8a8c8e;
+  position: relative;
+}
+
+.account .main form .input-group.select .select-block .selected > span {
+  font-size: 0;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #8a8c8e;
+  width: 100%;
+}
+
+.account .main form .input-group.select .select-block .selected > span > * {
+  vertical-align: middle;
+}
+
+.account .main form .input-group.select .select-block .selected > span.contry img {
+  width: 27px;
+}
+
+.account .main form .input-group.select .select-block .selected > span.contry input {
+  width: calc(100% - 30px - 27px);
+  padding: 0;
+  font-size: 16px;
+  padding-left: 8px;
+  border: none;
+}
+
+.account .main form .input-group.select .select-block .selected > span span {
+  width: calc(100% - 30px);
+  font-size: 16px;
+}
+
+.account .main form .input-group.select .select-block .selected > span [class*='fa-'] {
+  width: 30px;
+  text-align: center;
+  font-size: 16px;
+}
+
+.account .main form .input-group.select .select-block .selected .dropdown-selected {
+  position: absolute;
+  opacity: 0;
+  pointer-events: none;
+  top: calc(100% + 2px);
+  left: 0;
+  border-radius: 8px;
+  overflow: hidden;
+  width: 100%;
+  -webkit-transition: all 0.3s ease;
+  transition: all 0.3s ease;
+  max-height: 210px;
+  overflow-y: scroll;
+  z-index: 999;
+}
+
+.account .main form .input-group.select .select-block .selected .dropdown-selected p {
+  padding: 16px 18px;
+  font-size: 16px;
+  color: #8a8c8e;
+  background-color: #ffffff;
+  width: 100%;
+}
+
+.account .main form .input-group.select .select-block .selected .dropdown-selected p:hover, .account .main form .input-group.select .select-block .selected .dropdown-selected p.selected-value {
+  background-color: #fff6d0;
+}
+
+.account .main form .input-group.select .select-block .selected.show .dropdown-selected {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.account .main form .input-group .radio-group {
+  width: 100%;
+  padding: 21px 0;
+  border: 1px solid #525660;
+  text-align: center;
+  font-size: 0;
+}
+
+.account .main form .input-group .radio-group .group-label {
+  display: inline-block;
+  width: 50%;
+  position: relative;
+  font-size: 14px;
+}
+
+.account .main form .input-group .radio-group .group-label > * {
+  vertical-align: middle;
+}
+
+.account .main form .input-group .radio-group .group-label input:checked ~ label {
+  background-color: #ddd9d8;
+}
+
+.account .main form .input-group .radio-group .group-label input:checked ~ label::before {
+  content: '';
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background-color: #000;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+}
+
+.account .main form .input-group .radio-group .group-label label {
+  cursor: pointer;
+  border-radius: 50%;
+  background-color: #8a8c8e;
+  padding: 9px;
+  position: relative;
+  width: 18px;
+  height: 18px;
+  display: inline-block;
+  margin-right: 17px;
+}
+
+.account .main form .input-group .radio-group .group-label span {
+  -webkit-user-select: none;
+     -moz-user-select: none;
+      -ms-user-select: none;
+          user-select: none;
+}
+
+.account .main form .input-group > span {
+  position: absolute;
+  top: 0;
+  left: 27px;
+  -webkit-transform: translate(0, -50%);
+          transform: translate(0, -50%);
+  padding: 0 13px;
+  background-color: #1a2032;
+  color: #fac800;
+  font-size: 16px;
+  z-index: 9;
+}
+
+.account .main form .input-group input {
+  background-color: transparent;
+  color: #8a8c8e;
+  border: 1px solid #525660;
+  font-size: 14px;
+  padding: 18px;
+  width: 100%;
+}
+
+.account .main form .input-group input[type='radio'] {
+  display: none;
+}
+
+.account .main form .input-group input[type='checkbox'] {
+  display: none;
+}
+
+.account .main form .input-group button {
+  cursor: pointer;
+  border-radius: 10px;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#e9c258), color-stop(#ecd98a), color-stop(#a57d04), to(#c39500));
+  background-image: linear-gradient(to bottom, #e9c258, #ecd98a, #a57d04, #c39500);
+  color: #fff;
+  padding: 17px 0;
+  width: 195px;
+  font-size: 16px;
+  text-transform: uppercase;
+  font-weight: 500;
+  border: none;
+}
+
+.account .main form .input-group button.valid {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.account .main form .input-group button.not-valid {
+  opacity: 0.5;
+  pointer-events: none;
+}
+
+.account .main form .input-group button.not-valid + span.not-allowed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  cursor: not-allowed;
+  -webkit-transform: none;
+          transform: none;
+  padding: 0;
+  background-color: transparent;
+  color: transparent;
+  font-size: 0;
+  z-index: 999;
+}
+
+.account .main .ref > div {
+  margin-top: 25px;
+  font-size: 0;
+}
+
+.account .main .ref > div > span:first-child {
+  width: 160px;
+  font-size: 16px;
+  color: #8a8c8e;
+}
+
+.account .main .ref > div .high-line {
+  color: #fac800;
+  font-size: 18px;
+}
+
+.account .main .ref > div .link {
+  word-break: break-all;
+  font-size: 16px;
+  cursor: pointer;
+  color: #0687d7;
+  word-wrap: break-word;
+}
+
+.account .main .ref > div .link [class*='fa-'] {
+  color: #fff;
+  cursor: pointer;
+}
+
+.account .main .ref > div .code {
+  cursor: pointer;
+  color: #ffffff;
+  font-size: 16px;
+}
+
+.account .main .ref > div .code [class*='fa-'] {
+  color: #fff;
+  cursor: pointer;
+}
+
+.account .main .rule {
+  margin-top: 35px;
+  padding: 20px 15px;
+  border-radius: 5px;
+  background-color: #121827;
+}
+
+.account .main .rule p:first-child {
+  font-size: 16px;
+  color: #fac800;
+  text-decoration: underline;
+  font-style: italic;
+}
+
+.account .main .rule p + p {
+  margin-top: 25px;
+  font-size: 14px;
+  color: #8a8c8e;
+}
+
+.account .main .rule p + p + p {
+  margin-top: 5px;
+}
+
+@media only screen and (max-width: 992px) {
+  .account .sidebar {
+    padding: 15px 0;
+  }
+  .account .sidebar .bottom-sidebar {
+    margin-top: 26px;
+  }
+  .account .main .ref > div > span:first-child {
+    width: 80px;
+    vertical-align: top;
+    font-size: 14px;
+  }
+  .account .main .ref > div > span:last-child {
+    width: calc(100% - 80px);
+    vertical-align: top;
+  }
+  .account .main .input-group.haft.select {
+    width: 100%;
+  }
+  .account .main .input-group.haft.select + .select {
+    margin-top: 48px;
+  }
+  .account .main form .upload {
+    font-size: 0;
+  }
+  .account .main form .upload .text {
+    width: 70%;
+    font-size: 12px;
+  }
+  .account .main form .upload .upload-block {
+    width: 30%;
+    padding: 10px;
+  }
+  .account .kdg-col-3 {
+    width: 100%;
+  }
+  .account .kdg-col-3 * {
+    text-align: center;
+  }
+  .account .kdg-col-9 {
+    width: 100%;
+    margin-top: 7px;
+  }
+}
+
+@media only screen and (max-width: 767px) {
+  body .account .sidebar {
+    padding: 15px 0;
+  }
+  body .account .sidebar .bottom-sidebar {
+    margin-top: 26px;
+  }
+  body .account .main .ref > div > span:first-child {
+    width: 80px;
+    vertical-align: top;
+    font-size: 14px;
+  }
+  body .account .main .ref > div > span:last-child {
+    width: calc(100% - 80px);
+    vertical-align: top;
+  }
+  body .account .main .input-group.haft.select {
+    width: 100%;
+  }
+  body .account .main .input-group.haft.select + .select {
+    margin-top: 48px;
+  }
+  body .account .main form .upload {
+    font-size: 0;
+  }
+  body .account .main form .upload .text {
+    width: 100%;
+    font-size: 12px;
+    text-align: center;
+    padding: 0;
+  }
+  body .account .main form .upload .upload-block {
+    width: 100%;
+    padding: 10px;
+  }
+  body .account .kdg-col-3 {
+    width: 100%;
+  }
+  body .account .kdg-col-3 * {
+    text-align: center;
+  }
+  body .account .kdg-col-9 {
+    width: 100%;
+    margin-top: 7px;
+  }
+}
+
+.button-gradiant {
+  border-radius: 10px;
+  background-image: -webkit-gradient(linear, left top, left bottom, from(#e9c258), color-stop(#ecd98a), color-stop(#a57d04), to(#c39500));
+  background-image: linear-gradient(to bottom, #e9c258, #ecd98a, #a57d04, #c39500);
+  color: #fff;
+  padding: 17px 0;
+  width: 195px;
+  font-size: 16px;
+  text-transform: uppercase;
+  font-weight: 500;
+  border: none;
+  cursor: pointer;
+}
+/*# sourceMappingURL=account.css.map */

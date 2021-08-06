@@ -1,0 +1,60 @@
+.rotate-block {
+  display: block;
+  position: relative;
+  width: 250px;
+  height: 250px;
+}
+
+.rotate-block > * {
+  position: absolute;
+}
+
+.rotate-block .rotate-left {
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  -webkit-transition: all 5s linear;
+  transition: all 5s linear;
+  -webkit-animation: rotateleft 5s infinite linear;
+          animation: rotateleft 5s infinite linear;
+}
+
+.rotate-block .middle {
+  top: 50%;
+  left: 50%;
+  -webkit-transform: translate(-50%, -50%);
+          transform: translate(-50%, -50%);
+  width: 45%;
+}
+
+@-webkit-keyframes rotateleft {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  50% {
+    -webkit-transform: rotate(-180deg);
+            transform: rotate(-180deg);
+  }
+  100% {
+    -webkit-transform: rotate(-360deg);
+            transform: rotate(-360deg);
+  }
+}
+
+@keyframes rotateleft {
+  0% {
+    -webkit-transform: rotate(0deg);
+            transform: rotate(0deg);
+  }
+  50% {
+    -webkit-transform: rotate(-180deg);
+            transform: rotate(-180deg);
+  }
+  100% {
+    -webkit-transform: rotate(-360deg);
+            transform: rotate(-360deg);
+  }
+}
+/*# sourceMappingURL=loading.css.map */

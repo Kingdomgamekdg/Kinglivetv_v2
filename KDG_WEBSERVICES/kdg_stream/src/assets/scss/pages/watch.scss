@@ -1,0 +1,57 @@
+@import '../common.scss';
+
+.watch {
+  display: flex;
+  align-items: flex-start;
+
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 25px;
+
+  $left-width: 350px;
+
+  &__left {
+    width: calc(100% - #{$left-width});
+    padding-right: 25px;
+  }
+
+  &__right {
+    width: $left-width;
+    min-height: 150vh;
+  }
+
+  @media (max-width: $break-point-medium) {
+    flex-direction: column;
+
+    &__left {
+      width: 100%;
+      padding-right: 0;
+    }
+
+    &__right {
+      width: 100%;
+      min-height: unset;
+    }
+  }
+
+  @media (max-width: $break-point-small) {
+    padding: 25px 10px;
+  }
+
+  &__videoBox {
+    position: relative;
+
+    padding-top: 56.25%;
+
+    > iframe {
+      position: absolute;
+      top: 0;
+      left: 0;
+
+      width: 100%;
+      height: 100%;
+
+      border: none;
+    }
+  }
+}

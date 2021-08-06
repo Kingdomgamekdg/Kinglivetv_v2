@@ -1,0 +1,112 @@
+@import '../common.scss';
+
+.language {
+  cursor: pointer;
+  user-select: none;
+
+  width: 110px;
+
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+
+  position: relative;
+
+  &:hover {
+    .language__selected,
+    .language__arrowIcon,
+    .language__languageIcon {
+      opacity: 0.5;
+    }
+  }
+
+  &__selected {
+    font-size: $size-5;
+    transition: 0.3s;
+    margin-right: 5px;
+    @include hidden-text(1);
+  }
+
+  &__languageIcon {
+    font-size: 26px;
+    transition: 0.3s;
+  }
+
+  &__arrowIcon {
+    transform: rotate(0);
+    transition: 0.3s;
+
+    &.show {
+      transform: rotate(180deg);
+    }
+  }
+
+  &__list {
+    border-radius: 5px;
+    box-shadow: $box-shadow;
+    background-color: $background-white;
+
+    // animation: popper 0.3s ease-in-out 1 forwards;
+    // transform-origin: top right;
+
+    // @keyframes popper {
+    //   0% {
+    //     top: 50%;
+    //     transform: scale(0);
+    //   }
+    //   100% {
+    //     top: 100%;
+    //     transform: scale(1);
+    //   }
+    // }
+
+    z-index: $z-index-footer;
+    position: absolute;
+    top: calc(100% + 20px);
+    right: 0;
+
+    transition: 0.3s;
+    opacity: 0;
+    pointer-events: none;
+
+    &.show {
+      top: calc(100%);
+
+      opacity: 1;
+      pointer-events: all;
+    }
+  }
+
+  &__item {
+    min-width: 100%;
+    width: max-content;
+    font-size: $size-4;
+    padding: 0 15px;
+    height: 34px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:not(:last-child) {
+      border-bottom: $border-bottom;
+    }
+
+    &:hover {
+      background-color: $background-color-hover;
+    }
+  }
+
+  @media (max-width: 992px) {
+    width: auto;
+  }
+
+  @media (max-width: 576px) {
+    &__selected {
+      font-size: $size-5;
+    }
+
+    &__item {
+      font-size: $size-5;
+    }
+  }
+}

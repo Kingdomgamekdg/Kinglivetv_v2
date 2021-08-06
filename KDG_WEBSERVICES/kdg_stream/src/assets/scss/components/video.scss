@@ -1,0 +1,107 @@
+@import '../common.scss';
+
+.video {
+  cursor: pointer;
+  user-select: none;
+
+  width: 100%;
+  height: 100%;
+
+  position: relative;
+
+  @extend %hover-effect;
+
+  &__thumb {
+    width: 100%;
+
+    z-index: 2;
+    position: relative;
+
+    &::before {
+      content: '';
+
+      display: block;
+      padding-top: 55%;
+    }
+
+    > img {
+      position: absolute;
+      top: 0;
+      left: 0;
+
+      display: block;
+      width: 100%;
+      height: 100%;
+
+      object-fit: cover;
+    }
+  }
+
+  &__duration {
+    position: absolute;
+    right: 4px;
+    bottom: 4px;
+    padding: 3px 4px;
+    background-color: rgba(0, 0, 0, 0.8);
+    color: #fff;
+    font-size: 12px;
+  }
+
+  &__info {
+    z-index: 2;
+    position: relative;
+
+    display: flex;
+    align-items: flex-start;
+
+    $ava-width: 15.5%;
+
+    &-ava {
+      width: $ava-width;
+
+      position: relative;
+
+      &::before {
+        content: '';
+
+        display: block;
+        padding-top: 100%;
+      }
+
+      > img {
+        position: absolute;
+        top: 0;
+        left: 0;
+
+        display: block;
+        width: 100%;
+        height: 100%;
+
+        border-radius: 50%;
+        object-fit: cover;
+      }
+    }
+
+    &-text {
+      width: calc(100% - #{$ava-width});
+      padding-left: 10px;
+
+      &-title {
+        color: $title-color;
+        font-size: $size-6;
+        font-weight: 600;
+
+        @media (max-width: $break-point-extra-extra-small) {
+          font-weight: 500;
+        }
+
+        @include hidden-text(2);
+      }
+
+      &-date,
+      &-name {
+        font-size: 14px;
+      }
+    }
+  }
+}

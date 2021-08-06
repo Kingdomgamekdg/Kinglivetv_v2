@@ -1,0 +1,204 @@
+.form-block{
+    width: 100vw;
+    height: 100vh;
+    margin: auto auto;
+    font-size: 0;
+    >*{
+        display: inline-block;
+        height: 100%;
+        vertical-align: top;
+    }
+    .left{
+        width: 40%;
+        position: relative;
+        img{
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+
+        }
+        @media only screen and (max-width: 767px){
+            display: none;
+        }
+    }
+    .right{
+        width: 60%;
+        background-color: #fff;
+        position: relative;
+        @media only screen and (max-width: 767px){
+            width: 100%;
+        }
+        .choose-lang{
+            position: absolute;
+            bottom: 100%;
+            right: 0%;
+            cursor: pointer;
+            color: #8a8c8e;
+            font-size: 14px;
+            img{
+                width: 20px;
+            }
+            span{
+                margin: 0 5px;
+            }
+            &:hover{
+                .drop-down{
+                    pointer-events: all;
+                    opacity: 1;
+                }
+            }
+            .drop-down{
+                position: absolute;
+                top: 100%;
+                right: 0;
+                transition: all .3s ease;
+                border-radius: 8px;
+                background-color: #f1f3f4;
+                opacity: 0;
+                pointer-events: none;
+                li{
+                    cursor: pointer;
+                    padding: 10px 15px;
+                    width: 100px;
+                    &.active{
+                        background-color: #fff6d0;
+                    }
+                }
+            }
+        }
+        form{
+            position: absolute;
+            top: 50%;
+            margin: 0 -8px;
+            left: 50%;
+            transform: translate(-50% , -50%);
+            width: 410px;
+            @media only screen and (max-width: 767px){
+                width: 300px;
+            }
+            h3{
+                font-size: 24px;
+                font-weight: 600;
+                color: #0f1024;
+                padding: 0 8px;
+            }
+            > span{
+                padding: 0 8px;
+                font-size: 14px;
+                color:#8a8c8e;
+                > span{
+                    cursor: pointer;
+                    color: #fac800;
+                }
+            }
+            .form-group{
+                width: 100%;
+                margin-top: 20px;
+                padding: 0 8px;
+                font-size: 0;
+                P{
+                    font-weight: 600;
+                    font-size: 14px;
+                    color: #414042;
+                }
+                .input-password{
+                    margin-top: 7px;
+                    position: relative;
+                    .validate-error{
+                        position: absolute;
+                        top: calc(100% + 5px);
+                        left: 0;
+                        white-space: nowrap;
+                    }
+                    input{
+                        margin-top: 0;
+                        padding-right: 15px;
+                    }
+                    .eye{
+                        position: absolute;
+                        cursor: pointer;
+                        top: 50%;
+                        right: 10px;
+                        transform: translate(0 , -50%);
+                        font-size: 14px;
+                    }
+                }
+                input{
+                    padding:10px;
+                    background-color: #f1f3f4;
+                    font-size: 12px;
+                    color: #8a8c8e;
+                    border-radius: 5px;
+                    border: none;
+                    width: 100%;
+                    margin-top: 7px;
+                }
+                .validate-error{
+                    font-size: 12px;
+                    color: #ff0000;
+                    font-style: italic;
+                    opacity: 0;
+                    pointer-events: none;
+                    &.show{
+                        opacity: 1;
+                        pointer-events: all;
+                    }
+                }
+                &.half{
+                    width: 50%;
+                    display: inline-block;
+                    @media only screen and (max-width: 767px){
+                        width: 100%;
+                    }
+                }
+                .button,button{
+                    width: 100%;
+                    padding:10px;
+                    color: #fff;
+                    background-image: linear-gradient(to bottom, #eac45d, #eac45d,#a77f08,#c39500);
+                    border:none;
+                    border-radius: 5px;
+                    cursor: pointer;
+                    font-size: 14px;
+                    text-align: center;
+                    position: relative;
+                    .count-down{
+                        position: absolute;
+                        top: 50%;
+                        right: 10px;
+                        transform: translate(0 , -50%);
+                    }
+                }
+                &.checkbox{
+                    text-align: left;
+                    >*{
+                        vertical-align: top;
+                    }
+                    input{
+                        width: 15px;
+                        height: 15px;
+                        border-radius: 1px;
+                        border: 1px solid #ddd9d8;
+                        margin: 0;
+                    }
+                    label{
+                        display: inline-block;
+                        width: calc(100% - 15px);
+                        font-size: 14px;
+                        color: #8a8c8e;
+                        padding-left: 7px;
+                        a{
+                            color: #005cfc;
+                            text-decoration: underline;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

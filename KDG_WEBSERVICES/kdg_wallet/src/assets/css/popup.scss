@@ -1,0 +1,124 @@
+$breakpoint-768: 768px;
+
+.popup {
+  z-index: 9999999999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  transition: 0.3s;
+  opacity: 1;
+  pointer-events: all;
+
+  &.hide {
+    opacity: 0;
+    pointer-events: none;
+  }
+
+  &__mask {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    background-color: rgba($color: #e5e5e5, $alpha: 0.8);
+  }
+
+  &__content {
+    background-repeat: no-repeat;
+    background-size: contain;
+
+    position: absolute;
+    left: 50%;
+    bottom: 130%;
+    transform: translate(-50%, 50%);
+
+    animation: slipDownAnimation 0.8s linear 0s 1 forwards;
+
+    @keyframes slipDownAnimation {
+      0% {
+        bottom: 130%;
+      }
+
+      100% {
+        bottom: 70%;
+      }
+    }
+
+    width: 702px;
+    height: 470px;
+
+    @media (max-width: $breakpoint-768) {
+      width: 327px;
+      height: 219px;
+    }
+
+    background-color: #fff;
+    box-shadow: 5px 10px 20px 0 rgba($color: #000000, $alpha: 0.5);
+  }
+
+  &__closeicon {
+    cursor: pointer;
+
+    position: absolute;
+    top: 25px;
+    right: 20px;
+
+    @media (max-width: $breakpoint-768) {
+      top: 5px;
+      right: 5px;
+    }
+
+    padding: 5px;
+
+    font-size: 32px;
+
+    border-radius: 50%;
+
+    transition: 0.3s;
+
+    &:hover {
+      background-color: #a1a049;
+    }
+  }
+
+  &__swapbutton {
+    cursor: pointer;
+
+    position: absolute;
+    bottom: 30px;
+    right: 30px;
+
+    display: flex;
+    align-items: center;
+
+    padding: 0 20px;
+    height: 40px;
+
+    font-size: 18px;
+    font-weight: 400;
+    text-transform: capitalize;
+
+    color: #000;
+    border-radius: 5px;
+    background-color: #fac800;
+
+    transition: 0.3s;
+
+    &:hover {
+      background-color: #c09a00;
+    }
+
+    @media (max-width: $breakpoint-768) {
+      bottom: 10px;
+      right: 10px;
+
+      height: 25px;
+
+      font-size: 14px;
+    }
+  }
+}

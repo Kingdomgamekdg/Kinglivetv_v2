@@ -1,0 +1,106 @@
+.term {
+  margin-top: 50px;
+}
+
+@media only screen and (max-width: 768px) {
+  .term {
+    margin-top: 25px;
+  }
+}
+
+.term.kdg-row .kdg-col-3 {
+  padding-right: 0;
+}
+
+.term.kdg-row .kdg-col-9 {
+  padding-left: 0;
+}
+
+.term .sidebar-term {
+  text-align: right;
+  background-color: #20293d;
+  padding-top: 35px;
+  padding-bottom: 35px;
+  padding-right: 30px;
+}
+
+@media only screen and (max-width: 768px) {
+  .term .sidebar-term {
+    padding: 0;
+    background-color: transparent;
+    text-align: left;
+    white-space: pre;
+    overflow-x: scroll;
+  }
+  .term .sidebar-term::-webkit-scrollbar {
+    display: none;
+  }
+}
+
+.term .sidebar-term h2 {
+  font-size: 20px;
+  font-weight: 600;
+  color: #ddd9d8;
+}
+
+@media only screen and (max-width: 768px) {
+  .term .sidebar-term h2 {
+    display: none;
+  }
+}
+
+.term .sidebar-term p {
+  font-size: 18px;
+  color: #ddd9d8;
+  margin-top: 35px;
+  cursor: pointer;
+}
+
+@media only screen and (max-width: 768px) {
+  .term .sidebar-term p {
+    margin: 0;
+    display: inline-block;
+    text-align: left;
+    white-space: pre;
+  }
+  .term .sidebar-term p + p {
+    margin-left: 10px;
+  }
+  .term .sidebar-term p.active {
+    text-decoration: underline;
+  }
+}
+
+.term .sidebar-term p.active {
+  color: #fac800;
+}
+
+.term .term-content {
+  background-color: #1b2335;
+  padding: 35px 20px;
+  overflow-y: scroll;
+}
+
+@media only screen and (max-width: 768px) {
+  .term .term-content {
+    padding: 0;
+    background-color: transparent;
+    margin-top: 30px;
+  }
+}
+
+.term .term-content::-webkit-scrollbar {
+  display: none;
+}
+
+@media only screen and (max-width: 768px) {
+  .term.kdg-row .kdg-col-3 {
+    width: 100%;
+    padding-right: 9px;
+  }
+  .term.kdg-row .kdg-col-9 {
+    width: 100%;
+    padding-left: 9px;
+  }
+}
+/*# sourceMappingURL=term.css.map */

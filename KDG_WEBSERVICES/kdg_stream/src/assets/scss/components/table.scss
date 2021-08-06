@@ -1,0 +1,75 @@
+@import '../common.scss';
+
+.table {
+  width: 100%;
+  border-collapse: collapse;
+
+  @media (max-width: $break-point-small) {
+    width: 980px;
+  }
+
+  @media (max-width: $break-point-extra-extra-small) {
+    width: 500px;
+  }
+
+  thead {
+    color: $title-color;
+    font-size: $size-5;
+    font-weight: 500;
+    line-height: 1.5;
+    border-bottom: 1px solid $background-color-hover;
+  }
+
+  tbody {
+    font-size: $size-6;
+
+    tr {
+      border-bottom: 1px solid $background-color-hover;
+    }
+
+    td {
+      height: 50px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+
+      .button {
+        display: inline-block;
+      }
+
+      img {
+        display: block;
+        width: auto;
+        max-width: 100%;
+      }
+    }
+  }
+
+  &__dotIcon {
+    cursor: pointer;
+    user-select: none;
+
+    display: block;
+    margin-left: auto;
+    width: 30px;
+    height: 30px;
+
+    border-radius: 13px;
+
+    &:hover {
+      background-color: $background-color-hover;
+    }
+  }
+
+  &__avatar {
+    cursor: pointer;
+    user-select: none;
+
+    display: block;
+    width: 30px;
+    height: 30px;
+
+    object-fit: cover;
+
+    border-radius: 50%;
+  }
+}

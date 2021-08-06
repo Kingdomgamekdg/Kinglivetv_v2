@@ -1,0 +1,105 @@
+@import '../common.scss';
+
+.popper1 {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 1;
+    border-radius: 10px;
+    border: 1px solid #d3d3d3;
+    box-shadow: 0 5px 15px rgba(0, 0, 0, 0.2);
+    width: 500px;
+    padding: 30px;
+    background-color: $background-white;
+    height: 610px;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+        display: none;
+    }
+
+    &__title {
+        color: #151515;
+        font-size: 26px;
+        font-weight: 500;
+    }
+
+    &__text1 {
+        color: #e41a7f;
+        font-size: 28px;
+        font-weight: 700;
+    }
+
+    &__input {
+        color: #707070;
+        font-size: 20px;
+        border-radius: 5px;
+        border: 1px solid #707070;
+        height: 40px;
+        line-height: 40px;
+        max-width: 120px;
+        padding: 0 15px;
+    }
+
+    &__package {
+        width: 100%;
+        position: relative;
+        border-radius: 15px;
+        background-color: $background-white;
+        cursor: pointer;
+        user-select: none;
+
+        &:hover,
+        &.active {
+            background-color: #987575;
+        }
+
+        &::before {
+            content: '';
+            display: block;
+            padding-top: 100%;
+        }
+
+        > img {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            width: 80%;
+            height: 80%;
+            object-fit: cover;
+        }
+    }
+
+    textarea {
+        color: #707070;
+        font-size: 20px;
+        padding: 15px;
+        width: 100%;
+        min-height: 130px;
+        resize: none;
+        outline: none;
+        border-radius: 5px;
+        border: 1px solid #707070;
+    }
+
+    &__finish {
+        color: #fff;
+        font-size: 26px;
+        font-weight: 500;
+        border-radius: 5px;
+        background-color: #e41a7f;
+        line-height: 45px;
+        height: 45px;
+        min-width: 200px;
+        padding: 0 15px;
+        transition: 0.3s;
+        cursor: pointer;
+        user-select: none;
+
+        &:hover {
+            background-color: rgba(228, 26, 127, 0.5);
+        }
+    }
+}

@@ -1,0 +1,58 @@
+@import '../common.scss';
+
+.crop-container {
+  z-index: 999999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+
+  background-color: rgba($color: #fff, $alpha: 0.8);
+
+  input {
+    width: 50%;
+
+    position: absolute;
+    left: 50%;
+    top: 100px;
+    transform: translate(-50%, 0);
+  }
+
+  .btn-group {
+    width: 50%;
+
+    position: absolute;
+    bottom: 80px;
+    left: 50%;
+    transform: translate(-50%, 0);
+
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  &.avatar-crop{
+    .reactEasyCrop_CropArea {
+      border-radius: 50%;
+    }
+  }
+  
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+
+  width: 50%;
+  height: 80px;
+
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.slider {
+  padding: 22px 0px;
+}

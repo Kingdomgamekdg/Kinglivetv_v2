@@ -1,0 +1,121 @@
+@import '../common.scss';
+
+.coverBtn {
+  cursor: pointer;
+  user-select: none;
+
+  z-index: 10;
+  position: absolute;
+
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.2);
+  backdrop-filter: blur(14px) brightness(115%);
+  transition: 0.3s;
+
+  opacity: 0;
+  pointer-events: none;
+  &.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.4);
+  }
+
+  &.coverBtnLeft {
+    top: 50%;
+    left: 0;
+    transform: translate(-50%, -50%);
+  }
+
+  &.coverBtnRight {
+    top: 50%;
+    left: 65%;
+    transform: translate(-50%, -50%);
+  }
+
+  .icon {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+
+    color: rgba(0, 0, 0, 1);
+    font-size: 20px;
+  }
+}
+
+.coverOverlay {
+  display: block;
+  position: absolute;
+  border-radius: 5px;
+  background-color: rgba(255, 255, 255, 0);
+  backdrop-filter: blur(50px) brightness(115%);
+  z-index: 1;
+  transition: 0.5s;
+  opacity: 0;
+  pointer-events: none;
+
+  &.show {
+    opacity: 1;
+    pointer-events: auto;
+  }
+
+  top: 0;
+  width: 35%;
+  height: 100%;
+}
+
+.coverOverlayLeft {
+  left: 0;
+}
+
+.coverOverlayRight {
+  right: 0;
+}
+
+.coverTrack {
+  width: 100%;
+  overflow-x: hidden;
+}
+
+.cover {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+
+  width: calc(65% * var(--item));
+
+  &__item {
+    cursor: pointer;
+    user-select: none;
+
+    width: calc(100% / var(--item));
+
+    position: relative;
+
+    &::before {
+      content: '';
+
+      display: block;
+      padding-top: 55%;
+    }
+
+    > img {
+      position: absolute;
+      top: 0;
+      left: 0;
+
+      width: 100%;
+      height: 100%;
+
+      border-radius: 5px;
+
+      object-fit: cover;
+    }
+  }
+}

@@ -1,0 +1,128 @@
+.popup {
+  z-index: 9999999999;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+  opacity: 1;
+  pointer-events: all;
+}
+
+.popup.hide {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.popup__mask {
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(229, 229, 229, 0.8);
+}
+
+.popup__content {
+  background-repeat: no-repeat;
+  background-size: contain;
+  position: absolute;
+  left: 50%;
+  bottom: 130%;
+  -webkit-transform: translate(-50%, 50%);
+          transform: translate(-50%, 50%);
+  -webkit-animation: slipDownAnimation 0.8s linear 0s 1 forwards;
+          animation: slipDownAnimation 0.8s linear 0s 1 forwards;
+  width: 702px;
+  height: 470px;
+  background-color: #fff;
+  -webkit-box-shadow: 5px 10px 20px 0 rgba(0, 0, 0, 0.5);
+          box-shadow: 5px 10px 20px 0 rgba(0, 0, 0, 0.5);
+}
+
+@-webkit-keyframes slipDownAnimation {
+  0% {
+    bottom: 130%;
+  }
+  100% {
+    bottom: 70%;
+  }
+}
+
+@keyframes slipDownAnimation {
+  0% {
+    bottom: 130%;
+  }
+  100% {
+    bottom: 70%;
+  }
+}
+
+@media (max-width: 768px) {
+  .popup__content {
+    width: 327px;
+    height: 219px;
+  }
+}
+
+.popup__closeicon {
+  cursor: pointer;
+  position: absolute;
+  top: 25px;
+  right: 20px;
+  padding: 5px;
+  font-size: 32px;
+  border-radius: 50%;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+}
+
+@media (max-width: 768px) {
+  .popup__closeicon {
+    top: 5px;
+    right: 5px;
+  }
+}
+
+.popup__closeicon:hover {
+  background-color: #a1a049;
+}
+
+.popup__swapbutton {
+  cursor: pointer;
+  position: absolute;
+  bottom: 30px;
+  right: 30px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  padding: 0 20px;
+  height: 40px;
+  font-size: 18px;
+  font-weight: 400;
+  text-transform: capitalize;
+  color: #000;
+  border-radius: 5px;
+  background-color: #fac800;
+  -webkit-transition: 0.3s;
+  transition: 0.3s;
+}
+
+.popup__swapbutton:hover {
+  background-color: #c09a00;
+}
+
+@media (max-width: 768px) {
+  .popup__swapbutton {
+    bottom: 10px;
+    right: 10px;
+    height: 25px;
+    font-size: 14px;
+  }
+}
+/*# sourceMappingURL=popup.css.map */

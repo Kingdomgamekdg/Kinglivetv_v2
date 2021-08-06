@@ -1,0 +1,135 @@
+@import './common.scss';
+
+.myartwork {
+  &__tabs {
+    display: flex;
+    justify-content: space-between;
+    background-color: #171a2b;
+    border-radius: 50px;
+    overflow: hidden;
+  }
+
+  &__tab {
+    padding: 13px 0;
+    width: 25%;
+    text-align: center;
+    font-size: 18px;
+    transition: 0.3s;
+    position: relative;
+    cursor: pointer;
+    overflow: hidden;
+
+    span {
+      top: 100%;
+      position: absolute;
+      left: 50%;
+      transform: translate(-50%, 0);
+      z-index: 9;
+    }
+
+    &::before {
+      content: '';
+      top: 50%;
+      left: 50%;
+      right: 50%;
+      bottom: 50%;
+      position: absolute;
+      background-color: #f52871;
+      transition: 0.3s;
+    }
+
+    &:hover {
+      span {
+        transition: 0.3s;
+        transition-delay: 0.3s;
+        color: #fff;
+        top: 50%;
+        transform: translate(-50%, -50%);
+      }
+      &::before {
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+      }
+    }
+
+    &.active {
+      color: #fff;
+      background-color: #f52871;
+
+      span {
+        display: none;
+      }
+      &::before {
+        display: none;
+      }
+    }
+  }
+
+  &__list {
+    display: flex;
+    margin: 0 -10px;
+    margin-top: 40px;
+    flex-wrap: wrap;
+    row-gap: 20px;
+
+    &-item {
+      width: 33.33333%;
+      padding: 0 10px;
+
+      .artwork {
+        background-color: #171a2b;
+        border-radius: 10px;
+        padding: 20px;
+        .img {
+          @include img(0.75);
+          border-radius: 10px;
+          overflow: hidden;
+        }
+        .video {
+          @include img(0.75);
+          border-radius: 10px;
+          overflow: hidden;
+          video {
+            opacity: 0;
+          }
+        }
+        .name {
+          color: #fff;
+        }
+        .type {
+          color: #fff;
+        }
+        .price {
+          color: #f52871;
+        }
+        .create-date {
+          padding-top: 10px;
+          margin-top: 10px;
+          border-top: 1px solid #2e3145;
+          display: flex;
+          align-items: center;
+          span {
+            margin-left: 5px;
+            font-size: 14px;
+            color: #6a6a6d;
+          }
+        }
+      }
+
+      &.active-video {
+        .artwork{ 
+          .video {
+            img {
+              opacity: 0;
+            }
+            video {
+              opacity: 1;
+            }
+          }
+        }
+      }
+    }
+  }
+}

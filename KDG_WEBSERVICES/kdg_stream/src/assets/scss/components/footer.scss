@@ -1,0 +1,180 @@
+@import '../common.scss';
+
+.footer {
+  height: $footer-height;
+  padding: 0 25px;
+
+  display: flex;
+  justify-content: space-between;
+
+  background-color: $background-color-footer;
+
+  &__copyright {
+    line-height: $footer-height;
+    font-size: $size-7;
+    font-weight: 500;
+
+    margin-right: 40px;
+    @include hidden-text(1);
+  }
+
+  &__social {
+    width: 450px;
+    display: flex;
+    justify-content: space-between;
+
+    a {
+      width: $footer-height;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      color: $text-color;
+      font-size: 26px;
+
+      &:hover {
+        opacity: 0.5;
+      }
+    }
+  }
+
+  &__menu {
+    cursor: pointer;
+    user-select: none;
+    display: none;
+    width: $footer-height;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__menuIcon {
+    display: block;
+  }
+
+  &__sidebarContainer {
+    position: fixed;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    z-index: $z-index-footer;
+    background-color: rgba(0, 0, 0, 0.5);
+    transition: 0.3s;
+
+    width: 0;
+    &.show {
+      width: 100%;
+    }
+  }
+
+  &__sidebar {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    background-color: #fff;
+    transition: 0.3s;
+
+    width: 0;
+    &.show {
+      width: 300px;
+    }
+  }
+
+  &__sidebarClose {
+    height: $footer-height;
+    border-bottom: $border-bottom;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      background-color: $background-color-hover;
+    }
+  }
+
+  &__sidebarBody {
+    padding: 20px 0;
+    overflow-y: auto;
+    height: calc(100vh - #{$footer-height} - #{$sidebar-footer-height});
+  }
+
+  &__sidebarTitle {
+    color: #000;
+    font-size: 20px;
+    font-weight: 700;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+  &__sidebarRow1 {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 108px;
+    font-size: 18px;
+
+    &:hover {
+      background-color: $background-color-hover;
+    }
+  }
+
+  &__sidebarRow2 {
+    padding-top: 10px;
+    padding-bottom: 10px;
+    padding-left: 80px;
+    display: flex;
+    align-items: center;
+    color: $text-color;
+    font-size: 18px;
+    text-decoration: none;
+
+    &:hover {
+      background-color: $background-color-hover;
+    }
+
+    svg {
+      margin-right: 10px;
+    }
+  }
+
+  &__sidebarCopyright {
+    border-top: $border-bottom;
+    height: $sidebar-footer-height;
+    padding: 0px 10px;
+
+    font-size: 14px;
+    color: #b2b2b2;
+    font-weight: 500;
+    text-align: center;
+
+    align-items: center;
+    justify-content: center;
+    display: none;
+
+    &.show {
+      display: flex;
+    }
+  }
+
+  @media (max-width: 992px) {
+    &__social {
+      width: auto;
+      flex-grow: 1;
+    }
+  }
+
+  @media (max-width: 768px) {
+    padding: 0 10px;
+
+    &__copyright {
+      margin-right: 0;
+      flex-grow: 1;
+    }
+
+    &__social {
+      display: none;
+    }
+
+    &__menu {
+      display: flex;
+    }
+  }
+}
