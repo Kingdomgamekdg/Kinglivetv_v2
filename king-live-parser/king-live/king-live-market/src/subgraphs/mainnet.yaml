@@ -1,0 +1,142 @@
+specVersion: 0.0.2
+schema:
+  file: ./src/schemas/schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: VolatilityArt
+    network: mainnet
+    source:
+      address: "0xbc6c831a566eb4018b13968c45304cfc3c674df8"
+      abi: VolatilityArt
+      startBlock: 11583074
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - AssetLogs
+      abis:
+        - name: VolatilityArt
+          file: ./abis/VolatilityArt.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+        - event: BatchMint(address,uint256[],string[],uint256)
+          handler: handleBatchMint
+      file: ./src/mappings/volatility_art_v1.ts
+  - kind: ethereum/contract
+    name: BlankCollectionFactory
+    network: mainnet
+    source:
+      address: "0xd76f16e38d152cac0cfbe1dc1d844cbfa3e2ab0d"
+      abi: BlankCollectionFactory
+      startBlock: 11583074
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - CollectionLogs
+        - ParticipantLogs
+      abis:
+        - name: BlankCollectionFactory
+          file: ./abis/BlankCollectionFactory.json
+      eventHandlers:
+        - event: CollectionCreated(address,string,address,uint256)
+          handler: handleCollectionCreated
+      file: ./src/mappings/factory.ts
+templates:
+  - kind: ethereum/contract
+    name: BlankSoloCollection
+    network: mainnet
+    source:
+      abi: BlankSoloCollection
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - AssetLogs
+      abis:
+        - name: BlankSoloCollection
+          file: ./abis/BlankSoloCollection.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+        - event: BatchMint(address,uint256[],string[],uint256)
+          handler: handleBatchMint
+      file: ./src/mappings/solo_collection.ts
+  - kind: ethereum/contract
+    name: BlankCollabCollection
+    network: mainnet
+    source:
+      abi: BlankCollabCollection
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - AssetLogs
+        - ParticipantLogs
+      abis:
+        - name: BlankCollabCollection
+          file: ./abis/BlankCollabCollection.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+        - event: BatchMint(address,uint256[],string[],uint256)
+          handler: handleBatchMint
+        - event: ParticipantAdded(address,uint256)
+          handler: handleParticipantAdded
+        - event: ParticipantRemoved(address)
+          handler: handleParticipantRemoved
+      file: ./src/mappings/collab_collection.ts
+  - kind: ethereum/contract
+    name: BlankGroupCollection
+    network: mainnet
+    source:
+      abi: BlankGroupCollection
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - AssetLogs
+        - ParticipantLogs
+      abis:
+        - name: BlankGroupCollection
+          file: ./abis/BlankGroupCollection.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+        - event: BatchMint(address,uint256[],string[],uint256)
+          handler: handleBatchMint
+        - event: ParticipantAdded(address,uint256)
+          handler: handleParticipantAdded
+        - event: ParticipantRemoved(address)
+          handler: handleParticipantRemoved
+        - event: ParticipantRemovedByOwner(address)
+          handler: handleParticipantRemovedByOwner
+      file: ./src/mappings/group_collection.ts
+  - kind: ethereum/contract
+    name: VolatilityArt
+    network: mainnet
+    source:
+      abi: VolatilityArt
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - AssetLogs
+      abis:
+        - name: VolatilityArt
+          file: ./abis/VolatilityArt.json
+      eventHandlers:
+        - event: Transfer(indexed address,indexed address,indexed uint256)
+          handler: handleTransfer
+        - event: BatchMint(address,uint256[],string[],uint256)
+          handler: handleBatchMint
+        - event: Wrapped(address,uint256)
+          handler: handleWrapped
+      file: ./src/mappings/volatility_art_v2.ts

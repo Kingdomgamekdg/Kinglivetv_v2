@@ -1,0 +1,6 @@
+node_modules
+.git
+.env
+yarn.lock
+logs
+.gitlab-ci.yml

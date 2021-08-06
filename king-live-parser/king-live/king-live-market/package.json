@@ -1,0 +1,32 @@
+{
+  "name": "king-live-market",
+  "scripts": {
+    "build": "graph build",
+    "codegen-rinkeby": "cp src/subgraphs/rinkeby.yaml ./subgraph.yaml && graph codegen",
+    "codegen-mainnet": "cp src/subgraphs/mainnet.yaml ./subgraph.yaml && graph codegen",
+    "create-local": "graph create --node http://localhost:8020/ king-live-market",
+    "create-rinkeby": "graph create --node http://178.128.223.164:8020 king-live-market",
+    "create-mainnet": "graph create --node http://34.234.8.203:8020 king-live-market",
+    "remove-local": "graph remove --node http://localhost:8020/ king-live-market",
+    "remove-rinkeby": "graph remove --node http://178.128.223.164:8020 king-live-market",
+    "remove-mainnet": "graph remove --node http://159.65.223.165:8020 king-live-market",
+    "deploy-local": "graph deploy --node http://localhost:8020/ --ipfs http://localhost:5001 king-live-market",
+    "deploy-rinkeby": "graph deploy --node http://178.128.223.164:8020 --ipfs http://178.128.223.164:5001 king-live-market",
+    "deploy-mainnet": "graph deploy --node http://34.234.8.203:8020 --ipfs http://34.234.8.203:5001 king-live-market"
+  },
+  "devDependencies": {
+    "@graphprotocol/graph-cli": "^0.16.0",
+    "@typescript-eslint/eslint-plugin": "^2.7.0",
+    "@typescript-eslint/parser": "^2.7.0",
+    "eslint": "^6.6.0",
+    "eslint-config-standard": "^14.1.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-node": "^10.0.0",
+    "eslint-plugin-promise": "^4.2.1",
+    "eslint-plugin-standard": "^4.0.1",
+    "typescript": "^3.7.2"
+  },
+  "dependencies": {
+    "@graphprotocol/graph-ts": "^0.15.0"
+  }
+}

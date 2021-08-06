@@ -1,0 +1,27 @@
+specVersion: 0.0.2
+schema:
+  file: ./src/schemas/schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: KingLive1155
+    network: testnet
+    source:
+      address: "0x5e689430C8C57653c2f3a3d450CeAb5D7824EC95"
+      abi: KingLive1155
+      startBlock: 9807656
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - AssetLogs
+      abis:
+        - name: KingLive1155
+          file: ./abis/KingLive1155.json
+      eventHandlers:
+        - event: Create(indexed address,indexed uint256,string,indexed uint256,uint256,uint256)
+          handler: handleCreate
+        - event: TransferSingle(indexed address,indexed address,indexed address,uint256,uint256)
+          handler: handleTransferSingle
+      file: ./src/mappings/king_live_1155.ts
+  

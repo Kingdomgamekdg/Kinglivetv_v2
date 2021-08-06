@@ -1,0 +1,39 @@
+specVersion: 0.0.2
+schema:
+  file: ./src/schemas/schema.graphql
+dataSources:
+  - kind: ethereum/contract
+    name: KingLiveMarket
+    network: testnet
+    source:
+      address: "0x0c2c17A9F21BfC6C8424F49AD63427660F53E3c8"
+      abi: KingLiveMarket
+      startBlock: 9807656
+    mapping:
+      kind: ethereum/events
+      apiVersion: 0.0.3
+      language: wasm/assemblyscript
+      entities:
+        - AssetLogs
+      abis:
+        - name: KingLiveMarket
+          file: ./abis/KingLiveMarket.json
+      eventHandlers:
+        - event: List(uint256,address,address,uint256,uint256,uint256,uint256,address,uint256)
+          handler: handleList
+        - event: Bid(uint256,address,address,uint256,uint256,address,uint256,uint256)
+          handler: handleBid
+        - event: Buy(uint256,address,address,uint256,address,uint256)
+          handler: handleBuy
+        - event: CancelListed(uint256,address)
+          handler: handleCancelListed
+        - event: UpdateItem(uint256,address,uint256,uint256,address,uint256)
+          handler: handleUpdateItem
+        - event: UpdateBid(uint256,uint256,address,uint256,address,uint256,uint256,uint256)
+          handler: handleUpdateBid
+        - event: AcceptBid(uint256,uint256,address,address,bool)
+          handler: handleAcceptBid
+        - event: CancelBid(uint256,uint256,address,address,bool)
+          handler: handleCancelBid
+      file: ./src/mappings/king_live_market.ts
+  

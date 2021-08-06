@@ -1,0 +1,37 @@
+type AssetLogs @entity {
+    id: ID!                         # id
+    collection: String              # Contract address
+    assetId: BigInt                 # assetId
+    uri: String                     # Asset uri
+    creator: String                 # Creator address
+    isReviewed: Boolean
+    editions: BigInt                # init amount
+    totalEditions: BigInt          # total amount
+    transaction: String             # Transaction hash
+    time: BigInt                    # Block time
+    logIndex: BigInt                   # Log index
+}
+
+type ReviewLogs @entity {
+    id: ID!                         # id
+    collection: String              # Contract address
+    assetId: BigInt                 # assetId
+    result: Boolean
+    reviewer: String                # init amount
+    transaction: String             # Transaction hash
+    time: BigInt                    # Block time
+    logIndex: BigInt                   # Log index
+}
+
+type TransferLogs @entity {
+    id: ID!                         # id
+    collection: String              # Contract address
+    assetId: BigInt                 # assetId
+    fromAddress: String                    # from address
+    toAddress: String                      # to address
+    amount: BigInt                  # amount transfer
+    transaction: String             # Transaction hash
+    time: BigInt                    # Block time
+    logIndex: BigInt                # Log index
+}
+

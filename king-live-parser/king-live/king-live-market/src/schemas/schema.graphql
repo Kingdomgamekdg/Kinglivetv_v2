@@ -1,0 +1,119 @@
+type ListLogs @entity {
+    id: ID!  
+    contract: String                   #contractAddress
+    listId : BigInt                     # id
+    owner : String                     # Creator address
+    collection: String                 # assetId
+    assetId: BigInt                     # Asset uri
+    quantity: BigInt               
+    mask: Int                # init amount
+    price: BigInt          # total amount
+    paymentToken: String             # Transaction hash
+    expiration: BigInt                    # Block time
+    transaction: String             # Transaction hash
+    time: BigInt                    # Block time
+    logIndex: BigInt                # Log index
+}
+
+type BidLogs @entity {
+    id: ID!                         # id
+    contract: String
+    listId : BigInt                 # id list log
+    fromAddress: String
+    toAddress: String
+    bidOrderId: BigInt              # id bid orders
+    quantity: BigInt                # quantity bid
+    bidToken: String                # from address
+    bidPrice: BigInt               # to address
+    expiration: BigInt              # amount transfer
+    status: Int                     # 1 open , 2 accept, 3 cancel
+    transaction: String             # Transaction hash
+    time: BigInt                    # Block time
+    logIndex: BigInt                # Log index
+}
+
+
+type UpdateBidLogs @entity {
+    id: ID!                         # id
+    contract: String
+    fromAddress: String 
+    bidOrderId: BigInt              # id bid orders
+    quantity: BigInt                # quantity bid
+    bidPrice: String                # from address
+    bidAmount: BigInt               # to address
+    expiration: BigInt              # amount transfer
+    status: Int                     # 1 open , 2 accept, 3 cancel
+    transaction: String             # Transaction hash
+    time: BigInt                    # Block time
+    logIndex: BigInt                # Log index
+}
+
+
+type BuyLogs @entity {
+    id: ID!                         # id
+    contract: String
+    listId : BigInt                 # id list log
+    fromAddress: String
+    toAddress: String
+    quantity: BigInt                # quantity buy
+    paymentToken: String            # from address
+    paymentAmount: BigInt           # to address
+    expiration: BigInt              # amount transfer
+    transaction: String             # Transaction hash
+    time: BigInt                    # Block time
+    logIndex: BigInt                # Log index
+}
+
+
+type AcceptBidLogs @entity {
+    id: ID!    
+    contract: String                     # id
+    fromAddress :String
+    toAddress:String
+    bidOrderId : BigInt                 # id list log
+    isAccept: Boolean                # quantity buy
+    transaction: String             # Transaction hash
+    time: BigInt                    # Block time
+    logIndex: BigInt                # Log index
+}
+
+type CancelBidLogs @entity {
+    id: ID!    
+    contract: String                     # id
+    fromAddress :String
+    toAddress:String
+    bidOrderId : BigInt                 # id list log
+    isCancel: Boolean                # quantity buy
+    transaction: String             # Transaction hash
+    time: BigInt                    # Block time
+    logIndex: BigInt                # Log index
+}
+
+
+
+type UpdateItemListLogs @entity {
+    id: ID!                         # id
+    listId : BigInt                 # id list log
+    fromAddress: String
+    mask: Int                # init amount
+    price: BigInt          # total amount
+    paymentToken: String             # Transaction hash
+    expiration: BigInt                    # Block time
+    transaction: String             # Transaction hash
+    time: BigInt                    # Block time
+    logIndex: BigInt                # Log index
+}
+
+
+type CancelListedLogs @entity {
+    id: ID!                         # id
+    listId : BigInt                       # id
+    status : Int                    # 3 canceled
+    transaction: String             # Transaction hash
+    time: BigInt                    # Block time
+    logIndex: BigInt                # Log index
+}
+
+
+
+
