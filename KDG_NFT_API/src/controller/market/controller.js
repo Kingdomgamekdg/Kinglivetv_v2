@@ -49,12 +49,11 @@ class Controller {
         })
         .populate({
             path : 'buys',
-            populate : 'users',
-
+            populate : 'from to',
         })
         .populate({
             path : 'bid-orders',
-            populate : 'users',
+            populate : 'from to',
         })
         .sort({_id : -1})
         .lean()
