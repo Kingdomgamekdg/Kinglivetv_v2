@@ -52,7 +52,7 @@ class Controller {
             populate : 'from to',
         })
         .populate({
-            path : 'bid-orders',
+            path : 'bid_orders',
             populate : 'from to',
         })
         .sort({_id : -1})
