@@ -45,7 +45,16 @@ class Controller {
         }))
         .limit(params.limit)
         .populate({
-            path : 'asset owner bid_orders buys',
+            path : 'asset owner',
+        })
+        .populate({
+            path : 'buys',
+            populate : 'users',
+
+        })
+        .populate({
+            path : 'bid-orders',
+            populate : 'users',
         })
         .sort({_id : -1})
         .lean()
