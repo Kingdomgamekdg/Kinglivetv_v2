@@ -233,14 +233,7 @@ class SubcripberAsset {
                 await bidOrder.save();
             } else if (data.channel === 'new_cancel_list'){
                 const currentList = await ListingAssets.findOne({ id:ObjectId(payload.list_id) }).populate('assets users');
-                let owner = await Users.findOne({_id : currentList?.owner?._id});
-                if(owner && currentList.asset){
-                    userBalance = await UserAsset.findOne({asset : ObjectId( currentList?.asset?._id), user : ObjectId(owner?._id)});
-                    userBalance.amount = new Number(userBalance.amount)  + new Number(currentList.quantity);                    
-                    await userBalance.save();
-                }
                 currentList.quantity = 0;
-                currentList.status = 3 ;
                 await currentList.save()
             }
         });
