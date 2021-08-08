@@ -33,8 +33,8 @@ class Server {
         app.use(bodyParser.json())
 
         // let dbURI = `mongodb://localhost:27017/admin`
-        //let dbURI = `mongodb://${config.MONGO_USER}:${encodeURIComponent(config.MONGO_PASSWORD)}@${config.MONGO_HOST}:${config.MONGO_PORT}/${config.MONGO_DB}`
-        let dbURI =`mongodb://KDG:Kingdomgame%40%40123@10.104.0.23:27017/KDG?authSource=admin`
+        let dbURI = `mongodb://${config.MONGO_USER}:${encodeURIComponent(config.MONGO_PASSWORD)}@${config.MONGO_HOST}:${config.MONGO_PORT}/${config.MONGO_DB}`
+        // let dbURI =`mongodb://KDG:Kingdomgame%40%40123@10.104.0.23:27017/KDG?authSource=admin`
         mongoose.connect(dbURI,{
             useNewUrlParser : true ,
             useFindAndModify : false ,
