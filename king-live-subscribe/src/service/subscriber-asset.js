@@ -232,7 +232,7 @@ class SubcripberAsset {
                 bidOrder.status =   1,//1 order, 2 accept, 3 cancel
                 await bidOrder.save();
             } else if (data.channel === 'new_cancel_list'){
-                const currentList = await ListingAssets.findOne({ id:ObjectId(payload.list_id) }).populate('assets users');
+                const currentList = await ListingAssets.findOne({ id:payload.list_id, contract:payload.contract }).populate('assets users');
                 currentList.quantity = 0;
                 await currentList.save()
             }
