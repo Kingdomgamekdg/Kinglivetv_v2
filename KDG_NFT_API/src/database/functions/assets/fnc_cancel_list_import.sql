@@ -8,7 +8,7 @@ BEGIN
 	-----------------------------------------------------------------
 
 	-- Open Edition smart contract on Rinkeby and Mainnet
-	PERFORM PG_NOTIFY('new_cancel_list', '{"contract":"' || NEW.CONTRACT || '","list_id":"' || NEW.LIST_ID || '" ,"list_id":"' || NEW.LIST_ID || '" }');
+	PERFORM PG_NOTIFY('new_cancel_list', '{"contract":"' || NEW.CONTRACT || '","list_id":"' || NEW.LIST_ID || '"  }');
 	RETURN NEW;
 END;
 $$
