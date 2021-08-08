@@ -16,7 +16,10 @@ export default function NFT() {
   const [isOwner, setIsOwner] = useState(false)
 
   const [amountBuy, setAmountBuy] = useState(0)
+  const [price, setPrice] = useState(0)
+
   const [netTotal, setNetTotal] = useState(0)
+  const [netPaymentPrice, setNetPaymentPrice] = useState(0)
 
   const [topQuantity, setTopQuantityList] = useState([])
   const [ActiveTop9, setActiveTop9] = useState(0)
@@ -31,13 +34,12 @@ export default function NFT() {
     var ids = PopulateList.map((o) => o._id)
 
     const res = await callAPI.get(`/listing-asset?limit=9&${ids.length ? `ids=${ids}` : ''}`, true)
-
-    if (res?.data?.length === 0) {
-      isLoadMore.current = false
-      setPopulateList([...PopulateList])
-      return
-    }
-    setPopulateList([...PopulateList, ...res.data])
+      if (res?.data?.length === 0) {
+        isLoadMore.current = false
+        setPopulateList([...PopulateList])
+        return
+      }
+      setPopulateList([...PopulateList, ...(res?.data ? res.data : [])])   
   }, [PopulateList])
 
   const getTop9 = useCallback(async () => {
@@ -46,7 +48,7 @@ export default function NFT() {
     if (res?.data?.length === 0) {
       return
     }
-    setTop9List([...res.data])
+    setTop9List([...(res?.data ? res.data : [])])
   }, [])
 
   useEffect(() => {
@@ -83,19 +85,23 @@ export default function NFT() {
   useEffect(() => {
     ;(async () => {
       const res = await callAPI.get(`/listing-asset?limit=9&`)
-      setTop9List(res.data)
-      setTopQuantityList(res.data)
+      if(res?.data?.length){
+        setTop9List(res.data)
+        setTopQuantityList(res.data)
+      }
     })()
   }, [])
 
   const handleBuy = async (e) => {
     e.preventDefault()
     const listId = e.target._listid.value
+    const type = new Number(e.target._type.value)
     const amount = new Decimal(e.target._amount.value).toHex()
     const paymentToken = itemBuy.payment_token
     const netTotalPayment = new Decimal(e.target._netTotal.value).toHex()
     console.log('netTotalPayment', netTotalPayment)
-    window.contractMarket.methods
+    if(type == 1){
+      window.contractMarket.methods
       .buy(listId, amount, paymentToken, netTotalPayment)
       .send({ from: window.ethereum.selectedAddress })
       .then((result) => {
@@ -107,6 +113,22 @@ export default function NFT() {
           setIsOpenBuy(false)
         }
       })
+    } else {
+      const netPaymentPrice = new Decimal(e.target._netPaymentPrice.value).toHex()
+      window.contractMarket.methods
+      .bid(listId, amount, paymentToken, netPaymentPrice,100000000)
+      .send({ from: window.ethereum.selectedAddress })
+      .then((result) => {
+        if (result) {
+          top9List.length = 0
+          PopulateList.length = 0
+          getTop9()
+          getAssets()
+          setIsOpenBuy(false)
+        }
+      })
+    }
+    
   }
 
   const handleApproval = async () => {
@@ -127,6 +149,32 @@ export default function NFT() {
   const handleDelist = async (item) => {
     window.contractMarket.methods
       .cancelListed(item)
+      .send({ from: window.ethereum.selectedAddress })
+      .then((result) => {
+        top9List.length = 0
+        PopulateList.length = 0
+        getTop9()
+        getAssets()
+        setIsOpenBuy(false)      
+      })
+  }
+
+  const handleAcceptBid = async (bidId) => {
+    window.contractMarket.methods
+      .acceptBid(bidId)
+      .send({ from: window.ethereum.selectedAddress })
+      .then((result) => {
+        top9List.length = 0
+        PopulateList.length = 0
+        getTop9()
+        getAssets()
+        setIsOpenBuy(false)      
+      })
+  }
+
+  const handleBidOrders = async (bidId) => {
+    window.contractMarket.methods
+      .acceptBid(bidId)
       .send({ from: window.ethereum.selectedAddress })
       .then((result) => {
         top9List.length = 0
@@ -191,11 +239,29 @@ export default function NFT() {
     }
   }
 
+  const handleChangePriceOrder = async (price) => {
+    const { Decimal } = require('decimal.js')
+    if (price && price.length && !isNaN(price)) {
+      paymentList.forEach((token) => {
+        if (token.address === itemBuy.payment_token) {
+            setPrice(new Decimal(price))
+            setTotal(new Decimal(price).mul(Decimal(amountBuy)))
+            setNetPaymentPrice(new Decimal(price).mul(new Decimal(10).pow(token.decimal)))
+            return
+        }
+      })
+    } else {
+      setTotal(0)
+      setPrice(0)
+      return
+    }
+  }
+
   const handleMouseOverNFT = useCallback((e) => {
     let target = e.target
     while (true) {
       const targetClassList = Array.from(target.classList)
-      if(targetClassList.includes('mid')) {
+      if(targetClassList.includes('mid')||targetClassList.includes('blur')) {
         break
       }
       target = target.parentElement
@@ -211,7 +277,7 @@ export default function NFT() {
     let target = e.target
     while (true) {
       const targetClassList = Array.from(target.classList)
-      if(targetClassList.includes('mid')) {
+      if(targetClassList.includes('mid')||targetClassList.includes('blur')) {
         break
       }
       target = target.parentElement
@@ -227,9 +293,9 @@ export default function NFT() {
   return (
     <>
       {isOpenBuy && (
-        <div key={itemBuy._id} className='popupX' onClick={() => setIsOpenBuy(false)}>
-          <form className='containerX' onSubmit={handleBuy} onClick={(e) => e.stopPropagation()}>
-            <img className='preview-image mb-25' src={itemBuy?.asset?.metadata?.image} alt='' />
+        <div key={itemBuy._id} className='market-popupX' onClick={() => setIsOpenBuy(false)}>
+          <form className='market-containerX' onSubmit={handleBuy} onClick={(e) => e.stopPropagation()}>
+            <img className='preview-image 25mb' src={itemBuy?.asset?.metadata?.image} alt='' />
             <div className='form-control'>
               <div className='label'>NFT</div>
               <input type='text' name='_name' readOnly value={itemBuy?.asset?.metadata?.name} />
@@ -239,6 +305,7 @@ export default function NFT() {
                 readOnly
                 value={itemBuy?.asset?.collection_id}
               />
+              <input type='hidden' name='_type' readOnly value={itemBuy?.type} />
               <input type='hidden' name='_id' readOnly value={itemBuy?.asset?.id} />
               <input type='hidden' name='_listid' readOnly value={itemBuy?.id} />
             </div>
@@ -258,7 +325,9 @@ export default function NFT() {
                 onChange={(e) =>handleChangeAmount(e.target.value)}
               />
             </div>
-            <div className='form-control'>
+
+            {itemBuy?.type==1 && (
+              <div className='form-control'>
               <div className='label'>Price</div>
               {paymentList.map((token) => {
                 if (token.address === itemBuy?.payment_token) {
@@ -273,6 +342,33 @@ export default function NFT() {
                 return null
               })}
             </div>
+            )}
+            {itemBuy?.type==2 && (
+            <div className='form-control'>
+              <div className='label'>Price</div>
+              {paymentList.map((token) => {
+                if (token.address === itemBuy?.payment_token) {
+                  return (
+                    <div className='price'>
+                       <input
+                        type='number'
+                        id='_price'
+                        name='_price'
+                        min={new Decimal(itemBuy.price).div(new Decimal(10).pow(token.decimal)).toString()}
+                        max={5000000}
+                        value={price}
+                        onChange={(e) =>handleChangePriceOrder(e.target.value)}
+                      />
+                       <input type='hidden'
+                        id='_netPaymentPrice'
+                        name='_netPaymentPrice'  value={netPaymentPrice} />
+                    </div>
+                  )
+                }
+                return null
+              })}
+            </div>
+             )}
             <div className='form-control'>
               <div className='label'>Total</div>
               <input type='number' readOnly name='_total' value={total} />
@@ -283,9 +379,14 @@ export default function NFT() {
                 Delisting
               </button>
             )}
-            {!isOwner && isApproval && (
+            {!isOwner && itemBuy?.type==1 && isApproval && (
               <button type='submit' className='buttonX'>
                 Buy
+              </button>
+            )}
+            {!isOwner && itemBuy?.type==2 && isApproval && (
+              <button type='submit' className='buttonX'>
+                Bid orders
               </button>
             )}
             {!isOwner && !isApproval && (
@@ -293,9 +394,87 @@ export default function NFT() {
                 Approval
               </button>
             )}
+            {itemBuy?.type==1 && (
+              <>
+              <div className='label'>Transaction history</div>
+              <table className='market-tableX'>
+                <thead>
+                  <th>From</th>
+                  <th>Amount</th>
+                  <th>Payment Amount</th>
+                </thead>    
+                {itemBuy?.buys.map((b)=>( 
+                      <>
+                      <tbody>
+
+                      <td>{b?.from?.kyc?.last_name?b?.from?.kyc?.last_name +' ' +b?.from?.kyc?.first_name: b?.from?.address}</td>
+                      <td>{b?.quantity}</td>
+                      {paymentList.map((token) => {
+                      if (token.address === itemBuy?.payment_token) {
+                        return (
+                          <td>{new Decimal(b?.payment_amount).div(new Decimal(10).pow(token.decimal)) +
+                            ' ' +
+                            token.coin}{' '}</td>
+                        )
+                      }
+                      })}
+                      </tbody>
+                      </>
+                  )
+                )} 
+              
+           </table> 
+           </>
+          )}
+
+          {itemBuy?.type==2 && (
+              <>
+              <div className='label'>Bid orders</div>
+              <table className='market-tableX'>
+                <thead>
+                  <th>From</th>
+                  <th>Amount</th>
+                  <th>Price</th>
+                  <th>Action</th>
+
+                </thead>    
+                {itemBuy?.bid_orders.map((b)=>( 
+                      <>
+                      <tbody>
+
+                      <td>{b?.from?.kyc?.last_name?b?.from?.kyc?.last_name +' ' +b?.from?.kyc?.first_name: b?.from?.address}</td>
+                      <td>{b?.quantity}</td>
+                      {paymentList.map((token) => {
+                      if (token.address === itemBuy?.payment_token) {
+                        return (
+                          <td>{new Decimal(b?.payment_price).div(new Decimal(10).pow(token.decimal)) +
+                            ' ' +
+                            token.coin}{' '}</td>
+                        )
+                      }
+                      })}
+                      {b?.status == 1 && (
+                        <td>                       
+                          <button onClick={()=> handleAcceptBid(b.id)}>Accept</button>
+                        </td>
+                      )}
+                       {b?.status == 2 && (
+                        <td>
+                          <button>Accepted</button>
+                        </td>
+                      )}
+                      </tbody>
+                      </>
+                  )
+                )}
+           
+           </table> 
+           </>
+          )}
           </form>
         </div>
-      )}
+        
+        )}
       <div className='nft-market'>
         <div className='banner'>
           <img src={banner} alt='' />
@@ -473,11 +652,27 @@ export default function NFT() {
                   </span>
                 </div>
                 <div key={'nft' + index} className='nft-blur'>
-                  <div className='blur'>
-                    <img src={o.asset?.metadata?.image} alt='' />
-                  </div>
+                  <div className='blur' 
+                      onMouseOver={handleMouseOverNFT}
+                      onMouseOut={handleMouseOutNFT}>
+                      {o?.asset?.metadata?.mimetype.startsWith('image') && (
+                          <>
+                           <div className='img'>
+                              <img key={'image' +o?._id} src={o.asset?.metadata?.image} alt='' />
+                            </div>
+                          </>
+                      )}
+                      {o?.asset?.metadata?.mimetype.startsWith('video/mp4') && (
+                        <>
+                          <div className='video'>
+                            <img key={'image' + o?._id} src={o?.asset?.metadata?.image} alt='' />
+                            <video muted autoPlay key={'video' + o?._id} src={o?.asset?.metadata?.animation_url} alt='' />
+                         </div>
+                        </>
+                        )}                  
+                        </div>                 
                   <div className='nft'>
-                    <img src={o.asset?.metadata?.image} alt='' />
+                    <img key={'image' +o?._id} src={o.asset?.metadata?.image} alt='' />
                   </div>
                 </div>
                 <span key={'name' + index} className='name'>
