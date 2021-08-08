@@ -4,3 +4,4 @@ export const STORAGE_DOMAIN = 'https://storage.v2.kingdomgame.org'
 export const RTMP_DOMAIN = 'rtmp://stream.v2.kinglive.tv:1935/live'
 export const PLAY_STREAM = 'https://play.v2.kinglive.tv/live/'
 export const TIME_EXPIRE = 1000000000
+export const EXPLORER_URL = 'https://testnet.bscscan.com/'

@@ -114,16 +114,26 @@ export default function NFT() {
       .approve(addressMarket, '0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff')
       .send({ from: window.ethereum.selectedAddress })
       .then((result) => {
-        setIsApproval(true)
+        if (result) {
+          top9List.length = 0
+          PopulateList.length = 0
+          getTop9()
+          getAssets()
+          setIsOpenBuy(false)
+          }
       })
   }
 
-  const handleCancel = async () => {
-    window.contractERC20.methods
-      .cancelList(addressMarket, '0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff')
+  const handleDelist = async (item) => {
+    window.contractMarket.methods
+      .cancelListed(item)
       .send({ from: window.ethereum.selectedAddress })
       .then((result) => {
-        setIsApproval(true)
+        top9List.length = 0
+        PopulateList.length = 0
+        getTop9()
+        getAssets()
+        setIsOpenBuy(false)      
       })
   }
 
@@ -141,6 +151,8 @@ export default function NFT() {
       }
       if (window.ethereum.selectedAddress === item?.owner?.address) {
         setIsOwner(true)
+      } else {
+        setIsOwner(false)
       }
     },
     [Decimal]
@@ -267,8 +279,8 @@ export default function NFT() {
               <input type='hidden' readOnly name='_netTotal' value={netTotal} />
             </div>
             {isOwner && (
-              <button className='buttonX' onClick={handleApproval}>
-                Cancel
+              <button className='buttonX' onClick={() => handleDelist(itemBuy.id)}>
+                Delisting
               </button>
             )}
             {!isOwner && isApproval && (
