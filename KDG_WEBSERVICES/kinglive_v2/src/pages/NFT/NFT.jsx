@@ -453,14 +453,18 @@ export default function NFT() {
                         )
                       }
                       })}
-                      {b?.status == 1 && (
+                      {isOwner && b?.status == 1 && (
                         <td>                       
                           <button onClick={()=> handleAcceptBid(b.id)}>Accept</button>
                         </td>
                       )}
-                       {b?.status == 2 && (
+                       {isOwner &&  b?.status == 2 && (
                         <td>
                           <button>Accepted</button>
+                        </td>
+                      )}
+                      {!isOwner &&  b?.status == 1 && (
+                        <td>
                         </td>
                       )}
                       </tbody>
