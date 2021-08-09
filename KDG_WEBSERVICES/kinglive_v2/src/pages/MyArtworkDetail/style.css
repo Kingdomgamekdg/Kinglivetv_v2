@@ -269,7 +269,7 @@
 .box-bidding .table-bidding table tr td .box-data .non-data {
     padding-top: 25px;
 }
-@media only screen and (min-device-width : 1236px) and (max-device-width : 1650px) {
+@media only screen and (min-device-width : 1236px) and (max-device-width : 1920px) {
     .box-slide-artwork .swiper-container {
         position: initial;
     }
