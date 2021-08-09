@@ -175,7 +175,7 @@ export default function Profile() {
           <h3>Edit Information</h3>
 
           <div className='form-control'>
-            <div className='label'>Surname</div>
+            <div className='label'>Last Name</div>
             <input type='text' name='last_name' defaultValue={userData?.kyc?.last_name || ''} />
           </div>
 
@@ -351,7 +351,12 @@ export default function Profile() {
                   </div>
 
                   <div style={{ display: 'flex', justifyContent: 'center' }}>
-                    <div className='buttonTrade'>
+                    <div
+                      className='buttonTrade'
+                      onClick={() =>
+                        window.open('https://www.mexc.com/exchange/KDG_USDT', '_blank')
+                      }
+                    >
                       <img src={tradeSVG} alt='' />
                       <span>Trade</span>
                     </div>

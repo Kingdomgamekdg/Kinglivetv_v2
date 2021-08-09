@@ -21,8 +21,14 @@ import { EXPLORER_URL } from '../../constant'
 
 export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false }) {
   const userRedux = useSelector((state) => state.user)
-  const userName = useMemo(() => userRedux?userRedux?.kyc?.last_name + ' ' + userRedux?.kyc?.first_name:"", [userRedux])
-  const followers = useMemo(() => userRedux?userRedux?.kinglive?.total_follower :"0", [userRedux])
+  const userName = useMemo(
+    () => (userRedux ? `${userRedux?.kyc?.first_name} ${userRedux?.kyc?.last_name}` : 'Username'),
+    [userRedux]
+  )
+  const followers = useMemo(
+    () => (userRedux ? userRedux?.kinglive?.total_follower : '0'),
+    [userRedux]
+  )
 
   const dispatch = useDispatch()
   const history = useHistory()
@@ -75,14 +81,16 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
     if (!window.ethereum.isMetaMask) return
 
     window.web3 = new Web3(window.ethereum)
-    if (!window.ethereum.networkVersion==97) {
+    if (!window.ethereum.networkVersion === 97) {
       setIsWrongNetwork(true)
     }
     window.contractKL1155 = new window.web3.eth.Contract(ABIKL1155, addressKL1155)
     window.contractMarket = new window.web3.eth.Contract(ABIMarket, addressMarket)
     window.contractERC20 = new window.web3.eth.Contract(ABIERC20, addressERC20)
-    if(window.ethereum.selectedAddress && window.contractERC20){
-      const balance = await window.contractERC20.methods.balanceOf(window.ethereum.selectedAddress).call()
+    if (window.ethereum.selectedAddress && window.contractERC20) {
+      const balance = await window.contractERC20.methods
+        .balanceOf(window.ethereum.selectedAddress)
+        .call()
       const grossBalance = new Decimal(balance).div(new Decimal(10).pow(18))
       setBalance(grossBalance.toNumber())
     }
@@ -92,7 +100,6 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
 
   // accountsChanged
   useEffect(() => {
-
     const { Decimal } = require('decimal.js')
     if (!window.ethereum) return
     if (!window.ethereum.isMetaMask) return
@@ -100,7 +107,7 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
     window.ethereum.on('accountsChanged', async function (accounts) {
       dispatch(actChangeAddress(accounts[0]))
       await loginUser()
-      if(window.ethereum && window.contractERC20){
+      if (window.ethereum && window.contractERC20) {
         const balance = await window.contractERC20.methods.balanceOf(accounts[0]).call()
         const grossBalance = new Decimal(balance).div(new Decimal(10).pow(18))
         setBalance(grossBalance.toNumber())
@@ -111,8 +118,8 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
     })
 
     window.ethereum.on('networkChanged', async function (networkId) {
-      console.log("networkId ",networkId)
-      if(networkId == 97){
+      console.log('networkId ', networkId)
+      if (networkId === 97) {
         setIsWrongNetwork(false)
       } else {
         setIsWrongNetwork(true)
@@ -144,21 +151,22 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
 
   const handleLogout = async () => {
     dispatch(actChangeAddress(null))
-    window.web3 = null;
+    window.web3 = null
     storage.clearToken()
     storage.clearRefresh()
   }
 
   return (
     <>
-
-        {isWrongNetwork && (
-          <div className='popupX'>
-            <div className='containerX'>
-              <div className='titleX'>Please use Binance Smart Chain Testnet (97) to start app<applet></applet>!</div>
-              </div>
+      {isWrongNetwork && (
+        <div className='popupX'>
+          <div className='containerX'>
+            <div className='titleX'>
+              Please use Binance Smart Chain Testnet (97) to start app<applet></applet>!
+            </div>
           </div>
-        )}
+        </div>
+      )}
       {insMetaMask && (
         <div className='popupX'>
           <div className='containerX'>
@@ -383,7 +391,7 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
           </div>
           <div
             onClick={() => setIsOpenConnect(true)}
-            className={`connect ${currentAddress && 'disabled'}`}
+            className={`connect ${currentAddress ? 'disabled' : ''}`}
           >
             {currentAddress ? shortAddress(currentAddress) : 'Connect'}
           </div>
@@ -416,8 +424,8 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
                   </div>
                 </div>
                 <div className='assets'>
-                    <span>{balance}</span>
-                    <img src={kdg} alt='' />
+                  <span>{balance}</span>
+                  <img src={kdg} alt='' />
                 </div>
               </div>
 
@@ -445,17 +453,28 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
                   </svg>
                   <span>Profile</span>
                 </div>
-                <div className='item' onClick={() =>   
-                  window.open(
-                    EXPLORER_URL +'/address/'+window.ethereum.selectedAddress,
-                    '_blank'
-                  )}>
-
-                <svg width="14" height="15" viewBox="0 0 11 8" fill="none" xmlns="http://www.w3.org/2000/svg">
-                <path d="M10.0936 0.280837C10.0973 0.207957 10.0717 0.133849 10.016 0.0781943C9.96038 0.0225396 9.88627 -0.00312457 9.81339 0.000640937C9.80909 0.000453997 9.80484 0 9.80046 0H8.18477C8.03727 0 7.91771 0.119561 7.91771 0.267057C7.91771 0.414553 8.03727 0.534114 8.18477 0.534114H9.18241L6.54237 3.17419L5.54678 2.1786C5.49671 2.12852 5.42877 2.10038 5.35794 2.10038C5.28712 2.10038 5.21918 2.12852 5.16911 2.1786L0.368253 6.97948C0.263968 7.08377 0.263968 7.25287 0.368253 7.35718C0.42041 7.40928 0.488749 7.43535 0.557089 7.43535C0.625429 7.43535 0.693796 7.40928 0.745925 7.35713L5.35794 2.74508L6.35353 3.74067C6.45782 3.84495 6.62692 3.84495 6.73123 3.74067L9.56011 0.911813V1.81473C9.56011 1.96223 9.67967 2.08179 9.82717 2.08179C9.97467 2.08179 10.0942 1.96223 10.0942 1.81473V0.293763C10.0942 0.28941 10.0938 0.285163 10.0936 0.280837Z" fill="#C4C4C4"/>
-                </svg>
-                <span>Explorer</span>
-
+                <div
+                  className='item'
+                  onClick={() =>
+                    window.open(
+                      EXPLORER_URL + '/address/' + window.ethereum.selectedAddress,
+                      '_blank'
+                    )
+                  }
+                >
+                  <svg
+                    width='14'
+                    height='15'
+                    viewBox='0 0 11 8'
+                    fill='none'
+                    xmlns='http://www.w3.org/2000/svg'
+                  >
+                    <path
+                      d='M10.0936 0.280837C10.0973 0.207957 10.0717 0.133849 10.016 0.0781943C9.96038 0.0225396 9.88627 -0.00312457 9.81339 0.000640937C9.80909 0.000453997 9.80484 0 9.80046 0H8.18477C8.03727 0 7.91771 0.119561 7.91771 0.267057C7.91771 0.414553 8.03727 0.534114 8.18477 0.534114H9.18241L6.54237 3.17419L5.54678 2.1786C5.49671 2.12852 5.42877 2.10038 5.35794 2.10038C5.28712 2.10038 5.21918 2.12852 5.16911 2.1786L0.368253 6.97948C0.263968 7.08377 0.263968 7.25287 0.368253 7.35718C0.42041 7.40928 0.488749 7.43535 0.557089 7.43535C0.625429 7.43535 0.693796 7.40928 0.745925 7.35713L5.35794 2.74508L6.35353 3.74067C6.45782 3.84495 6.62692 3.84495 6.73123 3.74067L9.56011 0.911813V1.81473C9.56011 1.96223 9.67967 2.08179 9.82717 2.08179C9.97467 2.08179 10.0942 1.96223 10.0942 1.81473V0.293763C10.0942 0.28941 10.0938 0.285163 10.0936 0.280837Z'
+                      fill='#C4C4C4'
+                    />
+                  </svg>
+                  <span>Explorer</span>
                 </div>
                 <div className='item' onClick={() => history.push('/my-artwork')}>
                   <svg
@@ -504,10 +523,9 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
                       fill='#C4C4C4'
                     />
                   </svg>
-                  <span >Logout</span>
+                  <span>Logout</span>
                 </div>
               </div>
-          
             </div>
           </div>
         </div>
