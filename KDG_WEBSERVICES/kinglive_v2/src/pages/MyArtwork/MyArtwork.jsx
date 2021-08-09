@@ -107,8 +107,8 @@ export default function MyArtwork() {
         setAssetList(res?.data ? res.data : [])
       })
 
-      if (window.web3.eth && window.ethereum.selectedAddress) {
-        new window.web3.eth.Contract(ABIKL1155, addressKL1155).methods
+      if (window.web3 && window.web3.eth && window.contractKL1155) {
+          window.contractKL1155.methods
           .isApprovedForAll(window.ethereum.selectedAddress, addressMarket)
           .call()
           .then((approved) => {
@@ -127,21 +127,22 @@ export default function MyArtwork() {
     const price = new Decimal(e.target._price.value)
       .mul(new Decimal(10).pow(paymentToken.decimal))
       .toHex()
-    await new window.web3.eth.Contract(ABIMarket, addressMarket).methods
-      .list(
-        e.target._contract.value,
-        e.target._id.value,
-        new Decimal(e.target._quantity.value).toHex(),
-        e.target._mask.value,
-        price,
-        paymentToken.address,
-        100000000
-      )
-      .send({ from: window.ethereum.selectedAddress })
-    AssetList.length = 0
-    await getAssets(status)
-
-    setIsOpenSell(false)
+      if(window.web3 && window.contractMarket){
+        await window.contractMarket.methods
+        .list(
+          e.target._contract.value,
+          e.target._id.value,
+          new Decimal(e.target._quantity.value).toHex(),
+          e.target._mask.value,
+          price,
+          paymentToken.address,
+          100000000
+        )
+        .send({ from: window.ethereum.selectedAddress })
+          AssetList.length = 0
+          await getAssets(status) 
+          setIsOpenSell(false)
+      }
   }
 
   const handleSellButton = async (item) => {
@@ -150,22 +151,26 @@ export default function MyArtwork() {
   }
 
   const handleAccept = async (item) => {
-    const result = await new window.web3.eth.Contract(ABIKL1155, addressKL1155).methods
+    if(window.web3 && window.contractKL1155){
+      const result = await window.contractKL1155.methods
       .reviewAsset(item.asset.id, true)
       .send({ from: window.ethereum.selectedAddress })
     if (result) {
       AssetList.length = 0
       await getAssets(status)
     }
+    }
   }
 
   const handleDeny = async (item) => {
-    const result = await new window.web3.eth.Contract(ABIKL1155, addressKL1155).methods
-      .reviewAsset(item.asset.id, false)
-      .send({ from: window.ethereum.selectedAddress })
-    if (result) {
-      AssetList.length = 0
-      await getAssets(status)
+    if(window.web3 && window.contractKL1155){
+      const result = await window.contractKL1155.Contract(ABIKL1155, addressKL1155).methods
+        .reviewAsset(item.asset.id, false)
+        .send({ from: window.ethereum.selectedAddress })
+      if (result) {
+        AssetList.length = 0
+        await getAssets(status)
+      }
     }
   }
 

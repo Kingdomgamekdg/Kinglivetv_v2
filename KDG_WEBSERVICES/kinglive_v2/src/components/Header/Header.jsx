@@ -81,7 +81,7 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
     window.contractKL1155 = new window.web3.eth.Contract(ABIKL1155, addressKL1155)
     window.contractMarket = new window.web3.eth.Contract(ABIMarket, addressMarket)
     window.contractERC20 = new window.web3.eth.Contract(ABIERC20, addressERC20)
-    if(window.contractERC20){
+    if(window.ethereum.selectedAddress && window.contractERC20){
       const balance = await window.contractERC20.methods.balanceOf(window.ethereum.selectedAddress).call()
       const grossBalance = new Decimal(balance).div(new Decimal(10).pow(18))
       setBalance(grossBalance.toNumber())
@@ -100,7 +100,7 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
     window.ethereum.on('accountsChanged', async function (accounts) {
       dispatch(actChangeAddress(accounts[0]))
       await loginUser()
-      if(window.contractERC20){
+      if(window.ethereum && window.contractERC20){
         const balance = await window.contractERC20.methods.balanceOf(accounts[0]).call()
         const grossBalance = new Decimal(balance).div(new Decimal(10).pow(18))
         setBalance(grossBalance.toNumber())
@@ -142,13 +142,20 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
     setInsMetaMask(true)
   }, [setupMetaMask, loginUser])
 
+  const handleLogout = async () => {
+    dispatch(actChangeAddress(null))
+    window.web3 = null;
+    storage.clearToken()
+    storage.clearRefresh()
+  }
+
   return (
     <>
 
         {isWrongNetwork && (
           <div className='popupX'>
             <div className='containerX'>
-              <div className='titleX'>Please use Binace Smart Chain Testnet (57) to start app<applet></applet>!</div>
+              <div className='titleX'>Please use Binance Smart Chain Testnet (97) to start app<applet></applet>!</div>
               </div>
           </div>
         )}
@@ -464,6 +471,40 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
                     />
                   </svg>
                   <span>My NFT Artwork</span>
+                </div>
+              </div>
+
+              <div className='bot'>
+                <div className='item' onClick={() => handleLogout()}>
+                  <svg
+                    width='15'
+                    height='15'
+                    viewBox='0 0 15 15'
+                    fill='none'
+                    xmlns='http://www.w3.org/2000/svg'
+                  >
+                    <path
+                      d='M14.5311 7.03073H8.59374C8.33499 7.03073 8.125 6.82074 8.125 6.562C8.125 6.30325 8.33499 6.09326 8.59374 6.09326H14.5311C14.7898 6.09326 14.9998 6.30325 14.9998 6.562C14.9998 6.82074 14.7898 7.03073 14.5311 7.03073Z'
+                      fill='#C4C4C4'
+                    />
+                    <path
+                      d='M12.1874 9.37447C12.0673 9.37447 11.9474 9.32881 11.8561 9.23703C11.673 9.05382 11.673 8.75697 11.8561 8.57387L13.8686 6.56149L11.8561 4.549C11.673 4.3659 11.673 4.06905 11.8561 3.88595C12.0393 3.70273 12.3361 3.70273 12.5192 3.88595L14.8629 6.22962C15.046 6.41272 15.046 6.70957 14.8629 6.89267L12.5192 9.23635C12.4273 9.32881 12.3074 9.37447 12.1874 9.37447Z'
+                      fill='#C4C4C4'
+                    />
+                    <path
+                      d='M4.99988 15C4.8661 15 4.73919 14.9813 4.6124 14.9419L0.851185 13.6888C0.339421 13.51 0 13.0332 0 12.5001V1.25049C0 0.561117 0.560629 0.000488281 1.25 0.000488281C1.38366 0.000488281 1.51057 0.019256 1.63748 0.0586225L5.39858 1.31171C5.91046 1.49046 6.24977 1.96732 6.24977 2.50037V13.75C6.24977 14.4394 5.68925 15 4.99988 15ZM1.25 0.937959C1.07811 0.937959 0.937471 1.0786 0.937471 1.25049V12.5001C0.937471 12.6332 1.02685 12.7569 1.15433 12.8013L4.89792 14.0488C4.92481 14.0575 4.95983 14.0625 4.99988 14.0625C5.17177 14.0625 5.3123 13.9219 5.3123 13.75V2.50037C5.3123 2.36728 5.22292 2.24357 5.09544 2.19917L1.35185 0.951691C1.32496 0.942994 1.28994 0.937959 1.25 0.937959Z'
+                      fill='#C4C4C4'
+                    />
+                    <path
+                      d='M9.5309 4.99988C9.27216 4.99988 9.06216 4.78989 9.06216 4.53115V1.71873C9.06216 1.28811 8.71164 0.937471 8.28101 0.937471H1.24999C0.991242 0.937471 0.78125 0.727478 0.78125 0.468735C0.78125 0.209993 0.991242 0 1.24999 0H8.28101C9.22913 0 9.99963 0.770621 9.99963 1.71873V4.53115C9.99963 4.78989 9.78964 4.99988 9.5309 4.99988Z'
+                      fill='#C4C4C4'
+                    />
+                    <path
+                      d='M8.28123 13.1244H5.78124C5.52249 13.1244 5.3125 12.9144 5.3125 12.6557C5.3125 12.3969 5.52249 12.1869 5.78124 12.1869H8.28123C8.71186 12.1869 9.06238 11.8363 9.06238 11.4057V8.59325C9.06238 8.3345 9.27238 8.12451 9.53112 8.12451C9.78986 8.12451 9.99985 8.3345 9.99985 8.59325V11.4057C9.99985 12.3538 9.22935 13.1244 8.28123 13.1244Z'
+                      fill='#C4C4C4'
+                    />
+                  </svg>
+                  <span >Logout</span>
                 </div>
               </div>
           

@@ -14,7 +14,9 @@ const ListingAssetSchema = new Schema({
     time: {type : Number},
     expiration: {type : Number},
     transaction: {type : String},
-    bid_orders: [{type : Types.ObjectId , ref : 'bid-orders'}]
+    bid_orders: [{type : Types.ObjectId , ref : 'bid-orders'}],
+    buys: [{type : Types.ObjectId , ref : 'buys'}]
+
 })
 
 module.exports = model('listing-assets', ListingAssetSchema)
