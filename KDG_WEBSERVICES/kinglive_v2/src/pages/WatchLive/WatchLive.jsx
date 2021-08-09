@@ -194,33 +194,36 @@ export default function WatchLive() {
       <div className={`popupGift ${showGift ? 'show' : ''}`}>
         <div className='popupGift__mask' onClick={() => setShowGift(false)}></div>
 
-        <div className='popupGift__content flexbox flex4' style={{ '--gap-col': '40px' }}>
-          {NFTList.map((nft) => (
-            <form onSubmit={handleDonate} key={nft._id} className='popupGift__gift flexbox__item'>
-              <img src={nft.asset.metadata.image_thumbnail} alt='gift' />
-              <p>{nft.asset.metadata.name}</p>
-              <p>{nft.amount}</p>
-              <input
-                type='number'
-                name='amount'
-                defaultValue={1}
-                onInput={(e) => {
-                  if (Number(e.target.value) <= 0) e.target.value = ''
-                  if (Number(e.target.value) >= nft.amount) e.target.value = 100
-                }}
-              />
-              <input
-                style={{ display: 'none' }}
-                type='text'
-                name='id'
-                readOnly
-                defaultValue={nft.asset.id}
-              />
-              <button style={{ display: 'none' }} type='submit'>
-                Donate
-              </button>
-            </form>
-          ))}
+        <div className='popupGift__content'>
+          <div style={{ color: '#fefefe', marginBottom: 16 }}>Gift</div>
+          <div className='flexbox flex4'>
+            {NFTList.map((nft) => (
+              <form onSubmit={handleDonate} key={nft._id} className='popupGift__gift flexbox__item'>
+                <img src={nft.asset.metadata.image_thumbnail} alt='gift' />
+                <p>{nft.asset.metadata.name}</p>
+                <p>{nft.amount}</p>
+                <input
+                  type='number'
+                  name='amount'
+                  defaultValue={1}
+                  onInput={(e) => {
+                    if (Number(e.target.value) <= 0) e.target.value = ''
+                    if (Number(e.target.value) >= nft.amount) e.target.value = 100
+                  }}
+                />
+                <input
+                  style={{ display: 'none' }}
+                  type='text'
+                  name='id'
+                  readOnly
+                  defaultValue={nft.asset.id}
+                />
+                <button style={{ display: 'none' }} type='submit'>
+                  Donate
+                </button>
+              </form>
+            ))}
+          </div>
         </div>
       </div>
 
