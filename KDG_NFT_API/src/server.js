@@ -60,14 +60,15 @@ class Server {
         const models = fs.readdirSync(__dirname + '/models')
         console.log("models",models);
         models.forEach(model => require(path.join(__dirname,'models' , model)))
-        
+
         const routes = fs.readdirSync(__dirname + '/routes')
-        routes.forEach(route=> require(path.join(__dirname, 'routes' , route))(router,eventEmitter))
+
+        routes.forEach(route => require(path.join(__dirname, 'routes' , route))(router,eventEmitter))
 
         require('./nms')
-        
-        
-        
+
+
+
         app.listen(80)
         // Defines the error handler
         app.use(this._handleError);

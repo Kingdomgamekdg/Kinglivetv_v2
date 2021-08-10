@@ -6,7 +6,8 @@ const common = require('../../lib/common')
 const Assets = model('assets')
 
 module.exports = class {
-  static async getAssetsTotal (_req, _res) {
+
+  static async getTotalAssets (_req, _res) {
     try {
       const queries = common.validateInputParams(_req.query, joi.object().keys({
         mimetype: joi.string(),
@@ -21,11 +22,11 @@ module.exports = class {
       }
       const totalAssets = await Assets.countDocuments(condition)
 
-      _req.status(200).json({
+      _res.status(200).json({
         total: totalAssets || 0
       })
     } catch (e) {
-      _req.status(400).json(e.message)
+      _res.status(400).json(e.message)
     }
   }
 }
