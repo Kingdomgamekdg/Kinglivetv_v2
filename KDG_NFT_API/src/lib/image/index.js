@@ -10,9 +10,6 @@ const HttpError = require('./../http-error');
 const Promise = require('bluebird')
 
 class Image {
-
-    
-
     /**
      * The middleware handles the uploaded file based on the conditions that is declared in multer.js
      */
@@ -27,22 +24,20 @@ class Image {
                 if (file) {
                     if (['.mp4'].includes(path.extname(file[0].originalname).toLowerCase())) {
                        await screenshot(file[0]).then(()=>{
-                                const image = {
-                                    path:file[0].path.replace('.mp4','') + '.png',
+                                _req.body.image = {
                                     originalname:file[0].originalname.replace('.mp4','') + '.png',
                                     mimetype:'image/png',
                                     destination:file[0].destination,
                                     filename:file[0].filename.replace('.mp4',''),
                                     path:file[0].path.replace('.mp4','') + '.png',
-                                }
-                                _req.body.image = image;
-                            })  
-                    } 
+                                };
+                            })
+                    }
                 }
                         // _req.body.image = file[0];
                 if (image) {
                     _req.body.image = image[0];
-    
+
                     if (!['.png', '.jpg', '.gif', '.jpeg'].includes(path.extname(image[0].originalname).toLowerCase())) {
                         _next(new HttpError(400, 'Image extension is not valid'));
                         return;
@@ -55,7 +50,7 @@ class Image {
                 _next(new HttpError(400, e.message));
 
             }
-            
+
         });
     }
 

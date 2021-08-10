@@ -32,8 +32,17 @@ class Server {
         app.use(express.urlencoded({ extended: false }));
         app.use(bodyParser.json())
 
+        const {
+            MONGO_USER,
+            MONGO_PASSWORD,
+            MONGO_HOST,
+            MONGO_PORT,
+            MONGO_DB
+        } = config
+
         // let dbURI = `mongodb://localhost:27017/admin`
-        let dbURI = `mongodb://${config.MONGO_USER}:${encodeURIComponent(config.MONGO_PASSWORD)}@${config.MONGO_HOST}:${config.MONGO_PORT}/${config.MONGO_DB}?authSource=admin`;
+        const auth = MONGO_USER && MONGO_PASSWORD ? MONGO_USER + ':' + MONGO_PASSWORD + '@' : ''
+        let dbURI = `mongodb://${auth}${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}?authSource=admin`;
         // let dbURI =`mongodb://KDG:Kingdomgame%40%40123@10.104.0.23:27017/KDG?authSource=admin`
         mongoose.connect(dbURI,{
             useNewUrlParser : true ,
@@ -46,6 +55,7 @@ class Server {
 
         const fs = require('fs')
         console.log(fs.readdirSync(__dirname + '/ffmpeg'));
+
         const path = require('path')
         const models = fs.readdirSync(__dirname + '/models')
         console.log("models",models);
@@ -53,6 +63,7 @@ class Server {
         
         const routes = fs.readdirSync(__dirname + '/routes')
         routes.forEach(route=> require(path.join(__dirname, 'routes' , route))(router,eventEmitter))
+
         require('./nms')
         
         
