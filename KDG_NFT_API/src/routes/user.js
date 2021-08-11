@@ -1,13 +1,9 @@
-'use strict';
+'use strict'
 
-const router = require('express').Router();
-
-const controller = require('./../controller/user/controller');
-const wrap = require('./../lib/common').wrapAsync;
-
-
+const controller = require('../controllers/user/controller')
+const UserValidation = require('../validations/user')
 module.exports = router => {
-    router.post('/login', wrap(controller.login));
-    router.put('/{address}', wrap(controller.updateUser));
-
-};
+    router.post('/login', UserValidation('login'), controller.login)
+    // router.put('/{address}', wrap(controller.updateUser))
+    router.get('/users/total', UserValidation('getTotalUsers'), controller.getTotalUsers)
+}
