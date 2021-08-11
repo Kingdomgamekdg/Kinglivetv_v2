@@ -132,7 +132,6 @@ export default function Profile() {
   }
 
   const handleInputImage = (e) => {
-    console.log('handleInputImage')
     const files = [...e.target.files]
     if (files.length === 0) return
 
