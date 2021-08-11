@@ -112,8 +112,8 @@ export default function Profile() {
   const [showCrop, setShowCrop] = useState(false)
   const [showPickImage, setShowPickImage] = useState(false)
   const [imageList, setImageList] = useState([])
-  const [image, setImage] = useState([])
-  const [imageId, setImageId] = useState([])
+  const [image, setImage] = useState('')
+  const [imageId, setImageId] = useState('')
 
   useEffect(() => {
     callAPI
@@ -176,6 +176,7 @@ export default function Profile() {
 
     dispatch(asyncChangeUser())
     setShowCrop(false)
+    setImageId(0)
     document.getElementById('upload').value = ''
   }
 
