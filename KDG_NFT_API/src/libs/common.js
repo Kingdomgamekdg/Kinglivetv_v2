@@ -4,8 +4,8 @@
 const joi = require('joi');
 const fetch = require('node-fetch');
 
-const config = require('./config');
-const constant = require('./config/constant');
+const config = require('../configs');
+const constant = require('../configs/constant');
 const HttpError = require('./http-error');
 
 class Common {
@@ -24,7 +24,7 @@ class Common {
     }
 
     /**
-     * Wraps the controller handler that contains async/await
+     * Wraps the controllers handler that contains async/await
      */
     wrapAsync (_fn) {
         return (req, res, next) => {

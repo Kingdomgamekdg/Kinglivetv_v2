@@ -3,7 +3,7 @@ const { model, isValidObjectId } = require('mongoose')
 const Users = model('users')
 const Streams = model('streams')
 
-const {mns_config} = require('./lib/config/constant')
+const {mns_config} = require('./configs/constant')
 const nms = new NodeMediaServer(mns_config)
 const {getStreamStatus} = require('./helpers/helpSocket')
 nms.run();

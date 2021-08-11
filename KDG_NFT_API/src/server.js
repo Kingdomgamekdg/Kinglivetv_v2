@@ -3,6 +3,7 @@
 require('dotenv').config();
 
 const fs = require('fs');
+const path = require('path')
 const cors = require('cors');
 const bodyParser= require('body-parser')
 
@@ -12,10 +13,10 @@ const http = require('http').createServer(app);
 const router = express.Router()
 
 
-const config = require('./lib/config');
-const response = require('./lib/http-response');
-const ipfs = require('./lib/ipfs');
-const database = require('./lib/database');
+const config = require('./configs');
+const response = require('./libs/http-response');
+const ipfs = require('./libs/ipfs');
+const database = require('./libs/database');
 
 const events = require('events');
 const eventEmitter = new events.EventEmitter();
@@ -53,12 +54,7 @@ class Server {
         // Defines api routes
         app.use('/api' , router)
 
-        const fs = require('fs')
-        console.log(fs.readdirSync(__dirname + '/ffmpeg'));
-
-        const path = require('path')
         const models = fs.readdirSync(__dirname + '/models')
-        console.log("models",models);
         models.forEach(model => require(path.join(__dirname,'models' , model)))
 
         const routes = fs.readdirSync(__dirname + '/routes')
@@ -106,7 +102,7 @@ class Server {
         console.log('Listening on port', 80);
 
         // Starts server
-        // await http.listen(config.PORT);
+        // await http.listen(configs.PORT);
 
         // Connects to database
         await database.connect();

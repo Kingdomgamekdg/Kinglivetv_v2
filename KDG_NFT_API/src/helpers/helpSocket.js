@@ -1,4 +1,4 @@
-const {STRING_SOCKET,socket_server} = require('../lib/config/constant')
+const {STRING_SOCKET,socket_server} = require('../configs/constant')
 const {io} = require('socket.io-client')
 const socket = io(
     socket_server,

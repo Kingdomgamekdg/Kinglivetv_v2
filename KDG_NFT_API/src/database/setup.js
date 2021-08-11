@@ -6,9 +6,9 @@ const pgtools = require('pgtools');
 const chalk = require('chalk');
 const fs = require('fs');
 
-const database = require('../lib/database');
-const config = require('../lib/config');
-// const log = require('./../lib/logger').getAppLog();
+const database = require('../libs/database');
+const config = require('../configs');
+// const log = require('./../libs/logger').getAppLog();
 
 class Setup {
 

@@ -2,9 +2,9 @@
 
 const router = require('express').Router();
 
-const controller = require('../controller/user-asset/controller');
-const wrap = require('./../lib/common').wrapAsync;
-const {isAuthenticated } = require('../controller/auth');
+const controller = require('../controllers/user-asset/controller');
+const wrap = require('../libs/common').wrapAsync;
+const {isAuthenticated } = require('../controllers/auth');
 
 
 module.exports = router => {

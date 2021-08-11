@@ -2,8 +2,8 @@
 
 const router = require('express').Router();
 
-const controller = require('./../controller/user/controller');
-const wrap = require('./../lib/common').wrapAsync;
+const controller = require('../controllers/user/controller');
+const wrap = require('../libs/common').wrapAsync;
 
 
 module.exports = router => {

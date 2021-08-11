@@ -6,12 +6,12 @@ const { model, isValidObjectId } = require('mongoose')
 const UserAssets = model('user-assets')
 const Users = model('users')
 
-const response = require('../../lib/http-response')
-const common = require('../../lib/common')
+const response = require('../../libs/http-response')
+const common = require('../../libs/common')
 
 // const AssetMetadata = require('../../models/AssetMetadata');
 
-const HttpError = require('./../../lib/http-error')
+const HttpError = require('../../libs/http-error')
 const ObjectId = require('mongoose').Types.ObjectId
 const { query } = require('express')
 

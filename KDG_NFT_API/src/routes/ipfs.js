@@ -2,11 +2,11 @@
 
 const router = require('express').Router();
 
-const controller = require('./../controller/ipfs/controller');
-const wrap = require('./../lib/common').wrapAsync;
-const {isAuthenticated} =  require('./../controller/auth');
+const controller = require('../controllers/ipfs/controller');
+const wrap = require('../libs/common').wrapAsync;
+const {isAuthenticated} =  require('../controllers/auth');
 
-const image = require('./../lib/image');
+const image = require('../libs/image');
 
 
 module.exports = router => {

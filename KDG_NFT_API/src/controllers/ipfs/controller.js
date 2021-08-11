@@ -6,14 +6,14 @@ const fs = require('fs');
 const path = require('path');
 const {model, isValidObjectId} = require('mongoose')
 const AssetMetadata = model('asset-metadata');
-const ipfs = require('../../lib/ipfs');
-const response = require('../../lib/http-response');
-const common = require('../../lib/common');
-const config = require('../../lib/config');
-const imageConverter = require('../../lib/image');
+const ipfs = require('../../libs/ipfs');
+const response = require('../../libs/http-response');
+const common = require('../../libs/common');
+const config = require('../../configs');
+const imageConverter = require('../../libs/image');
 // const AssetMetadata = require('../../models/AssetMetadata');
 
-const HttpError = require('./../../lib/http-error');
+const HttpError = require('../../libs/http-error');
 
 class Controller {
 

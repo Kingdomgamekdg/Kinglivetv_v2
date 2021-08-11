@@ -10,6 +10,7 @@ module.exports = class {
       const streams = await Streams.aggregate([
         {
           $match: {
+            status: 2,
             end_date: {
               $exists: true
             }

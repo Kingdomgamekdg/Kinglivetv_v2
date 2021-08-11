@@ -2,7 +2,7 @@
 
 const joi = require('joi')
 const { model, isValidObjectId } = require('mongoose')
-const common = require('../../lib/common')
+const common = require('../../libs/common')
 const Assets = model('assets')
 
 module.exports = class {

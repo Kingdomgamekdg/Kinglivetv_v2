@@ -1,4 +1,4 @@
-const common = require('../../lib/common')
+const common = require('../../libs/common')
 const joi = require('joi')
 const { model, isValidObjectId } = require('mongoose')
 const BidOrders = model('bid-orders')

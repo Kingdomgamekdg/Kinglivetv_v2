@@ -2,15 +2,15 @@
 'use strict'
 
 const joi = require('joi')
-const jwt = require('../../lib/jwt')
+const jwt = require('../../libs/jwt')
 const { model, isValidObjectId } = require('mongoose')
 const Users = model('users')
-const response = require('../../lib/http-response')
-const common = require('../../lib/common')
+const response = require('../../libs/http-response')
+const common = require('../../libs/common')
 
 // const AssetMetadata = require('../../models/AssetMetadata');
 
-const HttpError = require('./../../lib/http-error')
+const HttpError = require('../../libs/http-error')
 
 class Controller {
 
