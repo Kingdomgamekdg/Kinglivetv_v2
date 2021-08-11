@@ -1,12 +1,9 @@
-/* eslint-disable camelcase */
 'use strict'
 
-const joi = require('joi')
 const jwt = require('../../libs/jwt')
 const { model } = require('mongoose')
 const Users = model('users')
 const response = require('../../libs/http-response')
-const common = require('../../libs/common')
 
 class Controller {
   /**
@@ -14,13 +11,11 @@ class Controller {
    */
   static async login (_req, _res) {
     // console.log("_req",_req);
-    const params = common.validateInputParams(_req.body, joi.object().keys({
-      address: joi.string().trim().required()
-    }))
-    const user = await Users.findOne({ address: params.address.toLowerCase() })
+    const body = _req.body
+    const user = await Users.findOne({ address: body.address.toLowerCase() })
     if (user) {
       const token = jwt.issueToken({
-        id: params.address
+        id: body.address
       })
 
       response.success(_res, {
@@ -28,9 +23,9 @@ class Controller {
         user: user || {}
       })
     } else {
-      const user = await Users.create({ address: params.address.toLowerCase() })
+      const user = await Users.create({ address: body.address.toLowerCase() })
       const token = jwt.issueToken({
-        id: params.address
+        id: body.address
       })
 
       response.success(_res, {
@@ -58,11 +53,7 @@ class Controller {
 
   static async getTotalUsers (_req, _res) {
     try {
-      const queries = common.validateInputParams(_req.query, joi.object().keys({
-        isLock: joi.boolean(),
-        isReviewer: joi.boolean(),
-        kycStatus: joi.number()
-      }))
+      const queries = _req.query
 
       const {
         isLock,

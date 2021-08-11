@@ -1,16 +1,12 @@
 'use strict'
 
-const joi = require('joi')
 const { model } = require('mongoose')
-const common = require('../../libs/common')
 const Assets = model('assets')
 
 module.exports = class {
   static async getTotalAssets (_req, _res) {
     try {
-      const queries = common.validateInputParams(_req.query, joi.object().keys({
-        mimetype: joi.string()
-      }))
+      const queries = _req.query
 
       const condition = {}
       if (queries.mimetype) {

@@ -1,57 +1,48 @@
-/* eslint-disable camelcase */
 'use strict'
 
-const joi = require('joi')
 const { model } = require('mongoose')
 const ListingAssets = model('listing-assets')
 const Users = model('users')
-const common = require('../../libs/common')
 
 class Controller {
-    /**
-     * Uploads metadata and file, image to IPFS
-     */
-    static async getListingAsset (_req, _res) {
-        const params = common.validateInputParams(_req.query, joi.object().keys({
-            limit: joi.number().required(),
-            search: joi.string().trim(),
-            prev: joi.string().trim(),
-            ids: joi.string().trim()
-        }))
-        const { _id } = _req
-        const user = await Users.findById(_id)
-        console.log('user', user)
-        // const query = {user : ObjectId(user._id)};
-        // if(params.prev && isValidObjectId(params.prev)) {
-        //     query._id = {$lt : prev}
-        // }
-        const ids = params.ids ? params.ids.split(',') : []
+  /**
+   * Uploads metadata and file, image to IPFS
+   */
+  static async getListingAsset (_req, _res) {
+    const params = _req.query
+    const { _id } = _req
+    const user = await Users.findById(_id)
+    // const query = {user : ObjectId(user._id)};
+    // if(params.prev && isValidObjectId(params.prev)) {
+    //     query._id = {$lt : prev}
+    // }
+    const ids = params.ids ? params.ids.split(',') : []
 
-        const data = await ListingAssets.find()
-        .find(({
-            $and: [
-                { _id: { $nin: ids } },
-                { quantity: { $gt: 0 } }
-            ]
-        }))
-        .limit(params.limit)
-        .populate({
-            path: 'asset owner'
-        })
-        .populate({
-            path: 'buys',
-            populate: 'from to'
-        })
-        .populate({
-            path: 'bid_orders',
-            populate: 'from to'
-        })
-        .sort({ _id: -1 })
-        .lean()
-        data.reverse()
+    const limit = params.limit ? parseInt(params.limit) : 10
 
-        return _res.status(200).json({ status: 1, data })
-    }
+    const data = await ListingAssets
+      .find({
+        _id: { $nin: ids },
+        quantity: { $gt: 0 }
+      })
+      .limit(limit)
+      .populate({
+        path: 'asset owner'
+      })
+      .populate({
+        path: 'buys',
+        populate: 'from to'
+      })
+      .populate({
+        path: 'bid_orders',
+        populate: 'from to'
+      })
+      .sort({ _id: -1 })
+      .lean()
+    data.reverse()
+
+    return _res.status(200).json({ status: 1, data })
+  }
 }
 
 module.exports = Controller

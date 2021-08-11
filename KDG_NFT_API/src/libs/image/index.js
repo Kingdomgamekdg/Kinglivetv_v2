@@ -10,7 +10,7 @@ const Promise = require('bluebird')
 
 class Image {
     /**
-     * The middleware handles the uploaded file based on the conditions that is declared in multer.js
+     * The middlewares handles the uploaded file based on the conditions that is declared in multer.js
      */
     async upload (_req, _res, _next) {
         validate(_req, _res, async (err) => {

@@ -19,7 +19,7 @@ module.exports = class {
           $project: {
             _id: 1,
             start_date: 1,
-end_date: 1,
+            end_date: 1,
             streamTime: { $subtract: ['$end_date', '$start_date'] }
           }
         },

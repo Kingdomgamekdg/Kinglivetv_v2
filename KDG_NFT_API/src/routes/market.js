@@ -1,11 +1,11 @@
 'use strict'
 
 const controller = require('../controllers/market/controller')
-const wrap = require('../libs/common').wrapAsync
-const { isAuthenticated } = require('../controllers/auth')
+const { isAuthenticated } = require('../middlewares/auth')
+const MarketValidation = require('../validations/market')
 
 module.exports = router => {
-    router.get('/listing-asset', isAuthenticated, wrap(controller.getListingAsset))
-    router.get('/top-sellers-quantity', isAuthenticated, wrap(controller.getListingAsset))
-    router.get('/top-sellers-revenue', isAuthenticated, wrap(controller.getListingAsset))
+  router.get('/listing-asset', isAuthenticated, MarketValidation('getListingAsset'), controller.getListingAsset)
+  router.get('/top-sellers-quantity', isAuthenticated, MarketValidation('getListingAsset'), controller.getListingAsset)
+  router.get('/top-sellers-revenue', isAuthenticated, MarketValidation('getListingAsset'), controller.getListingAsset)
 }

@@ -11,7 +11,7 @@ const app = express()
 
 require('http').createServer(app)
 
-const router = express.Router()
+const router = require("express-async-router").AsyncRouter()
 
 const config = require('./configs')
 const response = require('./libs/http-response')
@@ -96,8 +96,6 @@ class Server {
      * Starts server and services
      */
     async start () {
-        console.log('Listening on port', 80)
-
         // Starts server
         // await http.listen(configs.PORT);
 
@@ -106,6 +104,9 @@ class Server {
 
         // Connects to IPFS
         await ipfs.connect()
+
+        console.log('Listening on port', 80)
+
     }
 }
 

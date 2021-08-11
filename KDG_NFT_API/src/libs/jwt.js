@@ -29,7 +29,7 @@ class JWT {
     }
 
     /**
-     * The middleware verifies token that attached in the "api-key" header when perform the request
+     * The middlewares verifies token that attached in the "api-key" header when perform the request
      */
     authenticate (_req, _res, _next) {
         // No "api-key" header exists on the incoming request, return not authorized

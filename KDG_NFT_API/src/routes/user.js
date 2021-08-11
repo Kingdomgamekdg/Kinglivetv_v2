@@ -1,10 +1,9 @@
 'use strict'
 
 const controller = require('../controllers/user/controller')
-const wrap = require('../libs/common').wrapAsync
-
+const UserValidation = require('../validations/user')
 module.exports = router => {
-    router.post('/login', wrap(controller.login))
-    router.put('/{address}', wrap(controller.updateUser))
-    router.get('/users/total', wrap(controller.getTotalUsers))
+    router.post('/login', UserValidation('login'), controller.login)
+    // router.put('/{address}', wrap(controller.updateUser))
+    router.get('/users/total', UserValidation('getTotalUsers'), controller.getTotalUsers)
 }

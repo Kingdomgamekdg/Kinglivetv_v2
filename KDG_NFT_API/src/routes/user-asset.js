@@ -1,9 +1,9 @@
 'use strict'
 
 const controller = require('../controllers/user-asset/controller')
-const wrap = require('../libs/common').wrapAsync
-const { isAuthenticated } = require('../controllers/auth')
+const { isAuthenticated } = require('../middlewares/auth')
+const UserAssetValidation = require('../validations/user-asset')
 
 module.exports = router => {
-    router.get('/user-asset', isAuthenticated, wrap(controller.getUserAsset))
+    router.get('/user-asset', isAuthenticated, UserAssetValidation('getAssets'), controller.getUserAsset)
 }

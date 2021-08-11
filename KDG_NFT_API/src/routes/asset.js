@@ -1,8 +1,8 @@
 'use strict'
 
 const controller = require('../controllers/asset/controller')
-const wrap = require('../libs/common').wrapAsync
+const AssetValidation = require('../validations/asset')
 
 module.exports = router => {
-  router.get('/assets/total', wrap(controller.getTotalAssets))
+  router.get('/assets/total', AssetValidation('getTotalAssets'), controller.getTotalAssets)
 }
