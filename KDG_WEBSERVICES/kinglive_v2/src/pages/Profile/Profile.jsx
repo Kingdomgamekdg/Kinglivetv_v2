@@ -146,6 +146,7 @@ export default function Profile() {
 
   const handleCancelCrop = () => {
     setShowCrop(false)
+    setImageId('')
     document.getElementById('upload').value = ''
   }
 
@@ -174,9 +175,7 @@ export default function Profile() {
     }
 
     dispatch(asyncChangeUser())
-    setShowCrop(false)
-    setImageId(0)
-    document.getElementById('upload').value = ''
+    handleCancelCrop()
   }
 
   return (
