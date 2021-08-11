@@ -126,9 +126,14 @@ main {
   line-height: inherit;
   font-weight: inherit;
   font-family: inherit;
+  text-align: center;
   background-color: $button-color;
 
   border-radius: 5px;
+
+  &.d-block {
+    display: block;
+  }
 
   &--cancel {
     color: $text-color-text;
@@ -456,5 +461,11 @@ main {
       color: $text-color-light;
       text-align: center;
     }
+  }
+}
+
+.avatarX {
+  .reactEasyCrop_CropArea {
+    border-radius: 50%;
   }
 }
