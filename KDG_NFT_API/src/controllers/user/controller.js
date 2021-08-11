@@ -3,26 +3,21 @@
 
 const joi = require('joi')
 const jwt = require('../../libs/jwt')
-const { model, isValidObjectId } = require('mongoose')
+const { model } = require('mongoose')
 const Users = model('users')
 const response = require('../../libs/http-response')
 const common = require('../../libs/common')
 
-// const AssetMetadata = require('../../models/AssetMetadata');
-
-const HttpError = require('../../libs/http-error')
-
 class Controller {
-
   /**
    * Uploads metadata and file, image to IPFS
    */
   static async login (_req, _res) {
     // console.log("_req",_req);
     const params = common.validateInputParams(_req.body, joi.object().keys({
-      address: joi.string().trim().required(),
+      address: joi.string().trim().required()
     }))
-    let user = await Users.findOne({ address: params.address.toLowerCase() })
+    const user = await Users.findOne({ address: params.address.toLowerCase() })
     if (user) {
       const token = jwt.issueToken({
         id: params.address
@@ -33,7 +28,7 @@ class Controller {
         user: user || {}
       })
     } else {
-      let user = await Users.create({ address: params.address.toLowerCase() })
+      const user = await Users.create({ address: params.address.toLowerCase() })
       const token = jwt.issueToken({
         id: params.address
       })
@@ -48,18 +43,14 @@ class Controller {
   /**
    * Uploads file and image to IPFS
    */
-  static async updateUser (_req, _res) {
-    const params = common.validateInputParams(_req.body, joi.object().keys({
-      name: joi.string().trim().required(),
-    }))
-    const queries = common.validateInputParams(_req.query, joi.object().keys({
-      address: joi.string().trim().required(),
-    }))
-  }
-
-  /**
-   * Saves asset metadata into database
-   */
+  // static async updateUser (_req, _res) {
+  //   const params = common.validateInputParams(_req.body, joi.object().keys({
+  //     name: joi.string().trim().required()
+  //   }))
+  //   const queries = common.validateInputParams(_req.query, joi.object().keys({
+  //     address: joi.string().trim().required()
+  //   }))
+  // }
 
   /**
    * Get total users

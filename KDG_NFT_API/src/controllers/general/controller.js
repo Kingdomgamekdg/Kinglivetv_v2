@@ -1,13 +1,10 @@
-const common = require('../../libs/common')
-const joi = require('joi')
-const { model, isValidObjectId } = require('mongoose')
+const { model } = require('mongoose')
 const BidOrders = model('bid-orders')
 const Buys = model('buys')
 
 module.exports = class {
   static async getTotalTraders (_req, _res) {
     try {
-
       const totalBidOrders = await BidOrders.countDocuments({
         status: 2
       })

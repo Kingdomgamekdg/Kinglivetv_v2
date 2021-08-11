@@ -1,6 +1,6 @@
-'use strict';
+'use strict'
 require('dotenv').config()
-const config = {};
+const config = {}
 
 // Environment variables
 const envs = [
@@ -19,16 +19,16 @@ const envs = [
     'MONGO_DB',
     'JWT_SECRET',
     'JWT_EXPIRES_IN'
-];
+]
 
 // Checks enviroment variables to ensure that all of them are declared
 envs.forEach((env) => {
     if (process.env[env] === undefined) {
-        console.log(`Enviroment variable \x1b[33m"${env}"\x1b[0m is required in file \x1b[33m".env"\x1b[0m \n`);
-        process.exit(0);
+        console.log(`Enviroment variable \x1b[33m"${env}"\x1b[0m is required in file \x1b[33m".env"\x1b[0m \n`)
+        process.exit(0)
     }
 
-    config[env] = process.env[env];
-});
+    config[env] = process.env[env]
+})
 
-module.exports = config;
+module.exports = config

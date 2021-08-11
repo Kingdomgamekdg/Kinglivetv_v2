@@ -1,9 +1,8 @@
-'use strict';
+'use strict'
 
-const status = require('http-status');
+const status = require('http-status')
 
 class HttpResponse {
-
     /**
      * Sends success result to the client
      */
@@ -11,7 +10,7 @@ class HttpResponse {
         _res.json({
             status: 1,
             data: _data
-        });
+        })
     }
 
     /**
@@ -24,9 +23,8 @@ class HttpResponse {
                 code: _code,
                 message: _msg || status[_code]
             }
-        });
+        })
     }
-
 }
 
-module.exports = new HttpResponse();
+module.exports = new HttpResponse()

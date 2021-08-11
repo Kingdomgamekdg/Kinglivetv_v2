@@ -1,11 +1,10 @@
-'use strict';
+'use strict'
 
-const ipfs = require('ipfs-api');
-require('dotenv').config();
+const ipfs = require('ipfs-api')
+require('dotenv').config()
 // const log = require('./../logger').getAppLog();
 
 class IPFS {
-
     /**
      * Initializes default settings
      */
@@ -14,7 +13,7 @@ class IPFS {
             host: process.env.IPFS_HOST,
             port: process.env.IPFS_PORT,
             protocol: 'http'
-        });
+        })
     }
 
     /**
@@ -23,12 +22,11 @@ class IPFS {
     async connect () {
         try {
             // Gets the identity of the IPFS peer to check the connection
-            await this._ipfs.id();
+            await this._ipfs.id()
 
-            console.log('Connected to IPFS');
-
+            console.log('Connected to IPFS')
         } catch (e) {
-            console.log('Occured error when connecting to IPFS. Error:', e.message);
+            console.log('Occured error when connecting to IPFS. Error:', e.message)
         }
     }
 
@@ -37,37 +35,34 @@ class IPFS {
      */
     async addFiles (_files, _options) {
         try {
-            const promises = [];
+            const promises = []
 
             // Adds the files to IPFS
             _files.forEach((file) => {
-                promises.push(this._ipfs.files.add(file, _options));
-            });
+                promises.push(this._ipfs.files.add(file, _options))
+            })
 
-            const result = await Promise.all(promises);
+            const result = await Promise.all(promises)
 
-            const cid = [];
+            const cid = []
 
             // Gets CIDs
             if (_options && _options.wrapWithDirectory) {
                 result.forEach((item) => {
-                    cid.push(item[1].hash + '/' + item[0].path);
-                });
-
+                    cid.push(item[1].hash + '/' + item[0].path)
+                })
             } else {
                 result.forEach((item) => {
-                    cid.push(item[0].hash);
-                });
+                    cid.push(item[0].hash)
+                })
             }
 
-            return cid;
-
+            return cid
         } catch (e) {
-            console.log(e.stack);
-            return null;
+            console.log(e.stack)
+            return null
         }
     }
-
 }
 
-module.exports = new IPFS();
+module.exports = new IPFS()

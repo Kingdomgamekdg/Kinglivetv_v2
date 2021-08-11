@@ -4,7 +4,6 @@ const { model } = require('mongoose')
 const Streams = model('streams')
 
 module.exports = class {
-
   static async getTotalStreamTime (_req, _res) {
     try {
       const streams = await Streams.aggregate([
@@ -19,7 +18,8 @@ module.exports = class {
         {
           $project: {
             _id: 1,
-            start_date: 1, end_date: 1,
+            start_date: 1,
+end_date: 1,
             streamTime: { $subtract: ['$end_date', '$start_date'] }
           }
         },

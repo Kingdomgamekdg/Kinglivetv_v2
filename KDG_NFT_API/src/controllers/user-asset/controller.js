@@ -6,17 +6,12 @@ const { model, isValidObjectId } = require('mongoose')
 const UserAssets = model('user-assets')
 const Users = model('users')
 
-const response = require('../../libs/http-response')
 const common = require('../../libs/common')
 
-// const AssetMetadata = require('../../models/AssetMetadata');
-
-const HttpError = require('../../libs/http-error')
 const ObjectId = require('mongoose').Types.ObjectId
 const { query } = require('express')
 
 class Controller {
-
   /**
    * Uploads metadata and file, image to IPFS
    */
@@ -27,7 +22,7 @@ class Controller {
       status: joi.number(),
       mimetype: joi.string(),
       search: joi.string().trim(),
-      prev: joi.string().trim(),
+      prev: joi.string().trim()
     }))
     const { _id } = _req
     console.log('_id', _id)
@@ -51,9 +46,8 @@ class Controller {
       }
     }
 
-    // const search = params.search;
     if (params.prev && isValidObjectId(params.prev)) {
-      query._id = { $lt: prev }
+      query._id = { $lt: params.prev }
     }
     let data = []
     if (params.status && params.status !== 0) {
@@ -61,8 +55,8 @@ class Controller {
         $and: [
           { _id: { $nin: ids } },
           { user: user._id },
-          { amount: { $gt: 0 } },
-        ],
+          { amount: { $gt: 0 } }
+        ]
       })
         .limit(params.limit)
         .populate({
@@ -72,13 +66,13 @@ class Controller {
         .sort({ _id: -1 })
         .lean()
       data.reverse()
-    } else if (params.status == 0) {
+    } else if (params.status === 0) {
       if (user?.isReviewer) {
         data = await UserAssets.find({
           $and: [
             { _id: { $nin: ids } },
-            { amount: { $gt: 0 } },
-          ],
+            { amount: { $gt: 0 } }
+          ]
         })
           .limit(params.limit)
           .populate({
@@ -93,8 +87,8 @@ class Controller {
           $and: [
             { _id: { $nin: ids } },
             { amount: { $gt: 0 } },
-            { user: user._id },
-          ],
+            { user: user._id }
+          ]
         })
           .limit(params.limit)
           .populate({
@@ -109,25 +103,24 @@ class Controller {
     }
 
     // console.log("data",data);
-    return _res.status(200).json({ status: 1, data: data.filter(dt => {return dt.asset}) })
+    return _res.status(200).json({ status: 1, data: data.filter(dt => { return dt.asset }) })
   }
 
   /**
    * Uploads file and image to IPFS
    */
-  static async updateUser (_req, _res) {
-    const params = common.validateInputParams(_req.body, joi.object().keys({
-      name: joi.string().trim().required(),
-    }))
-    const queries = common.validateInputParams(_req.query, joi.object().keys({
-      address: joi.string().trim().required(),
-    }))
-  }
+  // static async updateUser (_req, _res) {
+  //   const params = common.validateInputParams(_req.body, joi.object().keys({
+  //     name: joi.string().trim().required()
+  //   }))
+  //   const queries = common.validateInputParams(_req.query, joi.object().keys({
+  //     address: joi.string().trim().required()
+  //   }))
+  // }
 
   /**
    * Saves asset metadata into database
    */
-
 }
 
 module.exports = Controller

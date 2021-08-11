@@ -1,22 +1,21 @@
-'use strict';
+'use strict'
 
-const { Pool } = require('pg');
+const { Pool } = require('pg')
 
 // const log = require('./../logger').getAppLog();
 
 class Database {
-
     /**
      * Initializes default settings
      */
     constructor () {
-        this._db =  new Pool({
+        this._db = new Pool({
             host: process.env.PG_HOST,
             port: process.env.PG_PORT,
             user: process.env.PG_USER,
             password: process.env.PG_PASS,
             database: process.env.PG_DB_NAME
-        });
+        })
     }
 
     /**
@@ -25,12 +24,11 @@ class Database {
     async connect () {
         try {
             // Performs this query to check the connection to database server
-            await this._db.query("SELECT NOW() ");
+            await this._db.query('SELECT NOW() ')
 
-            console.log('Connected to postgres');
-
+            console.log('Connected to postgres')
         } catch (e) {
-            console.log('Occured error when connecting to postgres. Error:', e.message);
+            console.log('Occured error when connecting to postgres. Error:', e.message)
         }
     }
 
@@ -38,30 +36,27 @@ class Database {
      * Query data in database and return the result
      */
     async query (..._sql) {
-        let result = null;
+        let result = null
 
-        const client = await this._db.connect();
+        const client = await this._db.connect()
 
         try {
-            const { rows } = await client.query(..._sql);
+            const { rows } = await client.query(..._sql)
 
-            result = rows;
-
+            result = rows
         } catch (e) {
-            log.debug(_sql);
-            log.error(e.stack);
-
+            console.debug(_sql)
+            console.error(e.stack)
         } finally {
-            client.release();
+            client.release()
         }
 
-        return result;
+        return result
     }
 
     getInstance () {
-        return this._db;
+        return this._db
     }
-
 }
 
-module.exports = new Database();
+module.exports = new Database()

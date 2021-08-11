@@ -1,22 +1,13 @@
 /* eslint-disable camelcase */
-'use strict';
+'use strict'
 
-const joi = require('joi');
-const {model, isValidObjectId} = require('mongoose')
-const ListingAssets = model('listing-assets');
-const Users = model('users');
-
-const response = require('../../libs/http-response');
-const common = require('../../libs/common');
-
-// const AssetMetadata = require('../../models/AssetMetadata');
-
-const HttpError = require('../../libs/http-error');
-const ObjectId = require('mongoose').Types.ObjectId; 
-const { query } = require('express');
+const joi = require('joi')
+const { model } = require('mongoose')
+const ListingAssets = model('listing-assets')
+const Users = model('users')
+const common = require('../../libs/common')
 
 class Controller {
-
     /**
      * Uploads metadata and file, image to IPFS
      */
@@ -25,11 +16,11 @@ class Controller {
             limit: joi.number().required(),
             search: joi.string().trim(),
             prev: joi.string().trim(),
-            ids: joi.string().trim(),
-        }));
-        const {_id} = _req;
-        const user = await Users.findById(_id);
-        console.log("user",user);
+            ids: joi.string().trim()
+        }))
+        const { _id } = _req
+        const user = await Users.findById(_id)
+        console.log('user', user)
         // const query = {user : ObjectId(user._id)};
         // if(params.prev && isValidObjectId(params.prev)) {
         //     query._id = {$lt : prev}
@@ -37,31 +28,30 @@ class Controller {
         const ids = params.ids ? params.ids.split(',') : []
 
         const data = await ListingAssets.find()
-        .find(({ 
-            $and : [
-                {_id: { $nin: ids }} ,
-                {quantity: {$gt : 0}},
-            ],
+        .find(({
+            $and: [
+                { _id: { $nin: ids } },
+                { quantity: { $gt: 0 } }
+            ]
         }))
         .limit(params.limit)
         .populate({
-            path : 'asset owner',
+            path: 'asset owner'
         })
         .populate({
-            path : 'buys',
-            populate : 'from to',
+            path: 'buys',
+            populate: 'from to'
         })
         .populate({
-            path : 'bid_orders',
-            populate : 'from to',
+            path: 'bid_orders',
+            populate: 'from to'
         })
-        .sort({_id : -1})
+        .sort({ _id: -1 })
         .lean()
         data.reverse()
 
-        return _res.status(200).json({status : 1 , data})
+        return _res.status(200).json({ status: 1, data })
     }
-
 }
 
-module.exports = Controller;
+module.exports = Controller

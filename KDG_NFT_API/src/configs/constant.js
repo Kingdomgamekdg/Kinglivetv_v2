@@ -1,8 +1,8 @@
-'use strict';
+'use strict'
 
-const config = require('./index');
+const config = require('./index')
 
-const env = config.ETHEREUM_NETWORK.toLowerCase();
+const env = config.ETHEREUM_NETWORK.toLowerCase()
 
 const contracts = {
     testnet: {
@@ -19,7 +19,7 @@ const contracts = {
             }
         }
     }
-};
+}
 
 module.exports = {
     whitelist_types: {
@@ -61,10 +61,10 @@ module.exports = {
     },
     STRING_SOCKET: '8bL4a3Ymuk41wImgs85570NA9ro373P2p1SLTtoM2GM2dVHeVRA26CZNGbu9bS607hiXcrA6fgADMZKn9eDEbn8tnUNbwpxa8RnKD23C0fayV4tEETngy3lDJrUoM9ddPkbYueFaXA6DjoMvZ2G3xK0TH37V4kSCCCn0xFPzlxmPYvWLLLJJObSI2X4csarfEXilqxj8',
     STRING_API: 'YSDyFQAESEf5It5wMmZ7cJO3P33lzGVvjfQL7SaOW0jFtkuh2h5ywPqU0nCz88XZhSni8AYldpT6d0Qr9vz1sVDCAwNva9lKbzLa3FXWFFzguD1CGfDyo5K2sTF8KOQB6cCN1zvc0QEUg6ZP11mxKd4eJNvWng3ZSSyf9dbBEtlLVAtGqJzCWzyEvKx8AePlsOeGJ4PL',
-    socket_server: 'https://ws.kingdomgame.org',
+    SOCKET_SERVER: 'https://ws.kingdomgame.org',
     jwt_secret: 'lRNnoVulI0SMRXY30DN84lb0415gXOwHXqOqhLaplwodPnATPZYLe3TATY7viq6GIv5KmiUP2OpNKQT41EheS7TaWKNNN2TaUy0XJG9W7EapVF2qWDdf419whTiAeBe3dQdwITJMf9hFMcHi6DplrV7v6luLHG8kFwNa9p47kClIVhrbA6EqthmdNkgPElh6M7Ulmv30',
     refresh_secret: 'dUw4ZaWlYMhYMQhsJToNuiskEHeiK5cieCZKWHz02TRy2VdVA1O0ESIJeiii46jx36Jzo2eFIPD3sR7FNKwbWqkdHb9pOGIdm9qV34Xv4loqP9ew6iZXzxEaFsqPV4p2uvvLKL61OlTyWU1k3LCgDxwao0ovJtmTJYjbmmHApDY7eDJOrmw0zId6cdfENw9Zvt6DXW5O',
-    mns_config: {
+    MNS_CONFIG: {
       logType: 0,
       rtmp: {
         port: 1935,
@@ -84,14 +84,14 @@ module.exports = {
           {
             app: 'live',
             hls: true,
-            hlsFlags: '[hls_time=1:hls_list_size=0]',
+            hlsFlags: '[hls_time=1:hls_list_size=0]'
           },
           {
             app: 'live',
             mp4: true,
-            mp4Flags: '[movflags=faststart]',
-          },
+            mp4Flags: '[movflags=faststart]'
+          }
         ]
       }
-    },
-};
+    }
+}
