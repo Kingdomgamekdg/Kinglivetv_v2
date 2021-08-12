@@ -18,8 +18,10 @@ import shortAddress from '../../helpers/shortAddress'
 import storage from '../../helpers/storage'
 import { actChangeAddress, asyncChangeUser } from '../../store/actions'
 import { EXPLORER_URL } from '../../constant'
+import WalletProviderModal from '../WalletProviderModal/WalletProviderModal'
+import useModal from '../../hooks/useModal'
 
-export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false }) {
+export default function Header({ toggleSidebar = () => { }, IsOpenSidebar = false }) {
   const userRedux = useSelector((state) => state.user)
   const userName = useMemo(
     () => (userRedux ? `${userRedux?.kyc?.first_name} ${userRedux?.kyc?.last_name}` : 'Username'),
@@ -155,7 +157,7 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
     storage.clearToken()
     storage.clearRefresh()
   }
-
+  const [onPresentWalletProviderModal] = useModal(<WalletProviderModal />)
   return (
     <>
       {isWrongNetwork && (
@@ -390,7 +392,8 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
             </div>
           </div>
           <div
-            onClick={() => setIsOpenConnect(true)}
+            // onClick={() => setIsOpenConnect(true)}
+            click={onPresentWalletProviderModal}
             className={`connect ${currentAddress ? 'disabled' : ''}`}
           >
             {currentAddress ? shortAddress(currentAddress) : 'Connect'}

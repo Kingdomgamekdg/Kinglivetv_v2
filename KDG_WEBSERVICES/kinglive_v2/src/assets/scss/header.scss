@@ -172,7 +172,7 @@ header {
     cursor: pointer;
 
     &.disabled {
-      opacity: 0.5;
+      // opacity: 0.5;
       pointer-events: none;
     }
   }
@@ -374,6 +374,7 @@ header {
       justify-content: space-between;
       margin: 0 auto;
       margin-top: 35px;
+      cursor: pointer;
       + .item {
         margin-top: 5px;
       }

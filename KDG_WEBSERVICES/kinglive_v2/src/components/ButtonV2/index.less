@@ -1,0 +1,137 @@
+.btn-bsc {
+  button {
+    div{
+      & > span{
+        color: #B1B1B1;
+      }
+    }
+  }
+  background-color: #404040;
+}
+.btn-bsc-common {
+  & > * {
+    cursor: url(../../assets/images/cursor.svg) 15 15, move !important;
+  }
+  padding: 5px 10px;
+  border-radius: 10px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin: 0 5px;
+  button {
+    outline: none;
+    border: none;
+    background: none;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    div {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+    .btn-bsc-icon-loading {
+      -webkit-animation: btnSpin 2s infinite linear;
+      -moz-animation: btnSpin 2s infinite linear;
+      -o-animation: btnSpin 2s infinite linear;
+      -ms-animation: btnSpin 2s infinite linear;
+      animation: btnSpin 2s infinite linear;
+      display: block;
+      margin-left: 5px;
+      height: 20px;
+      width: 20px;
+    }
+    
+    span {
+      font-size: 16px;
+      font-family: poppins_medium;
+    }
+  }
+}
+
+.btn-bsc-link {
+  background: none !important;
+  border: none !important;
+  height: auto;
+  button {
+    div{
+      & > span{
+        color: white;
+      }
+    }
+  }
+}
+
+.btn-bsc-primary {
+  background-color: #0DBA88;
+  &:hover {
+    background-color: #0E8B66;
+  }
+  button {
+    div{
+      & > span{
+        color: white;
+      }
+    }
+  }
+}
+
+.btn-bsc-ghost {
+  background-color: white;
+  &:hover {
+    background-color: #CACACA;
+  }
+  button {
+    div{
+      & > span{
+        color: #0DBA88;
+      }
+    }
+  }
+}
+
+.btn-bsc-gray {
+  background-color: #404040;
+}
+
+
+.btn-bsc-hide {
+  display: none;
+}
+
+.btn-bsc-disabled {
+  & > * {
+    cursor: url(../../assets/images/cursor-disable.svg) 15 15, move !important;
+  }
+  background-color: #818181;
+  button {
+    div{
+      & > span{
+        color: #B1B1B1;
+      }
+    }
+  }
+}
+
+@-webkit-keyframes btnSpin {
+  0% { -webkit-transform: rotate(0deg);}
+  100% { -webkit-transform: rotate(360deg);}
+}
+@-moz-keyframes btnSpin {
+  0% { -moz-transform: rotate(0deg);}
+  100% { -moz-transform: rotate(360deg);}
+}
+@-o-keyframes btnSpin {
+  0% { -o-transform: rotate(0deg);}
+  100% { -o-transform: rotate(360deg);}
+}
+@-ms-keyframes btnSpin {
+  0% { -ms-transform: rotate(0deg);}
+  100% { -ms-transform: rotate(360deg);}
+}
+@keyframes btnSpin {
+  0% { transform: rotate(0deg);}
+  100% { transform: rotate(360deg);}
+} 
