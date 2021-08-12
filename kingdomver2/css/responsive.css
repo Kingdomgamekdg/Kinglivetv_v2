@@ -1,0 +1,346 @@
+@charset "utf-8";
+@media screen and (max-width: 768px) {
+	/* ------BODY------ */
+	body{background:#14151a url(../resources/images/ipad_main_bg.png) top center no-repeat;}
+	
+	/* ------MAIN-CONTAINER------ */
+	._cBlocks {width:609px;}
+	.kingliveTV, .NFT, .gamehub, .features, .roadmap, .partners {padding:63px 0 0 0;}
+	._dot {width:16px;height:16px;border:4px solid rgba(250,200,0,0.2);}
+	._dot em {width:16px;height:16px;}
+	._dot em:after {width:6px;height:6px;top:30%;left:30%;}
+	._desc h2 {font-size:30px;line-height:40px;}
+	._desc p {font-size:16px;line-height:24px;width:516px;}
+	._desc ._btn {font-size:14px;padding:12px 5px;margin:20px auto;line-height:24px;}
+	._rounded {-webkit-border-radius: 6px;-moz-border-radius: 6px;-ms-border-radius: 6px;-o-border-radius: 6px;border-radius: 6px;}
+	._attribute {padding:12px 25px;top:0;line-height:18px;font-size:12px;backdrop-filter: blur(5px);}
+	._attribute strong {font-size:14px;}
+
+	
+	/* ------HEADER------ */
+	.header {width:100%;min-height:47px;padding: 26px 0 0 0;}
+	.header ._cBlocks {height:47px;}
+	.header .navbar {display:block;z-index:602;}
+	.header .logo {width:70px;height:47px;background-size:70px;position:absolute;top:0;left:43px;z-index:605;}
+	.header .app_name {font-size:12px;line-height:16px;position:absolute;top:26px;left:123px;z-index:605;margin:0;}
+
+	#SetSticky {height:47px;}
+	.header ul {height: 100%;width: 0;position: fixed;z-index: 600;top: 0;left: 0;background-color:rgba(33,36,49,1);overflow-x: hidden;transition: 0.5s;padding:90px 0 0 0;}
+	.header ul.active {width:460px;}
+	.header ul li:first-child {border-top:2px solid rgba(255,255,255,.2);}
+	.header ul li {float:none;width:100%;margin:10px 0 0 71px;}
+	.header ul li a {display: block;width:100%;line-height:60px;box-sizing:border-box;padding:0 0 0 60px;}
+	.header ul li a:before {width:32px;height:32px;background:url(../resources/images/responsive_ico.png);position:absolute;content:'';top:14px;left:0px;}
+	.header ul li a:hover:before, .header ul li a.active:before,.header ul li a:active:before {background:url(../resources/images/responsive_ico_hover.png);}
+	.header ul li:nth-child(2) a:before {background-position: -32px 0;}
+	.header ul li:nth-child(3) a:before {background-position: -64px 0;}
+	.header ul li:nth-child(4) a:before {background-position: -96px 0;}
+	.header ul li:nth-child(7) a:before {background-position: -128px 0;}
+	.header ul li:nth-child(8) a:before {background-position: -160px 0;}
+	.header .lauch_btn {float:left;width:129px;padding:0;margin:14px 0 0 71px;}
+	.header .lauch_btn:before {width:0;height:0;}
+	
+	
+	/* ------MAIN-CONTAINER: SLIDER SECTION------ */
+	.slider ._left_content {width:315px;}
+	/* --MAIN-CONTAINER: _left_content -- */
+	._left_content h2 {font-size:20px;line-height:25px;margin:63px 0 0 0;}
+	._left_content p {font-size:14px;line-height:21px;margin:10px 0 0 0;}
+	._left_content span a {font-size:14px;line-height:21px;padding:12px 15px;margin:18px 11px 0 0;}
+	._left_content span a:nth-child(2) {margin:18px 0 0 0;}
+	/* --MAIN-CONTAINER: _right_content -- */
+	._right_content {width:251px;padding-top:59px;}
+	._right_content img {width:218px;height:431px;float:right;}
+	.gift_btn {width:55px;height:55px;border:6.5px solid rgba(250,200,0,0.2);display:block;top:240.7px;left:3px;}
+	.gift_btn:after {width:55px;height:55px;background-size:31px;}
+	/* --MAIN-CONTAINER:dot  -- */
+	.slider .pos1 {top:307px;left:0;}
+	.slider .pos2 {top:309px;left:134px;}
+	.slider .pos3 {top:278px;left:255px;}
+	._dot_desc h3 {font-size:18px;}
+	._dot_desc h3 em {font-size:60%;line-height:29px;}
+	._dot_desc p {font-size:12px;}
+	.slider .pos1_desc,.slider .pos2_desc,.slider .pos3_desc {top:345px;}
+	.slider .pos2_desc {left:134px;}
+	.slider .pos3_desc {left:255px;}
+	
+	
+	/* --MAIN-CONTAINER:kingliveTV  -- */
+	.kingliveTV ._attribute {padding:6px 10px;}
+	.kingliveTV img {width:389px;margin-top:20px;}
+	.kingliveTV .pos1 {top:50.2px;left:85.2px;}
+	.kingliveTV .pos2 {top:67.4px;right:52px;}
+	.kingliveTV .pos3 {top:140.7px;left:36px;}
+	.kingliveTV .pos4 {top:121px;right:23px;}
+	
+	
+	/* --MAIN-CONTAINER:NFT  -- */
+	.NFT ._desc {width:609px;}
+	.NFT ._desc p {margin:15px 0 20px 0;}
+	.NFT ._desc ul li {font-size:14px;line-height:20px;}
+	.NFT ._desc ul li span {background-size:22px;margin:0 8px 0 0;width:22px;height:22px;}
+	.NFT ._illustration {width:100%;float:right;} 
+	.NFT ._illustration img {display:block;margin:35px auto 0 auto;width:238px;}
+	.NFT ._desc ._btn {margin:20px 0 0 0;}
+	
+	.NFT .pos1 {top:76px;left:63px;}
+	.NFT .pos2 {top:185px;left:34px;padding:25px;}
+	.NFT .pos3 {top:238px;right:26px;padding:25px;}
+	.boxes {width:126px;height:126px;margin:0px 20px 0 0;}
+	.boxes strong {font-size:24px;line-height:36px;font-weight:normal;}
+	
+	
+	/* --MAIN-CONTAINER:gamehub  -- */
+	.gamehub ._illustration {width:100%;min-height:323px;}
+	.gamehub ._illustration img {width:362px;margin:0 auto;display:block;}
+	.gamehub ._subsection {width:100%;float:left;padding:15px 0 0 0;}
+	.gamehub ._subsection h3 {width:100%;height:61px;line-height:61px;font-size:20px;padding:0 0 0 17px;margin:0 0 21px 0;} 
+	.gamehub ._subsection ul {height:210px;}
+	.gamehub ._subsection ul li {font-size:16px;line-height:24px;display:block;margin:0 0 13px 18px;width:286px;height:auto;min-height:55px;}
+	.gamehub ._subsection ul li:nth-child(5),.sub_list li:nth-child(3) {line-height:55px;}
+	.gamehub ._subsection ul li span {width:29px;height:29px;background-size:290px;margin:15px 20px 0 0;}
+	.gamehub ._subsection ul li:nth-child(2) span {background-position:	-86px 0;}
+	.gamehub ._subsection ul li:nth-child(3) span {background-position:	-29px 0;margin-top:22px;}
+	.gamehub ._subsection ul li:nth-child(4) span {background-position:	-116px 0;}
+	.gamehub ._subsection ul li:nth-child(5) span {background-position:	-58px 0;}
+	.sub_list li:nth-child(3) {line-height:55px !important;}
+	.sub_list li:nth-child(5) {line-height:24px !important;}
+	.sub_list li:nth-child(1) span {background-position:-145px 0 !important;}
+	.sub_list li:nth-child(2) span {background-position:-232px 0 !important;}
+	.sub_list li:nth-child(3) span {background-position:-174px 0 !important;margin-top:12px !important;}
+	.sub_list li:nth-child(4) span {background-position:-261px 0 !important;}
+	.sub_list li:nth-child(5) span {background-position:-203px 0 !important;}
+	
+	
+	/* --MAIN-CONTAINER:features  -- */
+	.features ._subsection div {width:297px;height:auto;padding:20px;margin:15px 15px 0 0;-webkit-border-radius:10px;-moz-border-radius:10px;-ms-border-radius:10px;-o-border-radius:108px;border-radius:10px;min-height:360px; overflow:hidden;}
+	.features ._subsection div:before {height:6px;} 
+	.features ._subsection div h3 {font-size:16px;line-height:24px;}
+	.features ._subsection div p {font-size:14px;line-height:21px;}
+	.features ._subsection .f_ico {width:56px;height:56px;margin:0 auto 10px auto;}
+	.features ._subsection .f_ico:before {width:33px;height:33px;background-size:165px;top:11.5px;left:11.5px;}
+	.features ._subsection div:nth-child(2n) {margin:15px 0 0 0 !important;}
+	.features ._subsection div:nth-child(3n) {margin:15px 15px 0 0;}
+	.features ._subsection div:nth-child(2) .f_ico:before {background-position: -33px 0 !important;}
+	.features ._subsection div:nth-child(3) .f_ico:before {background-position: -66px 0 !important;}
+	.features ._subsection div:nth-child(4) .f_ico:before {background-position: -99px 0 !important;}
+	.features ._subsection div:nth-child(6) .f_ico:before {background-position: -132px 0 !important;}
+	
+	/* --MAIN-CONTAINER:roadmap  -- */
+	.roadmap {overflow:unset;}	
+	.roadmap ._illustration {height:860px;background:url(../resources/images/ilus_04_ipad.svg) 7px top no-repeat;margin:118px 0 0 0;}
+	.roadmap ._illustration:after {display:none;}
+	.roadmap ._dot {width:21px;height:21px;border:5px solid rgba(255,255,255,0.15);}
+	.roadmap ._dot em {width:21px;height:21px;}
+	.roadmap ._dot em:after {top:11.5px;left:11.5px;}
+	.roadmap ._dot:hover em:after,.roadmap ._dot.active em:after, .roadmap ._dot:active em:after {border:5px solid rgba(247,215,79,0.2);width:21px;height:21px;top:-5px;left:-5px;}
+	.roadmap ._dot_desc {padding:11px 16px;}
+	.roadmap ._dot_desc h3 {font-size:16px;margin: 0 0 5px 0 ;}
+	.roadmap ._dot_desc ul li {font-size:13px;line-height:19px;}
+	
+	.roadmap .pos1 {top:-9px;left:196px;}
+	.roadmap .pos2 {top:-9px;left:410px;}
+	.roadmap .pos3 {top:138px;left:323px;}
+	.roadmap .pos4 {top:138px;left:118px;}
+	.roadmap .pos5 {top:210px;left:-4px;}
+	.roadmap .pos6 {top:282px;left:363px;}
+	.roadmap .pos7 {top:357px;left:581px;}
+	
+	.roadmap .pos8 {top:432px;left:295px;}
+	.roadmap .pos9 {top:432px;left:87px;}
+	.roadmap .pos10 {top:500px;left:-4px;}
+	.roadmap .pos11 {top:578px;left:373.6px;}
+	.roadmap .pos12 {top:724.7px;left:312.5px;}
+	
+	.roadmap .pos1_desc {top:-105px;left:180px;max-width:207px;}
+	.roadmap .pos2_desc {top:-105px;left:394px;width:254px;}
+	.roadmap .pos3_desc {top:19px;left:309px;max-width:263px;}
+	.roadmap .pos4_desc {top:68px;left:102px;}
+	.roadmap .pos5_desc {top:171px;left:31px;}
+	.roadmap .pos6_desc {top:192px;left:346px;}
+	.roadmap .pos7_desc {top:320px;left:403px;max-width:180px;}
+	.roadmap .pos8_desc {top:320px;left:279px;max-width:147px;}
+	.roadmap .pos9_desc {top:313px;left:71px;max-width:230px;}
+	.roadmap .pos10_desc {top:462px;left:41px;max-width:400px;}
+	.roadmap .pos11_desc {top:610px;left:358px;}
+	.roadmap .pos12_desc {top:765px;left:297px;}
+	
+	/* --MAIN-CONTAINER:partners  -- */
+	.partners ._illustration a {padding:25px 0 0 0;width:302px;overflow:hidden;height:60px;margin:0;}
+	.partners ._illustration a img {max-width:148px;display:block;margin:0 auto;}
+	.partners ._illustration {padding: 0 0 95px 0;}
+	.partners ._illustration a:nth-child(4),.partners ._illustration a:nth-child(n+5):nth-child(-n+8) {margin:0;}
+	.partners ._illustration a:nth-child(9) {margin:0 auto;float:none;}
+	.partners ._illustration a:nth-child(6) img, .partners ._illustration a:nth-child(8) img,.partners ._illustration a:nth-child(9) img {max-height:51px;}
+	
+	/* ----FOOTER:left content ----*/
+	.footer ._left_content {width:304px;}
+	.footer ._left_content p {font-size:14px;line-height:20px;}
+	.footer ._left_content ul li {margin:40px 23px 0 0;}
+	.footer ._left_content ul li:last-child {margin:40px 0 0 0;}
+
+	
+	/* ----FOOTER:right content ----*/
+	.footer ._right_content {width:304px;float:right;min-height:30px;padding-top:0;}
+	.footer ._right_content a {float:left;font-size:18px;min-width:152px;text-align:left;margin:0 0 38px 0;}
+
+}
+
+
+@media screen and (max-width: 375px) {
+	/* ------BODY------ */
+	body{background:#14151a url(../resources/images/main_bg_iphone.png) top center no-repeat;}
+	
+	/* ------MAIN-CONTAINER------ */
+	._cBlocks {width:302px;}
+	.kingliveTV, .NFT, .gamehub, .features, .roadmap, .partners {padding:40px 0 0 0;}
+	._desc h2 {font-size:24px;line-height:33px;}
+	._desc p {font-size:14px;line-height:21px;width:100%;}
+	._desc ._btn {font-size:14px;padding:12px 14px;line-height:17px;font-size:12px;margin:25px auto;}
+	._attribute {padding:12px 25px;backdrop-filter: blur(10px);color:#FFFFFF;}
+	._attribute strong {font-size:14px;}
+
+	
+	/* ------HEADER------ */
+	.header {width:100%;min-height:38px;padding:37.5px 0 0 0;}
+	.header ._cBlocks {height:38px;}
+	.header .navbar {display:block;top:15px;}
+	.header .logo {width:56px;height:38px;background-size:56px;left:37px;}
+	.header .app_name {line-height:16px;top:21px;left:99px;z-index:605;margin:0;}
+	#SetSticky {height:38px;}
+	.header ul {padding:90px 0 0 0;}
+	.header ul.active {width:290px;}
+	.header ul li:first-child {border-top:2px solid rgba(255,255,255,.2);}
+	.header ul li {float:none;width:100%;margin:10px 0 0 71px;}
+	.header ul li a {line-height:40px;padding:0 0 0 32px;font-size:14px;}
+	.header ul li a:before {width:16px;height:16px;background-size:96px;top:12px;left:0px;}
+	.header ul li a:hover:before, .header ul li a.active:before,.header ul li a:active:before {background-size:96px;}
+	.header ul li:nth-child(2) a:before {background-position: -16px 0;}
+	.header ul li:nth-child(3) a:before {background-position: -32px 0;}
+	.header ul li:nth-child(4) a:before {background-position: -48px 0;}
+	.header ul li:nth-child(7) a:before {background-position: -64px 0;}
+	.header ul li:nth-child(8) a:before {background-position: -80px 0;}
+	.header .lauch_btn {float:left;width:129px;padding:0;margin:14px 0 0 71px;}
+	.header .lauch_btn:before {width:0;height:0;}
+	
+	
+	/* ------MAIN-CONTAINER: SLIDER SECTION------ */
+	.slider ._left_content {width:302px;}
+	/* --MAIN-CONTAINER: _left_content -- */
+	._left_content h2 {margin:60px 0 0 0;}
+	._left_content span a {font-size:12px;line-height:24px;padding:10px 15px;margin:13px 10px 0 0;}
+	._left_content span a:nth-child(2) {margin:13px 0 0 0;}
+	/* --MAIN-CONTAINER: _right_content -- */
+	._right_content {padding-top:0;width:302px;}
+	._right_content img {width:143.6px;height:285px;}
+	.gift_btn {width:36px;height:36px;border:4.2px solid rgba(250,200,0,0.2);top:120.4px;left:140px;}
+	.gift_btn:after {width:36px;height:36px;background-size:23px;}
+	/* --MAIN-CONTAINER:dot  -- */
+	.slider .pos1 {top:385px;left:0;}
+	.slider .pos2 {top:369px;left:48px;}
+	.slider .pos3 {top:347px;left:97px;}
+	._dot_desc h3 {font-size:18px;}
+	._dot_desc h3 em {font-size:60%;line-height:29px;}
+	._dot_desc p {font-size:11px;max-width:39px;line-height:18px;}
+	.slider .pos1_desc,.slider .pos2_desc,.slider .pos3_desc {top:422px;}
+	.slider .pos2_desc {left:48px;}
+	.slider .pos3_desc {left:97px;}
+	
+	
+	/* --MAIN-CONTAINER:kingliveTV  -- */
+	.kingliveTV ._attribute {padding:3px 10px;font-size:12px;line-height:15px;}
+	.kingliveTV img {width:253px;margin:0 auto;}
+	.kingliveTV .pos1 {top:9.4px;left:0;}
+	.kingliveTV .pos2 {top:22.4px;right:0;}
+	.kingliveTV .pos3 {top:61.5px;left:0;max-width:105px;}
+	.kingliveTV .pos4 {top:76px;right:0;max-width:127px;}
+	
+	
+	/* --MAIN-CONTAINER:NFT  -- */
+	.NFT ._desc {width:100%;}
+	.NFT ._desc p {margin:15px 0 20px 0;}
+	.NFT ._desc ul li {font-size:16px;}
+	.NFT ._illustration {width:100%;float:right;} 
+	.NFT ._illustration img {margin:0 auto;width:144px;}
+	.NFT ._attribute {padding:3px 6px;}
+	.NFT ._desc ._btn {margin:25px auto;}
+	.NFT .pos1 {top:18px;left:37px;}
+	.NFT .pos2 {top:72px;left:14px;max-width:105px;}
+	.NFT .pos3 {top:136px;right:12px;}
+	.boxes {width:91px;height:91px;margin:13.4px 9.4px 0 0;padding:24px 8px 8px 8px;font-size:12px;line-height:14px;}
+	 span.boxes:nth-of-type(3) {margin-right:0;}
+	.boxes strong {font-size:16px;line-height:23px;font-weight:normal;}
+	
+	
+	/* --MAIN-CONTAINER:gamehub  -- */
+	.gamehub ._illustration {padding-top:24px;min-height:0;}
+	.gamehub ._illustration img {width:229px;}
+	.gamehub ._subsection h3 {height:47px;line-height:47px;font-size:18px;} 
+	.gamehub ._subsection ul {height:auto;overflow:hidden;}
+	.gamehub ._subsection ul li {font-size:14px;line-height:21px;width:284px;min-height:41px;margin:0 0 17px 18px;}
+	.gamehub ._subsection ul li:nth-child(5),.sub_list li:nth-child(3) {line-height:41px;}
+	.gamehub ._subsection ul li span {width:29px;height:29px;background-size:290px;margin:8px 20px 0 0;}
+	.gamehub ._subsection ul li:nth-child(3) span {margin-top:8px;}
+	.sub_list li:nth-child(3) {line-height:41px !important;}
+	.sub_list li:nth-child(3) span {background-position:-174px 0 !important;margin-top:8px !important;}
+	
+	/* --MAIN-CONTAINER:features  -- */
+	.features ._subsection div {width:100%;min-height:100px;}
+
+	
+	/* --MAIN-CONTAINER:roadmap  -- */
+	.roadmap ._illustration {height:910px;background:url(../resources/images/ilus_04_iphone.svg) 6.5px top no-repeat;}
+	.roadmap ._illustration:after {display:none;}
+	.roadmap ._dot {width:17px;height:17px;border:5px solid rgba(255,255,255,0.15);}
+	.roadmap ._dot em {width:17px;height:17px;}
+	.roadmap ._dot em:after {top:8.5px;left:8.5px;}
+	.roadmap ._dot:hover em:after,.roadmap ._dot.active em:after, .roadmap ._dot:active em:after, {border:5px solid rgba(247,215,79,0.2);width:17px;height:17px;top:-5px;left:-5px;}
+	.roadmap ._dot_desc {padding:5px 8px;}
+	.roadmap ._dot_desc h3 {font-size:14px;}
+	.roadmap ._dot_desc ul li {font-size:11px;line-height:18px;}
+	
+	.roadmap .pos1 {top:-9px;left:49px;}
+	.roadmap .pos2 {top:-9px;left:167px;}
+	.roadmap .pos3 {top:41px;left:282px;}
+	.roadmap .pos4 {top:147px;left:-4px;}
+	.roadmap .pos5 {top:211px;left:137px;}
+	.roadmap .pos6 {top:259px;left:282px;}
+	.roadmap .pos7 {top:339px;left:3px;}
+	.roadmap .pos8 {top:428px;left:169px;}
+	
+	.roadmap .pos9 {top:477px;left:282px;}
+	.roadmap .pos10 {top:594px;left:-4px;}
+	.roadmap .pos11 {top:730px;left:282px;}
+	.roadmap .pos12 {top:787px;left:52px;}
+	
+	.roadmap .pos1_desc {top:-89px;left:0;max-width:154px;}
+	.roadmap .pos2_desc {top:-89px;left:161px;width:154px;}
+	.roadmap .pos3_desc {top:19px;left:21px;max-width:253px;text-align:right;}
+	.roadmap .pos4_desc {top:125px;left:45px;max-width:83px;}
+	.roadmap .pos5_desc {top:105px;left:129px;max-width:253px;}
+	.roadmap .pos6_desc {top:238px;left:80px;max-width:188px;text-align:right;}
+	.roadmap .pos7_desc {top:326px;left:42px;max-width:130px;}
+	
+	.roadmap .pos8_desc {top:340px;left:166px;max-width:147px;}
+	.roadmap .pos9_desc {top:448px;left:5px;max-width:261px;text-align:right;}
+	.roadmap .pos10_desc {top:547px;left:42px;max-width:260px;}
+	.roadmap .pos11_desc {top:696px;left:79px;text-align:right;max-width:187px;}
+	.roadmap .pos12_desc {top:817px;left:43px;max-width:252px;}
+	
+	/* --MAIN-CONTAINER:partners  -- */
+	.partners ._illustration a {padding:15px 0 0 0;width:151px;height:50px;}
+	.partners ._illustration a img {max-width:113px;}
+	.partners ._illustration {padding: 0 0 40px 0;}
+	.partners ._illustration a:nth-child(4),.partners ._illustration a:nth-child(n+5):nth-child(-n+8) {margin:0;}
+	.partners ._illustration a:nth-child(9) {margin:0 auto;float:none;}
+	.partners ._illustration a:nth-child(6) img, .partners ._illustration a:nth-child(8) img,.partners ._illustration a:nth-child(9) img {max-height:46px;}
+	
+	/* ----FOOTER:left content ----*/
+	.footer ._left_content {width:302px;}
+
+	/* ----FOOTER:right content ----*/
+	.footer ._right_content {width:302px;float:right;min-height:30px;padding-top:41px;}
+	.footer ._right_content a {float:left;font-size:18px;width:151px;text-align:left;margin:0 0 20px 0;min-width:0;}
+	.footer ._right_content a:hover, .footer ._right_content a:active {color:#FAC800;}
+	.footer ._right_content a:nth-child(4n) {max-width:151px;}
+}
