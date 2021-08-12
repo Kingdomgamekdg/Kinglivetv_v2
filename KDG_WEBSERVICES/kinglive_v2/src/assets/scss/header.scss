@@ -242,11 +242,26 @@ header {
               }
             }
           }
+          .balance {
+            display: flex;
+            flex-direction: column;
+            margin-left: 10px;
+            justify-content: flex-start;
+            span {
+              font-weight: 600;
+              font-size: 18px;
+              + span {
+                font-size: 18px;
+                font-weight: 400;
+                color: #ddd450;
+              }
+            }
+          }
         }
         .assets {
           margin-top: 5px;
           display: flex;
-          justify-content: flex-end;
+          justify-content: flex-start;
           align-items: center;
           span {
             color: #f52871;

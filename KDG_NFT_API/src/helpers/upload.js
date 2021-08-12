@@ -1,27 +1,26 @@
 const fs = require('fs')
-const axios = require('axios');
-const auth_headers = { AccessKey: "78e0551c-3f29-4636-9fc525d8dfa1-2973-44f0" }
+const axios = require('axios')
+const AUTH_HEADERS = { AccessKey: '78e0551c-3f29-4636-9fc525d8dfa1-2973-44f0' }
 const { getVideoStatus } = require('../helpers/helpSocket')
-async function create_video(title, _id) {
+async function createVideo (title, _id) {
     try {
-        const create = await axios.post('https://video.bunnycdn.com/library/1536/videos/', { title }, { headers: auth_headers })
+        const create = await axios.post('https://video.bunnycdn.com/library/1536/videos/', { title }, { headers: AUTH_HEADERS })
         return create.data.guid
     } catch (error) {
-        getVideoStatus(_id, null, 5)
+        await getVideoStatus(_id, null, 5)
         return null
     }
 }
 
-
-async function upload_video(guid, path, _id) {
+async function updateVideo (guid, path, _id) {
     try {
         await axios.put(
             `https://video.bunnycdn.com/library/1536/videos/${guid}`, fs.readFileSync(path),
             {
-                'maxContentLength': Infinity,
-                'maxBodyLength': Infinity,
+                maxContentLength: Infinity,
+                maxBodyLength: Infinity,
                 headers: {
-                    ...auth_headers,
+                    ...AUTH_HEADERS,
                     'Content-Type': 'video/mp4'
                 }
             }
@@ -32,5 +31,5 @@ async function upload_video(guid, path, _id) {
 }
 
 module.exports = {
-    create_video , upload_video
+    create_video: createVideo, upload_video: updateVideo
 }

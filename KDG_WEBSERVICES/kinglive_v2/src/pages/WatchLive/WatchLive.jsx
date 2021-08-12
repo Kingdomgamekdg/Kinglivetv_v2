@@ -7,12 +7,13 @@ import avatarDefaultSVG from '../../assets/svg/avatarDefault.svg'
 import coverDefaultJPG from '../../assets/svg/coverDefault.jpg'
 import giftPNG from '../../assets/svg/gift.png'
 import sendSVG from '../../assets/svg/send.svg'
-import shareSVG from '../../assets/svg/share.svg'
+// import shareSVG from '../../assets/svg/share.svg'
 import callAPI from '../../axios'
 import ButtonFollow from '../../components/ButtonFollow'
 import { PLAY_STREAM, STORAGE_DOMAIN } from '../../constant'
 import convertDateAgo from '../../helpers/convertDateAgo'
 import socket from '../../socket'
+import emptyGift from '../../assets/svg/emptyGift.svg'
 
 export default function WatchLive() {
   const history = useHistory()
@@ -194,33 +195,80 @@ export default function WatchLive() {
       <div className={`popupGift ${showGift ? 'show' : ''}`}>
         <div className='popupGift__mask' onClick={() => setShowGift(false)}></div>
 
-        <div className='popupGift__content flexbox flex4' style={{ '--gap-col': '40px' }}>
-          {NFTList.map((nft) => (
-            <form onSubmit={handleDonate} key={nft._id} className='popupGift__gift flexbox__item'>
-              <img src={nft.asset.metadata.image_thumbnail} alt='gift' />
-              <p>{nft.asset.metadata.name}</p>
-              <p>{nft.amount}</p>
-              <input
-                type='number'
-                name='amount'
-                defaultValue={1}
-                onInput={(e) => {
-                  if (Number(e.target.value) <= 0) e.target.value = ''
-                  if (Number(e.target.value) >= nft.amount) e.target.value = 100
-                }}
-              />
-              <input
-                style={{ display: 'none' }}
-                type='text'
-                name='id'
-                readOnly
-                defaultValue={nft.asset.id}
-              />
-              <button style={{ display: 'none' }} type='submit'>
-                Donate
-              </button>
-            </form>
-          ))}
+        <div className='popupGift__content'>
+          <div style={{ color: '#fefefe', marginBottom: 16 }}>Gift</div>
+          {NFTList.length !== 0 && (
+            <div className='flexbox flex4' style={{ height: 362, overflowY: 'auto' }}>
+              {NFTList.map((nft) => (
+                <form
+                  onSubmit={handleDonate}
+                  key={nft._id}
+                  className='popupGift__gift flexbox__item'
+                >
+                  <img src={nft.asset.metadata.image_thumbnail} alt='gift' />
+                  <p>{nft.asset.metadata.name}</p>
+                  <div style={{ position: 'relative' }}>
+                    <input
+                      type='number'
+                      name='amount'
+                      defaultValue={1}
+                      onInput={(e) => {
+                        if (Number(e.target.value) <= 0) e.target.value = ''
+                        if (Number(e.target.value) >= nft.amount) e.target.value = nft.amount
+                      }}
+                    />
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        right: 2,
+                        bottom: 0,
+                        fontSize: 14,
+                        lineHeight: '25px',
+                      }}
+                    >
+                      | of {nft.amount}
+                    </div>
+                  </div>
+                  <input
+                    style={{ display: 'none' }}
+                    type='text'
+                    name='id'
+                    readOnly
+                    defaultValue={nft.asset.id}
+                  />
+                  <button style={{ display: 'none' }} type='submit'>
+                    Donate
+                  </button>
+                </form>
+              ))}
+            </div>
+          )}
+
+          {NFTList.length === 0 && (
+            <div
+              style={{
+                height: 362,
+                display: 'flex',
+                justifyContent: 'center',
+                alignItems: 'center',
+              }}
+            >
+              <img src={emptyGift} alt='' />
+            </div>
+          )}
+
+          <div
+            style={{
+              color: '#f52871',
+              textAlign: 'right',
+              textDecoration: 'underline',
+              cursor: 'pointer',
+            }}
+            onClick={() => window.open('/nft-market', '_blank')}
+          >
+            Get more &gt;&gt;
+          </div>
         </div>
       </div>
 

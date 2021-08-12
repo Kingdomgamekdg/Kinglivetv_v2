@@ -231,12 +231,17 @@ class SubcripberAsset {
                 bidOrder.time =  payload.time,
                 bidOrder.status =   1,//1 order, 2 accept, 3 cancel
                 await bidOrder.save();
+            } else if (data.channel === 'new_cancel_list'){
+                const currentList = await ListingAssets.findOne({ id:payload.list_id, contract:payload.contract }).populate('assets users');
+                currentList.quantity = 0;
+                await currentList.save()
             }
         });
 
         db.query('LISTEN new_asset');
         db.query('LISTEN new_transfer');
         db.query('LISTEN new_list');
+        db.query('LISTEN new_cancel_list');
         db.query('LISTEN new_buy');
         db.query('LISTEN new_bid');
         db.query('LISTEN new_accept_bid');

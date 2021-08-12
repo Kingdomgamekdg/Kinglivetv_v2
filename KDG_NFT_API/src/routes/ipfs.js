@@ -1,14 +1,10 @@
-'use strict';
+'use strict'
 
-const router = require('express').Router();
+const controller = require('../controllers/ipfs/controller')
+const { isAuthenticated } = require('../middlewares/auth')
 
-const controller = require('./../controller/ipfs/controller');
-const wrap = require('./../lib/common').wrapAsync;
-const {isAuthenticated} =  require('./../controller/auth');
-
-const image = require('./../lib/image');
-
+const image = require('../libs/image')
 
 module.exports = router => {
-    router.post('/ipfs', [image.upload,isAuthenticated], wrap(controller.uploadMetadata));
-};
+    router.post('/ipfs', [image.upload, isAuthenticated], controller.uploadMetadata)
+}

@@ -1,23 +1,23 @@
-const {STRING_SOCKET,socket_server} = require('../lib/config/constant')
-const {io} = require('socket.io-client')
+const { STRING_SOCKET, SOCKET_SERVER } = require('../configs/constant')
+const { io } = require('socket.io-client')
 const socket = io(
-    socket_server,
+    SOCKET_SERVER,
     {
-        auth : {
-            token : STRING_SOCKET,
-            type : 1
+        auth: {
+            token: STRING_SOCKET,
+            type: 1
         }
     }
 )
-socket.on('connect'  , () => console.log('connect'))
+socket.on('connect', () => console.log('connect'))
 module.exports = {
-    getVideoStatus : async (_id,guid,status) => {
-        socket.emit('video_status', {_id ,guid, status})
+    getVideoStatus: async (_id, guid, status) => {
+        socket.emit('video_status', { _id, guid, status })
     },
-    getUser : async (_id) => {
+    getUser: async (_id) => {
         socket.emit('user', _id)
     },
-    getStreamStatus : async (_id) => {
+    getStreamStatus: async (_id) => {
         socket.emit('stream', _id)
     }
 }

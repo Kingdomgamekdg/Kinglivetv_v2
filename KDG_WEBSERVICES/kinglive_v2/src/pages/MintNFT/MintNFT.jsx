@@ -1,4 +1,6 @@
 import { useEffect, useRef, useState } from 'react'
+import { useDispatch, useSelector } from 'react-redux'
+
 import '../../assets/scss/mint-nft.scss'
 import checkSVG from '../../assets/svg/check.svg'
 import closeSVG from '../../assets/svg/close.svg'
@@ -18,7 +20,6 @@ export default function MintNFT() {
   const [isApproval, setIsApproval] = useState(false)
   const [file, setFile] = useState([])
   const [image, setImage] = useState({})
-
   const [percent, setPercent] = useState(0)
   const [isUploading, setIsUploading] = useState(false)
   const [uploadSuccess, setUploadSuccess] = useState(false)
@@ -27,7 +28,7 @@ export default function MintNFT() {
 
   useEffect(() => {
     async function getAllowance() {
-      if (window?.web3?.eth) {
+      if (window?.web3?.eth && window.contractERC20 && window?.ethereum?.selectedAddress) {
         const allowance = await window.contractERC20.methods
           .allowance(window.ethereum.selectedAddress, addressKL1155)
           .call()
@@ -37,7 +38,7 @@ export default function MintNFT() {
       }
     }
     getAllowance()
-  }, [window.ethereum.selectedAddress])
+  }, [window?.ethereum?.selectedAddress])
 
   const handlePreviewVideo = async (e) => {
     const files = e.target.files || []
@@ -63,11 +64,17 @@ export default function MintNFT() {
   }
 
   const handleApproval = async () => {
-    const approval = await window.contractERC20.methods
+    if(window.web3 && window.contractERC20){
+      const approval = await window.contractERC20.methods
       .approve(addressKL1155, '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff')
       .send({ from: window.ethereum.selectedAddress })
-    if (approval) {
-      setIsApproval(true)
+      if (approval) {
+        setIsApproval(true)
+      }else {
+        setIsApproval(false)
+      }
+    } else {
+      setIsApproval(false)
     }
   }
 
@@ -318,11 +325,11 @@ export default function MintNFT() {
               </button>
             )}
             {!isApproval && (
-              <button className='upload__button mr-15' onClick={handleApproval}>
+              <button className='upload__button mr-15' onClick={() =>handleApproval()}>
                 Approve
               </button>
             )}
-            <div className='upload__button upload__button--cancel' onClick={handleClearInput}>
+            <div className='upload__button upload__button--cancel' onClick={()=>handleClearInput()}>
               Cancel
             </div>
           </div>

@@ -20,7 +20,7 @@ const mongoose = require('mongoose')
 class Server {
 
     constructor(){
-        let dbURI = `mongodb://${config.MONGO_USER}:${encodeURIComponent(config.MONGO_PASSWORD)}@${config.MONGO_HOST}:${config.MONGO_PORT}/${config.MONGO_DB}`
+        let dbURI = `mongodb://${config.MONGO_USER}:${encodeURIComponent(config.MONGO_PASSWORD)}@${config.MONGO_HOST}:${config.MONGO_PORT}/${config.MONGO_DB}?authSource=admin`
         // let dbURI = `mongodb://localhost:27017/admin`
         // let dbURI =`mongodb://KDG:Kingdomgame%40%40123@10.104.0.23:27017/KDG?authSource=admin`
         mongoose.connect(dbURI,{

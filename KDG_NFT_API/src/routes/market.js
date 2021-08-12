@@ -1,15 +1,11 @@
-'use strict';
+'use strict'
 
-const router = require('express').Router();
-
-const controller = require('./../controller/market/controller');
-const wrap = require('./../lib/common').wrapAsync;
-const {isAuthenticated } = require('../controller/auth');
-
+const controller = require('../controllers/market/controller')
+const { isAuthenticated } = require('../middlewares/auth')
+const MarketValidation = require('../validations/market')
 
 module.exports = router => {
-    router.get('/listing-asset',isAuthenticated, wrap(controller.getListingAsset));
-    router.get('/top-sellers-quantity',isAuthenticated, wrap(controller.getListingAsset));
-    router.get('/top-sellers-revenue',isAuthenticated, wrap(controller.getListingAsset));
-
-};
+  router.get('/listing-asset', isAuthenticated, MarketValidation('getListingAsset'), controller.getListingAsset)
+  router.get('/top-sellers-quantity', isAuthenticated, MarketValidation('getListingAsset'), controller.getListingAsset)
+  router.get('/top-sellers-revenue', isAuthenticated, MarketValidation('getListingAsset'), controller.getListingAsset)
+}
