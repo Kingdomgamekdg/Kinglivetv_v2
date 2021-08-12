@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import nft from '../../assets/images/nft-market/nft.png'
 import arrowSVG from '../../assets/svg/arrow.svg'
 import avatarDefault from '../../assets/svg/avatarDefault.svg'
 import checkSVG from '../../assets/svg/check.svg'
@@ -56,11 +55,17 @@ const statisticArray = [
 export default function Profile() {
   const dispatch = useDispatch()
 
-  const [previewIMG, setPreviewIMG] = useState('')
-  const [tabIndex, setTabIndex] = useState(0)
-
   const [isEdit, setIsEdit] = useState(false)
   const [editSuccess, setEditSuccess] = useState(false)
+  const [showCrop, setShowCrop] = useState(false)
+  const [showPickImage, setShowPickImage] = useState(false)
+
+  const [image, setImage] = useState('')
+  const [imageId, setImageId] = useState('')
+  const [previewIMG, setPreviewIMG] = useState('')
+  const [tabIndex, setTabIndex] = useState(0)
+  const [typeImage, setTypeImage] = useState(1)
+  const [imageList, setImageList] = useState([])
 
   const userData = useSelector((state) => state.user)
   const avatar = userData?.kyc?.avatar?.path
@@ -108,20 +113,10 @@ export default function Profile() {
     }
   }
 
-  const [typeImage, setTypeImage] = useState(1)
-  const [showCrop, setShowCrop] = useState(false)
-  const [showPickImage, setShowPickImage] = useState(false)
-  const [imageList, setImageList] = useState([])
-  const [image, setImage] = useState('')
-  const [imageId, setImageId] = useState('')
-
   useEffect(() => {
     callAPI
       .get('/avatar')
-      .then((res) => {
-        console.log(res.data)
-        res.status === 1 && setImageList(res.data)
-      })
+      .then((res) => res.status === 1 && setImageList(res.data))
       .catch((error) => console.log(error))
   }, [])
 
@@ -146,6 +141,7 @@ export default function Profile() {
 
   const handleCancelCrop = () => {
     setShowCrop(false)
+    setImage('')
     setImageId('')
     document.getElementById('upload').value = ''
   }
@@ -183,10 +179,10 @@ export default function Profile() {
       {showCrop && (
         <div className={`popupX ${typeImage === 1 ? 'avatarX' : ''}`}>
           <DemoCrop
+            image={image}
+            typeImage={typeImage}
             onCancel={handleCancelCrop}
             onFinish={handleFinishCrop}
-            typeImage={typeImage}
-            image={image}
           />
         </div>
       )}
@@ -223,11 +219,11 @@ export default function Profile() {
             <div className='flexbox flex4' style={{ maxHeight: 600, overflowY: 'auto' }}>
               {imageList.map((o) => (
                 <img
+                  alt=''
                   key={o._id}
-                  style={{ objectFit: 'contain', cursor: 'pointer', height: 130 }}
                   className='flexbox__item'
                   src={`${STORAGE_DOMAIN}${o.path}`}
-                  alt=''
+                  style={{ objectFit: 'contain', cursor: 'pointer', height: 130 }}
                   onClick={(e) => {
                     setShowCrop(true)
                     setShowPickImage(false)
@@ -244,8 +240,8 @@ export default function Profile() {
               style={{
                 height: 362,
                 display: 'flex',
-                justifyContent: 'center',
                 alignItems: 'center',
+                justifyContent: 'center',
               }}
             >
               <img src={emptyGift} alt='' />
