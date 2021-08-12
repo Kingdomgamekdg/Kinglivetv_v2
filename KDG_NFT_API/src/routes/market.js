@@ -1,6 +1,6 @@
 'use strict'
 
-const controller = require('../controllers/market/controller')
+const controller = require('../controllers/market')
 const { isAuthenticated } = require('../middlewares/auth')
 const MarketValidation = require('../validations/market')
 

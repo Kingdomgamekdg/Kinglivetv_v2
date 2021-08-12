@@ -1,12 +1,12 @@
 'use strict'
 
-const { model, isValidObjectId } = require('mongoose')
-const UserAssets = model('user-assets')
-const Users = model('users')
+const { isValidObjectId } = require('mongoose')
+const UserAssetsService = require('../../services/user-assets')
+const UsersService = require('../../services/users')
 
 const { query } = require('express')
 
-class Controller {
+module.exports = class {
   /**
    * Uploads metadata and file, image to IPFS
    */
@@ -15,7 +15,7 @@ class Controller {
     const { _id } = _req
 
     const limit = params.limit ? parseInt(params.limit) : 10
-    const user = await Users.findById(_id)
+    const user = await UsersService.findById(_id)
 
     if (!Object.keys(user).length) {
       return _res.send({ status: 1, data: [] })
@@ -50,18 +50,9 @@ class Controller {
       delete filter.user
     }
 
-    const data = await UserAssets.find(filter)
-      .limit(limit)
-      .populate({
-        path: 'asset',
-        match
-      })
-      .sort({ _id: -1 })
-      .lean()
-    data.reverse()
+    const data = await UserAssetsService.getUserAssets({ filter, match, limit })
 
-    // console.log("data",data);
-    return _res.status(200).json({ status: 1, data: data.filter(dt => { return dt.asset }) })
+    return _res.status(200).json({ status: 1, data })
   }
 
   /**
@@ -80,5 +71,3 @@ class Controller {
    * Saves asset metadata into database
    */
 }
-
-module.exports = Controller

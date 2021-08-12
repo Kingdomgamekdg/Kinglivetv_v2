@@ -10,4 +10,3 @@ const actions = {
 }
 
 module.exports = Validation(schema, actions)
-

@@ -1,15 +1,16 @@
-const { model } = require('mongoose')
-const BidOrders = model('bid-orders')
-const Buys = model('buys')
+'use strict'
+
+const BidOrdersService = require('../../services/bid-orders')
+const BuysService = require('../../services/buys')
 
 module.exports = class {
   static async getTotalTraders (_req, _res) {
     try {
-      const totalBidOrders = await BidOrders.countDocuments({
+      const totalBidOrders = await BidOrdersService.count({
         status: 2
       })
 
-      const totalBuys = await Buys.countDocuments({
+      const totalBuys = await BuysService.count({
         status: 1
       })
 
