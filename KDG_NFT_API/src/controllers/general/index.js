@@ -23,4 +23,34 @@ module.exports = class {
       _res.status(400).json(e.message)
     }
   }
+
+  static async getTopSellerQuantity (_req, _res) {
+    try {
+      const params = _req.query
+      const {
+        limit = 10
+      } = params
+      const data = await BidOrdersService.getTopSeller({ limit })
+      _res.status(200).json({
+        data
+      })
+    } catch (e) {
+      _res.status(400).json(e.message)
+    }
+  }
+
+  static async getTopSellerRevenue (_req, _res) {
+    try {
+      const params = _req.query
+      const {
+        limit = 10
+      } = params
+      const data = await BuysService.getTopSeller({ limit })
+      _res.status(200).json({
+        data
+      })
+    } catch (e) {
+      _res.status(400).json(e.message)
+    }
+  }
 }
