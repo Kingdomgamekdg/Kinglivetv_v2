@@ -9,8 +9,8 @@ class ListingAssetsService extends BaseService {
         _id: { $nin: ids },
         quantity: { $gt: 0 }
       })
-      .limit(limit)
       .sort({ quantity: 1 })
+      .limit(limit)
       .populate({
         path: 'asset owner'
       })
@@ -33,6 +33,7 @@ class ListingAssetsService extends BaseService {
         quantity: { $gt: 0 }
       })
       .sort({ quantity: 1 })
+      .limit(limit)
       .populate({
         path: 'asset owner'
       })
@@ -45,7 +46,6 @@ class ListingAssetsService extends BaseService {
         populate: 'from to'
       })
       .lean()
-      .limit(limit)
     data.reverse()
     return data
   }
