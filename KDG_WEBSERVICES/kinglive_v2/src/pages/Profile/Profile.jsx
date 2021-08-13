@@ -40,6 +40,7 @@ export default function Profile() {
   const [imageList, setImageList] = useState([])
 
   const userData = useSelector((state) => state.user)
+  // const userId = userData?._id
   const avatar = userData?.kyc?.avatar?.path
   const avatarPos = userData?.kyc?.avatar_pos
   const cover = userData?.kyc?.cover?.path
@@ -150,6 +151,10 @@ export default function Profile() {
     dispatch(asyncChangeUser())
     handleCancelCrop()
   }
+
+  // useEffect(() => {
+  //   callAPI.get(`/videos?user=${userId}&limit=10`)
+  // }, [])
 
   return (
     <>
