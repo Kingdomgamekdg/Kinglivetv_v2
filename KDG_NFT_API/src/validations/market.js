@@ -1,12 +1,11 @@
 const Joi = require('joi')
 const Validation = require('../middlewares/validation')
-const joi = require('joi')
 
 const schema = {
-  limit: joi.number().required(),
-  search: joi.string().trim(),
-  prev: joi.string().trim(),
-  ids: joi.string().trim()
+  limit: Joi.number().required(),
+  search: Joi.string().trim(),
+  prev: Joi.string().trim(),
+  ids: Joi.string().trim()
 }
 
 const actions = {
@@ -14,4 +13,3 @@ const actions = {
 }
 
 module.exports = Validation(schema, actions)
-

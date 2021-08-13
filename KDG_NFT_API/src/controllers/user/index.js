@@ -1,18 +1,17 @@
 'use strict'
 
 const jwt = require('../../libs/jwt')
-const { model } = require('mongoose')
-const Users = model('users')
+const UsersService = require('../../services/user')
 const response = require('../../libs/http-response')
 
-class Controller {
+module.exports = class {
   /**
    * Uploads metadata and file, image to IPFS
    */
   static async login (_req, _res) {
     // console.log("_req",_req);
     const body = _req.body
-    const user = await Users.findOne({ address: body.address.toLowerCase() })
+    const user = await UsersService.findOne({ address: body.address.toLowerCase() })
     if (user) {
       const token = jwt.issueToken({
         id: body.address
@@ -23,7 +22,7 @@ class Controller {
         user: user || {}
       })
     } else {
-      const user = await Users.create({ address: body.address.toLowerCase() })
+      const user = await UsersService.create({ address: body.address.toLowerCase() })
       const token = jwt.issueToken({
         id: body.address
       })
@@ -75,7 +74,7 @@ class Controller {
         condition['kyc.status'] = kycStatus
       }
 
-      const totalUsers = await Users.countDocuments(condition)
+      const totalUsers = await UsersService.count(condition)
 
       _res.status(200).json({
         total: totalUsers || 0
@@ -85,5 +84,3 @@ class Controller {
     }
   }
 }
-
-module.exports = Controller

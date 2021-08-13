@@ -1,7 +1,6 @@
 const Joi = require('joi')
 
 module.exports = (schema, actions) => {
-
   return (action) => {
     return async (req, res, next) => {
       let data
