@@ -24,7 +24,7 @@ class BuysService extends BaseService {
       {
         $limit: limit
       }
-    ]).allowDiskUse(true)
+    ])
   }
 }
 

@@ -45,7 +45,7 @@ const userSchema = new Schema({
     }
 })
 
-mongoose.model('users', userSchema)
+module.exports = mongoose.model('users', userSchema)
 // userSchema.index({'kyc.first_name' : 'text' , 'kyc.first_name' : 'text'})
 
 // Users.createIndexes()

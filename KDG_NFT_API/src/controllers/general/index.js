@@ -42,10 +42,13 @@ module.exports = class {
   static async getTopSellerRevenue (_req, _res) {
     try {
       const params = _req.query
+
       const {
         limit = 10
       } = params
+
       const data = await BuysService.getTopSeller({ limit })
+
       _res.status(200).json({
         data
       })

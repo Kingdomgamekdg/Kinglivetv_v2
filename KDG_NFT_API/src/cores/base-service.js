@@ -209,7 +209,7 @@ class BaseService {
    * @returns {*|Aggregate|Promise}
    */
   aggregate (pipeline) {
-    return this.model.aggregate(pipeline)
+    return this.model.aggregate(pipeline).allowDiskUse(true)
   }
 
   /**

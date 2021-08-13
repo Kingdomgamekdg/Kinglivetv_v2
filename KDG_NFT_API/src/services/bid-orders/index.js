@@ -70,7 +70,7 @@ class BidOrdersService extends BaseService {
       {
         $limit: limit
       }
-    ]).allowDiskUse(true)
+    ])
   }
 }
 
