@@ -30,6 +30,20 @@ class StreamsService extends BaseService {
       }
     ])
   }
+
+  async calculateStreamer () {
+    return this.aggregate([
+        {
+          $group: {
+            _id: '$user'
+          }
+        },
+        {
+          $count: 'total'
+        }
+      ]
+    )
+  }
 }
 
 module.exports = new StreamsService(Model)

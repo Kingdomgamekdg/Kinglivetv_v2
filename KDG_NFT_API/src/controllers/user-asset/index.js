@@ -1,8 +1,8 @@
 'use strict'
 
 const { isValidObjectId } = require('mongoose')
-const UserAssetsService = require('../../services/user-assets')
-const UsersService = require('../../services/users')
+const UserAssetsService = require('../../services/user-asset')
+const UsersService = require('../../services/user')
 
 const { query } = require('express')
 

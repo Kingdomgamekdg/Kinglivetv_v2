@@ -6,4 +6,4 @@ const ViewedSchema = new Schema({
     video: { type: Types.ObjectId, ref: 'videos', indexes: 1 },
     last_update: { type: Date, default: Date.now }
 })
-mongoose.model('vieweds', ViewedSchema)
+module.exports = mongoose.model('vieweds', ViewedSchema)

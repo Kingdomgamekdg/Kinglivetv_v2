@@ -1,8 +1,8 @@
 'use strict'
 const { IsEmpty } = require('../../utils/common-util')
 
-const ListingAssetsService = require('../../services/listing-assets')
-const UsersService = require('../../services/users')
+const ListingAssetsService = require('../../services/listing-asset')
+const UsersService = require('../../services/user')
 
 module.exports = class {
   static async getTopSellAssets (_req, _res) {

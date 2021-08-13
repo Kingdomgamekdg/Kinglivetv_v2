@@ -1,7 +1,7 @@
 'use strict'
 
 const jwt = require('../../libs/jwt')
-const UsersService = require('../../services/users')
+const UsersService = require('../../services/user')
 const response = require('../../libs/http-response')
 
 module.exports = class {

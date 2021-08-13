@@ -26,6 +26,22 @@ class BuysService extends BaseService {
       }
     ])
   }
+
+  async getTotalAssetVolume ({ status = 1 }) {
+    return this.aggregate([
+      {
+        $match: {
+          status
+        }
+      },
+      {
+        $group: {
+          _id: null,
+          total: { $sum: '$payment_amount' }
+        }
+      }
+    ])
+  }
 }
 
 module.exports = new BuysService(Model)

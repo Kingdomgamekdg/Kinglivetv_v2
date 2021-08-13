@@ -1,7 +1,7 @@
 'use strict'
 
-const BidOrdersService = require('../../services/bid-orders')
-const BuysService = require('../../services/buys')
+const BidOrdersService = require('../../services/bid-order')
+const BuysService = require('../../services/buy')
 
 module.exports = class {
   static async getTotalTraders (_req, _res) {
