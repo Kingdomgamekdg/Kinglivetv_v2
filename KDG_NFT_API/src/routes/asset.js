@@ -1,6 +1,6 @@
 'use strict'
 
-const controller = require('../controllers/asset/controller')
+const controller = require('../controllers/asset')
 const AssetValidation = require('../validations/asset')
 
 module.exports = router => {

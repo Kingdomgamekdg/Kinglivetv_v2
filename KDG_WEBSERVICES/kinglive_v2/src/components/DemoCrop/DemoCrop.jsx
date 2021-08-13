@@ -1,6 +1,5 @@
 import { useCallback, useMemo, useState } from 'react'
 import Cropper from 'react-easy-crop'
-// import nft from '../../assets/images/nft-market/nft.png'
 
 const DemoCrop = ({ onCancel = () => {}, onFinish = () => {}, typeImage = 1, image = '' }) => {
   const [crop, setCrop] = useState({ x: 0, y: 0 })
@@ -12,12 +11,9 @@ const DemoCrop = ({ onCancel = () => {}, onFinish = () => {}, typeImage = 1, ima
     return 3
   }, [typeImage])
 
-  const onCropComplete = useCallback(
-    ({ x, y, width }) => {
-      setImagePos({ x, y, zoom: 10000 / width })
-    },
-    [zoom]
-  )
+  const onCropComplete = useCallback(({ x, y, width }) => {
+    setImagePos({ x, y, zoom: 10000 / width })
+  }, [])
 
   return (
     <>

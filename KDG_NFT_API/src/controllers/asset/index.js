@@ -1,7 +1,6 @@
 'use strict'
 
-const { model } = require('mongoose')
-const Assets = model('assets')
+const AssetService = require('../../services/asset')
 
 module.exports = class {
   static async getTotalAssets (_req, _res) {
@@ -15,7 +14,7 @@ module.exports = class {
           $in: mimetype
         }
       }
-      const totalAssets = await Assets.countDocuments(condition)
+      const totalAssets = await AssetService.count(condition)
 
       _res.status(200).json({
         total: totalAssets || 0

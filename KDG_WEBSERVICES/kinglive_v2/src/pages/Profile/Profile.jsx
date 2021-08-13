@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import nft from '../../assets/images/nft-market/nft.png'
 import arrowSVG from '../../assets/svg/arrow.svg'
 import avatarDefault from '../../assets/svg/avatarDefault.svg'
 import checkSVG from '../../assets/svg/check.svg'
@@ -8,6 +7,7 @@ import closeSVG from '../../assets/svg/close.svg'
 import coverDefault from '../../assets/svg/coverDefault.jpg'
 import editSVG from '../../assets/svg/edit.svg'
 import emptyGift from '../../assets/svg/emptyGift.svg'
+import errorSVG from '../../assets/svg/error.svg'
 import kdgSVG from '../../assets/svg/kdg.svg'
 import menuSVG from '../../assets/svg/menu.svg'
 import radioSVG from '../../assets/svg/radio.svg'
@@ -19,80 +19,63 @@ import VideoPlayer from '../../components/VideoPlayer'
 import { STORAGE_DOMAIN } from '../../constant'
 import convertPositionIMG from '../../helpers/convertPositionIMG'
 import isValidDate from '../../helpers/isValidDate'
+import { statisticArray } from '../../mock/profile'
 import { body1, body2, head1, head2 } from '../../mock/table'
 import { asyncChangeUser } from '../../store/actions'
-
-const statisticArray = [
-  {
-    amount: 234,
-    name: 'KDG',
-  },
-  {
-    amount: 34,
-    name: 'Total Videos Owner',
-  },
-  {
-    amount: 45,
-    name: 'Total Views',
-  },
-  {
-    amount: 23,
-    name: 'Total Gifts',
-  },
-  {
-    amount: 2434,
-    name: 'Followers',
-  },
-  {
-    amount: 324,
-    name: 'Followings',
-  },
-  {
-    amount: 45,
-    name: 'Total Live (hours)',
-  },
-]
 
 export default function Profile() {
   const dispatch = useDispatch()
 
-  const [previewIMG, setPreviewIMG] = useState('')
-  const [tabIndex, setTabIndex] = useState(0)
-
   const [isEdit, setIsEdit] = useState(false)
   const [editSuccess, setEditSuccess] = useState(false)
+  const [editError, setEditError] = useState(false)
+  const [showCrop, setShowCrop] = useState(false)
+  const [showPickImage, setShowPickImage] = useState(false)
+
+  const [image, setImage] = useState('')
+  const [imageId, setImageId] = useState('')
+  const [previewIMG, setPreviewIMG] = useState('')
+  const [tabIndex, setTabIndex] = useState(0)
+  const [typeImage, setTypeImage] = useState(1)
+  const [imageList, setImageList] = useState([])
 
   const userData = useSelector((state) => state.user)
+  // const userId = userData?._id
   const avatar = userData?.kyc?.avatar?.path
   const avatarPos = userData?.kyc?.avatar_pos
   const cover = userData?.kyc?.cover?.path
   const coverPos = userData?.kyc?.cover_pos
+  const lastName = userData?.kyc?.last_name
+  const firstName = userData?.kyc?.first_name
+  const phone = userData?.kyc?.phone
+  const address = userData?.kyc?.address
   const userName = `${userData?.kyc?.first_name} ${userData?.kyc?.last_name}`
 
-  const userBirthday = useMemo(() => {
-    let x = userData?.kyc?.birth_day.split('/')
-    if (!x) return ''
-
-    let [month, day, year] = x
+  const birthday = useMemo(() => {
+    if (!userData?.kyc?.birth_day) return ''
+    const [month, day, year] = userData?.kyc?.birth_day.split('/')
     return `${day}/${month}/${year}`
   }, [userData])
 
   const handleEditUser = async (e) => {
     e.preventDefault()
 
-    const data = new FormData(e.target)
+    const formData = new FormData(e.target)
 
-    if (!isValidDate(data.get('birth_day'))) return
+    if (!isValidDate(formData.get('birth_day'))) {
+      setEditError(true)
+      return
+    }
 
     const submitData = {}
-    for (let field of data) {
+    for (let field of formData) {
       submitData[field[0]] = field[1]
     }
 
     submitData.gioi_tinh_id = Number(submitData.gioi_tinh_id)
     submitData.id = userData?._id
 
-    let [day, month, year] = submitData.birth_day.split('/')
+    const [day, month, year] = submitData.birth_day.split('/')
     submitData.birth_day = `${month}/${day}/${year}`
 
     try {
@@ -108,20 +91,10 @@ export default function Profile() {
     }
   }
 
-  const [typeImage, setTypeImage] = useState(1)
-  const [showCrop, setShowCrop] = useState(false)
-  const [showPickImage, setShowPickImage] = useState(false)
-  const [imageList, setImageList] = useState([])
-  const [image, setImage] = useState('')
-  const [imageId, setImageId] = useState('')
-
   useEffect(() => {
     callAPI
       .get('/avatar')
-      .then((res) => {
-        console.log(res.data)
-        res.status === 1 && setImageList(res.data)
-      })
+      .then((res) => res.status === 1 && setImageList(res.data))
       .catch((error) => console.log(error))
   }, [])
 
@@ -146,6 +119,7 @@ export default function Profile() {
 
   const handleCancelCrop = () => {
     setShowCrop(false)
+    setImage('')
     setImageId('')
     document.getElementById('upload').value = ''
   }
@@ -178,15 +152,19 @@ export default function Profile() {
     handleCancelCrop()
   }
 
+  // useEffect(() => {
+  //   callAPI.get(`/videos?user=${userId}&limit=10`)
+  // }, [])
+
   return (
     <>
       {showCrop && (
         <div className={`popupX ${typeImage === 1 ? 'avatarX' : ''}`}>
           <DemoCrop
+            image={image}
+            typeImage={typeImage}
             onCancel={handleCancelCrop}
             onFinish={handleFinishCrop}
-            typeImage={typeImage}
-            image={image}
           />
         </div>
       )}
@@ -223,11 +201,11 @@ export default function Profile() {
             <div className='flexbox flex4' style={{ maxHeight: 600, overflowY: 'auto' }}>
               {imageList.map((o) => (
                 <img
+                  alt=''
                   key={o._id}
-                  style={{ objectFit: 'contain', cursor: 'pointer', height: 130 }}
                   className='flexbox__item'
                   src={`${STORAGE_DOMAIN}${o.path}`}
-                  alt=''
+                  style={{ objectFit: 'contain', cursor: 'pointer', height: 130 }}
                   onClick={(e) => {
                     setShowCrop(true)
                     setShowPickImage(false)
@@ -244,8 +222,8 @@ export default function Profile() {
               style={{
                 height: 362,
                 display: 'flex',
-                justifyContent: 'center',
                 alignItems: 'center',
+                justifyContent: 'center',
               }}
             >
               <img src={emptyGift} alt='' />
@@ -253,6 +231,24 @@ export default function Profile() {
           )}
         </div>
       </div>
+
+      {editError && (
+        <div className='popupX'>
+          <div className='containerX'>
+            <img className='closeX' src={closeSVG} alt='' onClick={() => setEditError(false)} />
+            <div className='titleX'>Wrong birthday format!</div>
+            <div className='descriptionX'>
+              <img src={errorSVG} alt='' />
+              <span>Please enter correct birthday format 'dd/mm/yyyy'</span>
+            </div>
+            <div style={{ display: 'flex', justifyContent: 'center' }}>
+              <div className='buttonX okX' onClick={() => setEditError(false)}>
+                Ok
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
 
       {editSuccess && (
         <div className='popupX'>
@@ -336,10 +332,9 @@ export default function Profile() {
           >
             <div className='profile😢__avatar'>
               <img
-                src={avatar ? `${STORAGE_DOMAIN}${avatar}` : avatarDefault}
-                // src={nft}
                 alt=''
                 style={convertPositionIMG(avatarPos)}
+                src={avatar ? `${STORAGE_DOMAIN}${avatar}` : avatarDefault}
                 onClick={(e) => setPreviewIMG(e.target.src)}
               />
               <span></span>
@@ -357,17 +352,17 @@ export default function Profile() {
 
             <div className='form-control'>
               <div className='label'>Last Name</div>
-              <input type='text' name='last_name' defaultValue={userData?.kyc?.last_name || ''} />
+              <input type='text' name='last_name' defaultValue={lastName} />
             </div>
 
             <div className='form-control'>
               <div className='label'>First Name</div>
-              <input type='text' name='first_name' defaultValue={userData?.kyc?.first_name || ''} />
+              <input type='text' name='first_name' defaultValue={firstName} />
             </div>
 
             <div className='form-control'>
               <div className='label'>Phone Number</div>
-              <input type='text' name='phone' defaultValue={userData?.kyc?.phone || ''} />
+              <input type='text' name='phone' defaultValue={phone} />
             </div>
 
             <div className='form-control'>
@@ -396,13 +391,13 @@ export default function Profile() {
                 type='text'
                 name='birth_day'
                 placeholder='dd/mm/yyyy'
-                defaultValue={userBirthday || ''}
+                defaultValue={birthday}
               />
             </div>
 
             <div className='form-control'>
               <div className='label'>Address</div>
-              <input type='text' name='address' defaultValue={userData?.kyc?.address || ''} />
+              <input type='text' name='address' defaultValue={address} />
             </div>
 
             <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: 35 }}>
@@ -501,7 +496,7 @@ export default function Profile() {
                     className='flexbox flex3'
                     style={{ '--gap-col': '5px', '--gap-row': '25px' }}
                   >
-                    {[1, 2, 3].map((item) => (
+                    {Array.from(Array(6)).map((item) => (
                       <div key={item} className='flexbox__item profile😢__video'>
                         <div className='thumbnail'>
                           <img src={coverDefault} alt='' />
