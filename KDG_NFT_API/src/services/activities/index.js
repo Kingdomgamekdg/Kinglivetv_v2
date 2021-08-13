@@ -14,7 +14,7 @@ class ActivityService extends BaseService {
         $group: {
           _id: null,
           total: {
-            $sum: { $toInt: '$data.amount' }
+            $sum: { $toDouble: '$data.amount' }
           }
         }
       }
