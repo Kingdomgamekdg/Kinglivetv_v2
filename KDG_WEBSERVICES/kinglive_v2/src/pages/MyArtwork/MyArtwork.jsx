@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import { useSelector } from 'react-redux'
+import { useHistory } from "react-router-dom";
 import '../../assets/scss/my-artwork.scss'
 import callAPI from '../../axios'
 import { STORAGE_DOMAIN } from '../../constant'
@@ -10,10 +11,10 @@ import convertPositionIMG from '../../helpers/convertPositionIMG'
 
 export default function MyArtwork() {
   const userRedux = useSelector((state) => state.user)
+  const history = useHistory()
   const [status, setStatus] = useState(1)
   const [previewIMG, setPreviewIMG] = useState('')
   const [AssetList, setAssetList] = useState([])
-  const [sellingItem, setSellingItem] = useState('')
 
   const isLoadMore = useRef(true)
   const isLoadingAPI = useRef(false)
@@ -145,10 +146,10 @@ export default function MyArtwork() {
       }
   }
 
-  const handleSellButton = async (item) => {
-    setIsOpenSell(true)
-    setSellingItem(item)
-  }
+  // const handleSellButton = async (item) => {
+  //   setIsOpenSell(true)
+  //   setSellingItem(item)
+  // }
 
   const handleAccept = async (item) => {
     if(window.web3 && window.contractKL1155){
@@ -160,6 +161,12 @@ export default function MyArtwork() {
       await getAssets(status)
     }
     }
+  }
+
+
+  const handleShowDetail = async (index) => {
+    var ids = AssetList.map((o) => o._id)
+    history.push(`/my-artwork-detail?ids=${ids}&index=${index}`)
   }
 
   const handleDeny = async (item) => {
@@ -209,7 +216,7 @@ export default function MyArtwork() {
 
   return (
     <>
-      {isOpenSell && (
+      {/* {isOpenSell && (
         <div key={sellingItem?._id} className='popupX' onClick={() => setIsOpenSell(false)}>
           <form className='containerX' onSubmit={handleSell} onClick={(e) => e.stopPropagation()}>
             <div className='form-control'>
@@ -251,7 +258,7 @@ export default function MyArtwork() {
             </button>
           </form>
         </div>
-      )}
+      )} */}
 
       <div className='myartwork profile😢 container'>
         <div style={{ position: 'relative', marginBottom: 60 }}>
@@ -325,12 +332,12 @@ export default function MyArtwork() {
 
           {AssetList?.length > 0 && (
             <div className='myartwork__list'>
-              {AssetList.map((al) => (
+              {AssetList.map((al,index) => (
                 <div 
                 onMouseOver={handleMouseOverNFT}
                 onMouseOut={handleMouseOutNFT}
                 key={'artwork' + al._id} className='myartwork__list-item'>
-                  <div className='artwork'>
+                  <div className='artwork' onClick={() => handleShowDetail(index)}>
                       {al.asset?.metadata?.mimetype.startsWith('image') && (
                          <div className='img'>
                             <img key={'image' + al._id} src={al.asset?.metadata?.image} alt='' />
@@ -371,42 +378,10 @@ export default function MyArtwork() {
                           fill='#6A6A6D'
                         />
                       </svg>
-
                       <span>{new Date(al.asset?.time * 1000).toDateString()}</span>
                     </div>
                   </div>
-                  {status === 1 && isApprovedForAll > 0 && (
-                    <div
-                      key={'sell' + al._id}
-                      className='buttonX'
-                      onClick={() => handleSellButton(al)}
-                    >
-                      Sell
-                    </div>
-                  )}
-                  {status === 1 && !isApprovedForAll > 0 && (
-                    <div
-                      key={'approve' + al._id}
-                      className='buttonX'
-                      onClick={() => handleApprove()}
-                    >
-                      Approval for sell
-                    </div>
-                  )}
-                  {isReviewer && status === 0 && (
-                    <div>
-                      <div
-                        key={'review' + al._id}
-                        className='buttonX'
-                        onClick={() => handleAccept(al)}
-                      >
-                        Accept
-                      </div>
-                      <div key={'deny' + al._id} className='buttonX' onClick={() => handleDeny(al)}>
-                        Deny
-                      </div>
-                    </div>
-                  )}
+
                 </div>
               ))}
             </div>
