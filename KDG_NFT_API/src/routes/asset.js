@@ -5,5 +5,5 @@ const AssetValidation = require('../validations/asset')
 
 module.exports = router => {
   router.get('/assets/total', AssetValidation('getTotalAssets'), controller.getTotalAssets)
-  router.get('/assets', AssetValidation('getAsset'), controller.getAsset)
+  router.get('/assets',[isAuthenticated], controller.getAsset)
 }

@@ -27,8 +27,9 @@ module.exports = class {
   static async getAsset (_req, _res) {
     try {
       const queries = _req.query
+      console.log("queries.id",queries.id);
 
-      const asset = await Assets.findByid(queries.id)
+      const asset = await AssetService.findById(queries.id)
 
       _res.status(200).json({
         status:1,

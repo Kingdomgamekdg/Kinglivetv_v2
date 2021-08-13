@@ -8,7 +8,7 @@ const schema = {
 
 const actions = {
   getTotalAssets: [],
-  getAsset:['id']
+  getAsset:[]
 }
 
 module.exports = Validation(schema, actions)
