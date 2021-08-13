@@ -3,6 +3,7 @@ import { useEffect, useState, useMemo } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import Web3 from 'web3'
+import { useWallet } from 'use-wallet'
 import kdg from '../../assets/images/header/kdg.png'
 import logo from '../../assets/images/header/logo.svg'
 import metamask from '../../assets/images/header/metamask.png'
@@ -20,6 +21,7 @@ import { actChangeAddress, asyncChangeUser } from '../../store/actions'
 import { EXPLORER_URL } from '../../constant'
 import WalletProviderModal from '../WalletProviderModal/WalletProviderModal'
 import useModal from '../../hooks/useModal'
+import Button from '../ButtonV2'
 
 export default function Header({ toggleSidebar = () => { }, IsOpenSidebar = false }) {
   const userRedux = useSelector((state) => state.user)
@@ -35,7 +37,7 @@ export default function Header({ toggleSidebar = () => { }, IsOpenSidebar = fals
   const dispatch = useDispatch()
   const history = useHistory()
   const currentAddress = useSelector((state) => state.address)
-
+  // const { account } = useWallet()
   const [IsOpenNoti, setIsOpenNoti] = useState(false)
   const [IsOpenLive, setIsOpenLive] = useState(false)
   const [IsOpenProfile, setIsOpenProfile] = useState(false)
@@ -392,12 +394,23 @@ export default function Header({ toggleSidebar = () => { }, IsOpenSidebar = fals
             </div>
           </div>
           <div
-            // onClick={() => setIsOpenConnect(true)}
-            click={onPresentWalletProviderModal}
+            onClick={() => setIsOpenConnect(true)}
+            // click={onPresentWalletProviderModal}
             className={`connect ${currentAddress ? 'disabled' : ''}`}
           >
             {currentAddress ? shortAddress(currentAddress) : 'Connect'}
           </div>
+
+          <div className="bsc-header-right">
+            <Button
+              primary
+              click={onPresentWalletProviderModal}
+              text={'2'}
+              className="connect"
+            />
+
+          </div>
+
           <div onClick={() => setIsOpenProfile(!IsOpenProfile)} className='profile'>
             <span className='avatar'>
               <img src={logo} alt='' />

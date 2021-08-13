@@ -2,7 +2,7 @@
 import React, { useEffect } from 'react'
 import styled from 'styled-components'
 import { useWallet } from 'use-wallet'
-
+import Button from '../ButtonV2'
 import Modal from '../Modal'
 import ModalActions from '../ModalActions'
 import ModalContent from '../ModalContent'
