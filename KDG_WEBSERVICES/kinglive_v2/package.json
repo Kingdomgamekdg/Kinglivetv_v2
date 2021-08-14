@@ -8,6 +8,7 @@
     "@ethersproject/contracts": "^5.4.1",
     "@ethersproject/providers": "^5.4.3",
     "@ethersproject/solidity": "^5.4.0",
+    "@kinglive/uikit": "^0.20.10",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",

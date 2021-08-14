@@ -6,7 +6,7 @@ import {
   ConnectorId,
   useWalletModal,
   Login,
-} from "@bscsswap/uikit";
+} from "@kinglive/uikit";
 import { injected, bsc, walletconnect } from "../../connectors";
 import useI18n from "../../hooks/useI18n";
 const UnlockButton: React.FC<ButtonProps> = (props) => {

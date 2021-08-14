@@ -3,7 +3,7 @@ import ReactDOM from "react-dom";
 import { Provider } from "react-redux";
 import { BrowserRouter } from "react-router-dom";
 import App from "./App";
-import { ModalProvider } from "@bscsswap/uikit";
+import { ModalProvider } from "@kinglive/uikit";
 import reportWebVitals from "./reportWebVitals";
 import store from "./store";
 import Providers from './Providers'

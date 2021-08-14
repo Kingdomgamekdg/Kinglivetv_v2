@@ -2753,6 +2753,18 @@
   resolved "https://registry.yarnpkg.com/@josephg/resolvable/-/resolvable-1.0.1.tgz#69bc4db754d79e1a2f17a650d3466e038d94a5eb"
   integrity sha512-CtzORUwWTTOTqfVtHaKRJ0I1kNQd1bpn3sUh8I3nJDVY+5/M/Oe1DnEWzPQvqq/xPIIkzzzIP7mfCoAjFRvDhg==
 
+"@kinglive/uikit@^0.20.10":
+  version "0.20.10"
+  resolved "https://registry.yarnpkg.com/@kinglive/uikit/-/uikit-0.20.10.tgz#f95c926c9b8edce28ef932f524cf967bda7da9f5"
+  integrity sha512-ick48lp47S6v0apmx6qqMQDS+HJui/rin61aoKNURoQJa/C6bXgZG5+BV6JAfjJ7MjrLayfH1otztxidadUhow==
+  dependencies:
+    "@types/lodash" "^4.14.162"
+    "@types/styled-system" "^5.1.10"
+    lodash "^4.17.20"
+    perfect-scrollbar "^1.5.1"
+    react-transition-group "^4.4.1"
+    styled-system "^5.1.5"
+
 "@ledgerhq/devices@^5.51.1":
   version "5.51.1"
   resolved "https://registry.yarnpkg.com/@ledgerhq/devices/-/devices-5.51.1.tgz#d741a4a5d8f17c2f9d282fd27147e6fe1999edb7"
@@ -15939,6 +15951,11 @@ pend@~1.2.0:
   version "1.2.0"
   resolved "https://registry.yarnpkg.com/pend/-/pend-1.2.0.tgz#7a57eb550a6783f9115331fcf4663d5c8e007a50"
   integrity sha1-elfrVQpng/kRUzH89GY9XI4AelA=
+
+perfect-scrollbar@^1.5.1:
+  version "1.5.2"
+  resolved "https://registry.yarnpkg.com/perfect-scrollbar/-/perfect-scrollbar-1.5.2.tgz#41167ac6bc95e3a5e87a7402fa36fdacca9bc298"
+  integrity sha512-McHAinFkyzKbBZrFtb4MT2mxkehp15KvOX/UrjB8C5EZZXHTHgyETo5IGFYtHRTI2Pb2bsV0OE0YnkjT9Cw3aw==
 
 performance-now@^2.1.0:
   version "2.1.0"
