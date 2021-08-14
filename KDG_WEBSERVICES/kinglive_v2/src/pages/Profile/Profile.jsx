@@ -1,10 +1,12 @@
 import { useEffect, useMemo, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
+import { useHistory } from 'react-router-dom'
 import arrowSVG from '../../assets/svg/arrow.svg'
 import avatarDefault from '../../assets/svg/avatarDefault.svg'
 import checkSVG from '../../assets/svg/check.svg'
 import closeSVG from '../../assets/svg/close.svg'
 import coverDefault from '../../assets/svg/coverDefault.jpg'
+import thumb from '../../assets/svg/thumb.png'
 import editSVG from '../../assets/svg/edit.svg'
 import emptyGift from '../../assets/svg/emptyGift.svg'
 import errorSVG from '../../assets/svg/error.svg'
@@ -25,6 +27,7 @@ import { asyncChangeUser } from '../../store/actions'
 
 export default function Profile() {
   const dispatch = useDispatch()
+  const history = useHistory()
 
   const [isEdit, setIsEdit] = useState(false)
   const [editSuccess, setEditSuccess] = useState(false)
@@ -86,7 +89,6 @@ export default function Profile() {
         setEditSuccess(true)
       }
     } catch (error) {
-      console.log('Error Edit User')
       console.log(error)
     }
   }
@@ -155,11 +157,11 @@ export default function Profile() {
   const [uploadList, setUploadList] = useState([])
 
   useEffect(() => {
-    callAPI.get(`/videos?user=${userId}&limit=10`).then((res) => {
-      console.log(res.data)
-      setUploadList(res.data)
-    })
-  }, [])
+    callAPI
+      .get(`/videos?user=${userId}&limit=6`)
+      .then((res) => res.status === 1 && setUploadList(res.data))
+      .catch((error) => console.log(error))
+  }, [userId])
 
   return (
     <>
@@ -286,10 +288,10 @@ export default function Profile() {
 
           <div className='profile😢__cover'>
             <img
-              src={cover ? `${STORAGE_DOMAIN}${cover}` : coverDefault}
               alt=''
               style={convertPositionIMG(coverPos)}
               onClick={(e) => setPreviewIMG(e.target.src)}
+              src={cover ? `${STORAGE_DOMAIN}${cover}` : coverDefault}
             />
             <span></span>
           </div>
@@ -339,8 +341,8 @@ export default function Profile() {
               <img
                 alt=''
                 style={convertPositionIMG(avatarPos)}
-                src={avatar ? `${STORAGE_DOMAIN}${avatar}` : avatarDefault}
                 onClick={(e) => setPreviewIMG(e.target.src)}
+                src={avatar ? `${STORAGE_DOMAIN}${avatar}` : avatarDefault}
               />
               <span></span>
             </div>
@@ -497,26 +499,46 @@ export default function Profile() {
                 <div>
                   <div className='profile😢__title'>Video Uploaded</div>
 
-                  <div
-                    className='flexbox flex3'
-                    style={{ '--gap-col': '5px', '--gap-row': '25px' }}
-                  >
-                    {Array.from(Array(6)).map((item) => (
-                      <div key={item} className='flexbox__item profile😢__video'>
-                        <div className='thumbnail'>
-                          <img src={coverDefault} alt='' />
-                        </div>
-
-                        <div className='info'>
-                          <div>
-                            Greatest Hits Game Of Popular Game Of All Time Greatest Hits Game Of
-                            Popular Game Of All Time Greatest Hits Game Of Popular Game Of All Time
+                  {uploadList.length !== 0 && (
+                    <div
+                      className='flexbox flex3'
+                      style={{ '--gap-col': '5px', '--gap-row': '25px' }}
+                    >
+                      {uploadList.map((video) => (
+                        <div
+                          key={video._id}
+                          className='flexbox__item profile😢__video'
+                          onClick={() => history.push(`/watchvideo?v=${video.short_id}`)}
+                        >
+                          <div className='thumbnail'>
+                            <img
+                              // src={`https://vz-3f44931c-ed0.b-cdn.net/${video.guid}/thumbnail.jpg`}
+                              src={thumb}
+                              alt=''
+                            />
                           </div>
-                          <img src={menuSVG} alt='' />
+
+                          <div className='info'>
+                            <div>{video.name}</div>
+                            <img src={menuSVG} alt='' />
+                          </div>
                         </div>
-                      </div>
-                    ))}
-                  </div>
+                      ))}
+                    </div>
+                  )}
+
+                  {uploadList.length === 0 && (
+                    <div
+                      style={{
+                        height: 362,
+                        display: 'flex',
+                        justifyContent: 'center',
+                        alignItems: 'center',
+                      }}
+                    >
+                      <img src={emptyGift} alt='' />
+                    </div>
+                  )}
                 </div>
               </div>
 

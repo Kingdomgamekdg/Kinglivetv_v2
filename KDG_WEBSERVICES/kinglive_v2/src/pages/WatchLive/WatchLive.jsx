@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { useHistory } from 'react-router-dom'
 import '../../assets/scss/watchlive.scss'
 import avatarDefaultSVG from '../../assets/svg/avatarDefault.svg'
-import coverDefaultJPG from '../../assets/svg/coverDefault.jpg'
+import thumb from '../../assets/svg/thumb.png'
 import giftPNG from '../../assets/svg/gift.png'
 import sendSVG from '../../assets/svg/send.svg'
 // import shareSVG from '../../assets/svg/share.svg'
@@ -45,7 +45,6 @@ export default function WatchLive() {
 
   useEffect(() => console.log({ streamData1 }), [streamData1])
 
-  // Get Current LiveVideo
   useEffect(() => {
     let streamId
     ;(async () => {
@@ -74,7 +73,6 @@ export default function WatchLive() {
     }
   }, [id, history])
 
-  // Get Chat of LiveVideo
   useEffect(() => {
     ;(async () => {
       try {
@@ -95,12 +93,10 @@ export default function WatchLive() {
     }
   }, [id])
 
-  // Scroll ChatBox to very bottom when have new chat
   useEffect(() => {
     chatListRef.current.scroll(0, chatListRef.current.scrollHeight)
   }, [chatData])
 
-  // Emit new Chat
   const handleChat = (e) => {
     e.preventDefault()
 
@@ -113,7 +109,6 @@ export default function WatchLive() {
     e.target.reset()
   }
 
-  // Get Live List
   useEffect(() => {
     ;(async () => {
       try {
@@ -127,7 +122,6 @@ export default function WatchLive() {
     })()
   }, [])
 
-  // Follow and Unfollow
   const handleFollow = async () => {
     try {
       const res = await callAPI.post(`follow?id=${user?._id}`)
@@ -389,39 +383,54 @@ export default function WatchLive() {
           </div>
 
           {!hideLive && (
-            <div>
-              {liveList.map((live) => (
+            <>
+              {liveList.length !== 0 && (
+                <div>
+                  {liveList.map((live) => (
+                    <div
+                      key={live._id}
+                      className='watchlive__livevideo'
+                      onClick={() => {
+                        history.push(`/watchlive?s=${live._id}`)
+                        window.scroll(0, 0)
+                      }}
+                    >
+                      <div>
+                        <img
+                          src={live.thumbnail ? `${STORAGE_DOMAIN}${live.thumbnail.path}` : thumb}
+                          alt=''
+                        />
+                      </div>
+
+                      <div>
+                        <div>{live.name}</div>
+                        <div>
+                          {live.user.kyc.first_name || live.user.kyc.last_name
+                            ? `${live.user.kyc.first_name} ${live.user.kyc.last_name}`
+                            : 'Username'}
+                        </div>
+                        <div>
+                          {live.views} views • {convertDateAgo(live.start_date)}
+                        </div>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+
+              {liveList.length === 0 && (
                 <div
-                  key={live._id}
-                  className='watchlive__livevideo'
-                  onClick={() => {
-                    history.push(`/watchlive?s=${live._id}`)
-                    window.scroll(0, 0)
+                  style={{
+                    height: 362,
+                    display: 'flex',
+                    justifyContent: 'center',
+                    alignItems: 'center',
                   }}
                 >
-                  <div>
-                    <img
-                      src={
-                        live.thumbnail ? `${STORAGE_DOMAIN}${live.thumbnail.path}` : coverDefaultJPG
-                      }
-                      alt=''
-                    />
-                  </div>
-
-                  <div>
-                    <div>{live.name}</div>
-                    <div>
-                      {live.user.kyc.first_name || live.user.kyc.last_name
-                        ? `${live.user.kyc.first_name} ${live.user.kyc.last_name}`
-                        : 'Username'}
-                    </div>
-                    <div>
-                      {live.views} views • {convertDateAgo(live.start_date)}
-                    </div>
-                  </div>
+                  <img src={emptyGift} alt='' />
                 </div>
-              ))}
-            </div>
+              )}
+            </>
           )}
         </div>
       </div>
