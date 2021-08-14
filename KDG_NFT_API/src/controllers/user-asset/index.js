@@ -11,33 +11,39 @@ module.exports = class {
    * Uploads metadata and file, image to IPFS
    */
   static async getUserAsset (_req, _res) {
-    const params = _req.query
     const { _id } = _req
 
-    const limit = params.limit ? parseInt(params.limit) : 10
     const user = await UsersService.findById(_id)
 
     if (!Object.keys(user).length) {
       return _res.send({ status: 1, data: [] })
     }
-    const ids = params.ids ? params.ids.split(',') : []
+    const queries = _req.query
+
+    const { ...conditions } = queries
+
+    const {
+      limit
+    } = _req.paging
+
+    const ids = conditions.ids ? conditions.ids.split(',') : []
 
     const match = {}
 
-    const status = params.status ? parseInt(params.status) : ''
+    const status = conditions.status ? parseInt(conditions.status) : ''
     if (status) {
       match.status = status
     }
 
-    if (params.mimetype) {
-      const mimetype = params.mimetype.split(',').map(i => i.trim())
+    if (conditions.mimetype) {
+      const mimetype = conditions.mimetype.split(',').map(i => i.trim())
       match['metadata.mimetype'] = {
         $in: mimetype
       }
     }
 
-    if (params.prev && isValidObjectId(params.prev)) {
-      query._id = { $lt: params.prev }
+    if (conditions.prev && isValidObjectId(conditions.prev)) {
+      query._id = { $lt: conditions.prev }
     }
 
     const filter = {

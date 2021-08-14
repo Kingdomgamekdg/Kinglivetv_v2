@@ -3,12 +3,10 @@ const BaseService = require('../../cores/base-service')
 const Model = require('../../models/Activities')
 
 class ActivityService extends BaseService {
-  async getVolumeDonate ({ type }) {
+  async getVolumeDonate (conditions) {
     return this.aggregate([
       {
-        $match: {
-          type
-        }
+        $match: conditions
       },
       {
         $group: {

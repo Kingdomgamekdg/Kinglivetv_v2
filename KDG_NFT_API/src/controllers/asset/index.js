@@ -6,15 +6,16 @@ module.exports = class {
   static async getTotalAssets (_req, _res) {
     try {
       const queries = _req.query
-
-      const condition = {}
+      const { ...conditions } = queries
       if (queries.mimetype) {
         const mimetype = queries.mimetype.split(',').map(i => i.trim())
-        condition['metadata.mimetype'] = {
+        conditions['metadata.mimetype'] = {
           $in: mimetype
         }
+        delete conditions.mimetype
       }
-      const totalAssets = await AssetService.count(condition)
+
+      const totalAssets = await AssetService.count(conditions)
 
       _res.status(200).json({
         total: totalAssets || 0

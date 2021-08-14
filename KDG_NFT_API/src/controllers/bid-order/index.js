@@ -5,15 +5,11 @@ const BidOrderService = require('../../services/bid-order')
 module.exports = class {
   static async getTotalTransactions (_req, _res) {
     try {
-      const params = _req.query
+      const queries = _req.query
 
-      const condition = {}
+      const { ...conditions } = queries
 
-      if (params.status) {
-        condition.status = params.status
-      }
-
-      const total = await BidOrderService.count(condition)
+      const total = await BidOrderService.count(conditions)
 
       _res.status(200).json({
         total
