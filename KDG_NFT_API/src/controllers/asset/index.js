@@ -27,8 +27,9 @@ module.exports = class {
   static async getAsset (_req, _res) {
     try {
       const queries = _req.query
+      const ids = queries.ids ? queries.ids.split(',') : []
 
-      const asset = await AssetService.findById(queries.id).populate({
+      const asset = await AssetService.find({_id : {$in : queries.ids}}).populate({
         path : 'owner',
       })
 
