@@ -20,7 +20,7 @@ import { actChangeAddress, asyncChangeUser } from '../../store/actions'
 import { EXPLORER_URL } from '../../constant'
 import UnlockButton from '../../components/ConnectWalletButton'
 
-export default function Header({ toggleSidebar = () => { }, IsOpenSidebar = false }) {
+export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false }) {
   const userRedux = useSelector((state) => state.user)
   const userName = useMemo(
     () => (userRedux ? `${userRedux?.kyc?.first_name} ${userRedux?.kyc?.last_name}` : 'Username'),
@@ -82,9 +82,11 @@ export default function Header({ toggleSidebar = () => { }, IsOpenSidebar = fals
     if (!window.ethereum.isMetaMask) return
 
     window.web3 = new Web3(window.ethereum)
-    if (!window.ethereum.networkVersion === 97) {
-      setIsWrongNetwork(true)
-    }
+    // if (window.ethereum.networkVersion && window.ethereum.networkVersion !== 97) {
+    //   setIsWrongNetwork(true)
+    // } else {
+    //   setIsWrongNetwork(false)
+    // }
     window.contractKL1155 = new window.web3.eth.Contract(ABIKL1155, addressKL1155)
     window.contractMarket = new window.web3.eth.Contract(ABIMarket, addressMarket)
     window.contractERC20 = new window.web3.eth.Contract(ABIERC20, addressERC20)
@@ -530,6 +532,7 @@ export default function Header({ toggleSidebar = () => { }, IsOpenSidebar = fals
               </div>
             </div>
           </div>
+         
         </div>
       </header>
     </>
