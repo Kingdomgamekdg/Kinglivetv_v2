@@ -40,7 +40,7 @@ export default function Profile() {
   const [imageList, setImageList] = useState([])
 
   const userData = useSelector((state) => state.user)
-  // const userId = userData?._id
+  const userId = userData?._id
   const avatar = userData?.kyc?.avatar?.path
   const avatarPos = userData?.kyc?.avatar_pos
   const cover = userData?.kyc?.cover?.path
@@ -152,9 +152,14 @@ export default function Profile() {
     handleCancelCrop()
   }
 
-  // useEffect(() => {
-  //   callAPI.get(`/videos?user=${userId}&limit=10`)
-  // }, [])
+  const [uploadList, setUploadList] = useState([])
+
+  useEffect(() => {
+    callAPI.get(`/videos?user=${userId}&limit=10`).then((res) => {
+      console.log(res.data)
+      setUploadList(res.data)
+    })
+  }, [])
 
   return (
     <>
