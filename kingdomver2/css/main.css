@@ -36,7 +36,7 @@ font-face {font-family: 'Montserrat';src: url('font/Montserrat-Bold.woff2') form
 
 
 /* ------BODY------ */
-body{background:#14151a url(../resources/images/main_bg.png) top center no-repeat; font-family:'Poppins';font-weight:normal;}
+body{background:#14151a url(../resources/images/main_bg.png) top center no-repeat; font-family:'Poppins';font-weight:normal;font-size:1em;}
 ._transit, ._transit:after, ._transit:before {-webkit-transition: all .5s ease-in-out;-moz-transition: all .5s ease-in-out;-ms-transition: all .5s ease-in-out;-o-transition: all .5s ease-in-out;transition: all .5s ease-in-out;}
 ._rounded {-webkit-border-radius: 8px;-moz-border-radius: 8px;-ms-border-radius: 8px;-o-border-radius: 8px;border-radius: 8px;}
 ._dot {width:40px;height:40px;border:20px solid rgba(250,200,0,0.2);display:block;-webkit-border-radius:40px;-moz-border-radius:40px;-ms-border-radius:40px;-o-border-radius:40px;border-radius:40px;position:absolute;z-index:60;}
@@ -47,7 +47,7 @@ body{background:#14151a url(../resources/images/main_bg.png) top center no-repea
 ._desc h2 {font-size:40px;line-height:60px;text-align:center;color:#FFFFFF;}
 ._desc p {font-size:18px;line-height:30px;color:#C4C4C4;text-align:center;margin:15px auto 0 auto;max-width:900px;}
 ._desc p em {color:#FAC800;font-style:normal !important;}
-._desc ._btn {display:block;padding:20px 30px;margin:25px auto;background:#FAC800;max-width:86px;text-align:center;line-height:24px;border:1px solid #FAC800;}
+._desc ._btn {display:block;padding:20px 30px;margin:25px auto;background:#FAC800;max-width:86px;text-align:center;line-height:24px;border:1px solid #FAC800;font-size:18px;}
 ._desc ._btn:hover,._desc ._btn:active {color:#FAC800;background:none;border-color:#C4C4C4;}
 ._illustration {width:100%;overflow:hidden;position:relative;}
 ._attribute {backdrop-filter: blur(10px);background:rgba(196,196,196,0.25);display:block;padding:19px 40px;position:absolute;float:left;position:absolute;top:0;color:#C4C4C4;font-weight:normal;line-height:30px;-webkit-animation: blinking 2s ease infinite;-moz-animation: blinking 2s ease infinite;animation: blinking 2s ease infinite;text-align:center;}
@@ -57,13 +57,13 @@ body{background:#14151a url(../resources/images/main_bg.png) top center no-repea
 .bottom_cover.active {display:block;}
 
 /* ------HEADER------ */
-.header {width:100%;min-height:73px;padding: 66px 0 0 0;}	
+.header {width:100%;height:140px;padding: 66px 0 0 0;box-sizing:border-box}	
 .header .navbar {width:25px;height:25px;display:none;float:left;background:url(../resources/images/vertical_nav.png) center center no-repeat;cursor:pointer;position:absolute;top:22px;}
 
 .logo {width:110px;height:74px;display:block;background:url(../resources/images/Logo.png) no-repeat;float:left;}
 .app_name {display:block;font-family:'Montserrat';color:#FFFFFF;float:left;font-size:26px;font-weight:bold;margin:38px 0 0 18px;}
 /* ------HEADER:navigator------ */
-.header ul {display:block;width:932px;height:74px;float:right;}
+.header ul {display:block;width:848px;height:74px;float:right;}
 .header ul li {display:block;float:left;margin:38px 30px 0 0;}
 .header ul li:last-child {margin:0;}
 .navbar:hover, .navbar:active {background:url(../resources/images/responsive_ico_hover.svg) center center no-repeat;}
@@ -139,7 +139,7 @@ body{background:#14151a url(../resources/images/main_bg.png) top center no-repea
 .gamehub ._subsection h3 {display:block;width:100%;background:#3a3b40;color:#FAC800;height:72px;line-height:72px;font-weight:bold;font-size:22px;box-sizing:border-box;padding:0 0 0 20px;margin:0 0 25px 0;text-transform:uppercase;} 
 .gamehub ._subsection ul {display:block;height:240px;width:100%;}
 .gamehub ._subsection ul li {font-size:18px;color:#C4C4C4;line-height:30px;display:block;margin:0 0 20px 20px;float:left;width:361px;height:55px;}
-.gamehub ._subsection ul li:nth-child(5),.sub_list li:nth-child(3) {line-height:55px;}
+
 .gamehub ._subsection ul li span {display:block;float:left;width:33px;height:33px;background:url(../resources/images/gamehub_ico.png);margin:11px 20px 0 0;}
 .gamehub ._subsection ul li:nth-child(2) span {background-position:	-99px 0;}
 .gamehub ._subsection ul li:nth-child(3) span {background-position:	-33px 0;}
@@ -184,14 +184,14 @@ body{background:#14151a url(../resources/images/main_bg.png) top center no-repea
 .roadmap .pos1 {top:-16px;left:202px;}
 .roadmap .pos2 {top:-16px;left:650px;}
 .roadmap .pos3 {top:-16px;right:385px;}
-.roadmap .pos4 {top:137px;right:175px;}
+.roadmap .pos4 {top:137px;right:92px;}
 .roadmap .pos5 {top:296.4px;right:659px;}
 .roadmap .pos6 {top:296.4px;left:555.5px;}
 .roadmap .pos7 {top:296.4px;left:287px;}
-.roadmap .pos8 {top:450.9px;left:139px;}
+.roadmap .pos8 {top:450.9px;left:144px;}
 .roadmap .pos9 {top:606.6px;left:481px;}
 .roadmap .pos10 {top:606.6px;right:593px;}
-.roadmap .pos11 {top:755.6px;right:175px;}
+.roadmap .pos11 {top:755.6px;right:92px;}
 .roadmap .pos12 {top:917px;right:658px;}
 
 .roadmap .pos1_desc {top:-161.4px;left:178px;max-width:321px;z-index:10;}
@@ -203,8 +203,8 @@ body{background:#14151a url(../resources/images/main_bg.png) top center no-repea
 .roadmap .pos7_desc {top:150.6px;left:257px;max-width:302px;z-index:16;}
 .roadmap .pos8_desc {top:411px;left:189.5px;max-width:255px;z-index:17;}
 .roadmap .pos9_desc {top:462px;left:455px;max-width:387px;z-index:18;}
-.roadmap .pos10_desc {top:438px;left:865px;max-width:502px;z-index:19;}
-.roadmap .pos11_desc {top:701.4px;left:1015px;max-width:270px;z-index:20;}
+.roadmap .pos10_desc {top:462px;left:865px;max-width:502px;z-index:19;}
+.roadmap .pos11_desc {top:701.4px;left:931px;max-width:460px;z-index:20;}
 .roadmap .pos12_desc {top:954.4px;left:799px;max-width:462px;z-index:21;}
 
 
@@ -227,6 +227,7 @@ body{background:#14151a url(../resources/images/main_bg.png) top center no-repea
 .partners ._illustration {padding: 0 0 95px 0;}
 .partners ._illustration a:nth-child(4) {margin:59px 0 50px 0;}
 .partners ._illustration a:nth-child(n+5):nth-child(-n+8) {margin: 0 117px 50px 0;}
+.partners ._illustration a:nth-child(5){margin-left:20% !important;}
 .partners ._illustration a:nth-child(9)  {margin:0 0 50px 0;}
 
 /* -------------------------- FOOTER ------------------------*/
@@ -249,6 +250,5 @@ body{background:#14151a url(../resources/images/main_bg.png) top center no-repea
 
 /* ----FOOTER:right content ----*/
 .footer ._right_content {width:856px;float:right;min-height:30px;padding-top:82px;}
-.footer ._right_content a {display:block;float:right;color:#C3C3C3;font-size:20px;min-width:230px;margin:0 0 32px 0;text-align:right;}
+.footer ._right_content a {display:block;float:left;color:#C3C3C3;font-size:20px;min-width:230px;margin:0 0 32px 0;text-align:left;}
 .footer ._right_content a:hover, .footer ._right_content a:active {color:#FAC800;}
-.footer ._right_content a:nth-child(4n) {min-width:0;}
