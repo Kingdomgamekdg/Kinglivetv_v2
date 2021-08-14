@@ -1,6 +1,6 @@
 'use strict'
 
-const controller = require('../controllers/user-asset/controller')
+const controller = require('../controllers/user-asset')
 const { isAuthenticated } = require('../middlewares/auth')
 const UserAssetValidation = require('../validations/user-asset')
 

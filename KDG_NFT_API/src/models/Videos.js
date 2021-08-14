@@ -19,4 +19,4 @@ const VideosSchema = new Schema({
     stream: { type: Types.ObjectId, ref: 'streams' }
 })
 // Videos.updateMany({} , {}).exec()
-mongoose.model('videos', VideosSchema)
+module.exports = mongoose.model('videos', VideosSchema)

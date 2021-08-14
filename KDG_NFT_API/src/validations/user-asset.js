@@ -11,9 +11,7 @@ const schema = {
 }
 
 const actions = {
-  getAssets: [],
+  getAssets: []
 }
 
 module.exports = Validation(schema, actions)
-
-

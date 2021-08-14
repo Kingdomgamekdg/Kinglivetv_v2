@@ -1,6 +1,6 @@
 'use strict'
 
-const controller = require('../controllers/user/controller')
+const controller = require('../controllers/user')
 const UserValidation = require('../validations/user')
 module.exports = router => {
     router.post('/login', UserValidation('login'), controller.login)
