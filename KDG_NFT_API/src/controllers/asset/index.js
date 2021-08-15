@@ -29,7 +29,7 @@ module.exports = class {
       const queries = _req.query
       const ids = queries.ids ? queries.ids.split(',') : []
 
-      const asset = await AssetService.find({_id : {$in : queries.ids}}).populate({
+      const asset = await AssetService.find({_id : {$in : ids}}).populate({
         path : 'owner',
       })
 
