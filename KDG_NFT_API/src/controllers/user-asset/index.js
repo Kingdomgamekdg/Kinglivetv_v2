@@ -3,8 +3,16 @@
 const { isValidObjectId } = require('mongoose')
 const UserAssetsService = require('../../services/user-asset')
 const UsersService = require('../../services/user')
+const ObjectId = require('mongoose').Types.ObjectId; 
 
 const { query } = require('express')
+
+const mapOrder = (array, myorder, key) => {
+  var order = myorder.reduce((r, k, i) => (r[k] = i + 1, r), {})
+  const theSort = array.sort((a, b) => (order[a[key]] || Infinity) - (order[b[key]] || Infinity))
+  return theSort
+}
+
 
 module.exports = class {
   /**
@@ -51,7 +59,7 @@ module.exports = class {
     }
 
     const data = await UserAssetsService.getUserAssets({ filter, match, limit })
-
+  
     return _res.status(200).json({ status: 1, data })
   }
 
@@ -70,4 +78,26 @@ module.exports = class {
   /**
    * Saves asset metadata into database
    */
+
+   static async getUserAssetByIds (_req, _res) {
+    const params = _req.query
+    const { _id } = _req
+    const match = {}
+    const limit = params.limit ? parseInt(params.limit) : 10
+    const user = await UsersService.findById(_id)
+
+    if (!Object.keys(user).length) {
+      return _res.send({ status: 1, data: [] })
+    }
+    const ids = params.ids ? params.ids.split(',') : []
+
+    const filter = {
+      _id: { $in: ids },
+    }
+
+    const data = await UserAssetsService.getUserAssets({ filter, match, limit })
+    const myOrder = ids.map(id =>{ return new ObjectId(id)})
+    const orderData = mapOrder(data,myOrder,'_id');
+    return _res.status(200).json({ status: 1, orderData })
+  }
 }

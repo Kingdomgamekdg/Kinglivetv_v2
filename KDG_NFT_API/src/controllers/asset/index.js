@@ -1,22 +1,13 @@
 'use strict'
 
 const AssetService = require('../../services/asset')
+const ObjectId = require('mongoose').Types.ObjectId; 
+const mapOrder = (array, myorder, key) => {
+  var order = myorder.reduce((r, k, i) => (r[k] = i + 1, r), {})
+  const theSort = array.sort((a, b) => (order[a[key]] || Infinity) - (order[b[key]] || Infinity))
+  return theSort
+}
 
-function mapOrder (array, order, key) {
-  
-  array.sort( function (a, b) {
-    var A = a[key], B = b[key];
-    
-    if (order.indexOf(A) > order.indexOf(B)) {
-      return 1;
-    } else {
-      return -1;
-    }
-    
-  });
-  
-  return array;
-};
 
 module.exports = class {
   static async getTotalAssets (_req, _res) {
@@ -48,10 +39,12 @@ module.exports = class {
       const assets = await AssetService.find({_id : {$in : ids}}).populate({
         path : 'owner',
       })
-
-      ordered_array = mapOrder(assets, item_order, '_id');
-
-
+      let order = ids.map(id =>{
+        return new ObjectId(id);
+      })
+      const ordered_array = mapOrder(assets, order, '_id');
+      console.log("ids",order);
+      console.log("ordered_array",ordered_array);
       _res.status(200).json({
         status:1,
         data: ordered_array
