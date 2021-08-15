@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useRef, useState , Component} from 'react'
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { useSelector } from 'react-redux'
 import { useHistory } from "react-router-dom";
 import 'swiper/swiper.scss';
 import "swiper/components/navigation/navigation.min.css"
@@ -14,6 +15,7 @@ import { ABIKL1155, addressKL1155 } from '../../contracts/KL1155'
 import { paymentList } from '../../contracts/ERC20'
 import { ABIMarket, addressMarket } from '../../contracts/Market'
 const MyArtworkDetail = () => {
+    const userRedux = useSelector((state) => state.user)
     const ids = new URLSearchParams(window.location.search).get('ids')
     const index = new URLSearchParams(window.location.search).get('index')
     const history = useHistory()
@@ -22,6 +24,7 @@ const MyArtworkDetail = () => {
     const [currentIndex, setCurrentIndex] = useState(Number(index))
     const [isOpenSell, setIsOpenSell] = useState(false)
     const [isApprovedForAll, setIsApprovedForAll] = useState(false)
+    const isReviewer = useMemo(() => userRedux?.isReviewer, [userRedux])
 
     useEffect(() => {
         ;(async () => {
@@ -138,12 +141,10 @@ const MyArtworkDetail = () => {
     return (
             <>
                 {isOpenSell && (
-
                     <div key={userAssetList[currentIndex]?._id} className='popupX' onClick={() => setIsOpenSell(false)}>
                     <form className='containerX' onSubmit={handleSell} onClick={(e) => e.stopPropagation()}>
                         <div className='form-control'>
                         <img className='preview-image 25mb' src={userAssetList[currentIndex]?.asset?.metadata?.image} alt='' />
-
                         <div class='label'>NFT</div>
                         <input type='text' name='_name' readOnly value={userAssetList[currentIndex]?.asset?.metadata?.name} />
                         <input
@@ -271,11 +272,14 @@ const MyArtworkDetail = () => {
                                 </div>
                             </div>
                         </div>
-                        <div className="artist-content-button">
-                            <button type="button" className="btn-bid" onClick={()=> setIsOpenSell(true)}>
-                                Bid
+                        {userAssetList[currentIndex]?.asset?.status===1 && (
+                            <div className="artist-content-button">
+                            <button type="button" className="btn-sell" onClick={()=> setIsOpenSell(true)}>
+                                Sell
                             </button>
                         </div>
+                        )} 
+                
                     </div>
                 </div>
                 </div>

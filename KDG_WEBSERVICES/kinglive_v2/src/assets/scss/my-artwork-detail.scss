@@ -167,22 +167,42 @@
 .box-artist-wrapper .artist-content .artist-content-bottom .artist-contract .contract-item .address-contract img {
     margin-left: 10px;
 }
-.box-artist-wrapper .artist-content .artist-content-button .btn-bid {
-    width: 107px;
-    height: 37px;
-    position: absolute;
-    bottom: 35px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: transparent;
-    border: 1px solid #98999A;
-    box-sizing: border-box;
-    border-radius: 5px;
-    font-size: 18px;
-    line-height: 150%;
-    text-align: center;
-    color: #98999A;
-    cursor: pointer;
+.box-artist-wrapper .artist-content .artist-content-button {
+    .btn-bid {
+        width: 107px;
+        height: 37px;
+        position: absolute;
+        bottom: 35px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: transparent;
+        border: 1px solid #98999A;
+        box-sizing: border-box;
+        border-radius: 5px;
+        font-size: 18px;
+        line-height: 150%;
+        text-align: center;
+        color: #98999A;
+        cursor: pointer;
+    }
+
+    .btn-sell {
+        width: 107px;
+        height: 37px;
+        position: absolute;
+        bottom: 35px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: transparent;
+        border: 1px solid #F52871;
+        box-sizing: border-box;
+        border-radius: 5px;
+        font-size: 18px;
+        line-height: 150%;
+        text-align: center;
+        color: #F52871;
+        cursor: pointer;
+    }
 }
 .box-trading .title-trading {
     font-weight: 600;

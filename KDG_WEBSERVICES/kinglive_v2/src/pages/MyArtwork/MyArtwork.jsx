@@ -25,7 +25,6 @@ export default function MyArtwork() {
   const avatarPos = useMemo(() => userData?.kyc?.avatar_pos, [userData])
   const cover = useMemo(() => userData?.kyc?.cover?.path, [userData])
   const coverPos = useMemo(() => userData?.kyc?.cover_pos, [userData])
-  const isReviewer = useMemo(() => userRedux?.isReviewer, [userRedux])
   const userName = useMemo(
     () => `${userData?.kyc?.first_name} ${userData?.kyc?.last_name}`,
     [userData]
