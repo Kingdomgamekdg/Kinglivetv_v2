@@ -6,19 +6,25 @@ import avatarDefault from '../../assets/svg/avatarDefault.svg'
 import checkSVG from '../../assets/svg/check.svg'
 import closeSVG from '../../assets/svg/close.svg'
 import coverDefault from '../../assets/svg/coverDefault.jpg'
-import thumb from '../../assets/svg/thumb.png'
 import editSVG from '../../assets/svg/edit.svg'
+import edit2SVG from '../../assets/svg/edit2.svg'
+import trashSVG from '../../assets/svg/trash.svg'
+import pintopSVG from '../../assets/svg/pintop.svg'
+import statisticSVG from '../../assets/svg/statistic.svg'
 import emptyGift from '../../assets/svg/emptyGift.svg'
 import errorSVG from '../../assets/svg/error.svg'
 import kdgSVG from '../../assets/svg/kdg.svg'
 import menuSVG from '../../assets/svg/menu.svg'
 import radioSVG from '../../assets/svg/radio.svg'
+import thumb from '../../assets/svg/thumb.png'
+import titleSVG from '../../assets/svg/title.svg'
 import tradeSVG from '../../assets/svg/trade.svg'
 import callAPI from '../../axios'
 import DemoCrop from '../../components/DemoCrop/DemoCrop'
 import TableX from '../../components/TableX'
 import VideoPlayer from '../../components/VideoPlayer'
 import { STORAGE_DOMAIN } from '../../constant'
+import convertDateAgo from '../../helpers/convertDateAgo'
 import convertPositionIMG from '../../helpers/convertPositionIMG'
 import isValidDate from '../../helpers/isValidDate'
 import { statisticArray } from '../../mock/profile'
@@ -53,6 +59,8 @@ export default function Profile() {
   const phone = userData?.kyc?.phone
   const address = userData?.kyc?.address
   const userName = `${userData?.kyc?.first_name} ${userData?.kyc?.last_name}`
+
+  const introduce = userData?.kinglive?.introduce
 
   const birthday = useMemo(() => {
     if (!userData?.kyc?.birth_day) return ''
@@ -162,6 +170,7 @@ export default function Profile() {
       .get(`/videos?user=${userId}&limit=6`)
       .then((res) => {
         if (res.status === 1) {
+          console.log(res.data)
           setUploadList(res.data)
           const count = Math.ceil((res.total - 6) / 12)
           if (count <= 0) return
@@ -183,6 +192,20 @@ export default function Profile() {
     } catch (error) {
       console.log(error)
     }
+  }
+
+  const handleSetIntroduce = async (videoId) => {
+    try {
+      const res = await callAPI.post('/set_introduce', { video: videoId })
+      console.log(res)
+      dispatch(asyncChangeUser())
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
+  const handleDeleteVideo = async (videoId) => {
+    console.log('handleDeleteVideo', videoId)
   }
 
   return (
@@ -467,7 +490,11 @@ export default function Profile() {
               <div className={`item ${tabIndex === 0 ? 'active' : ''}`}>
                 <div className='profile😢__statistic'>
                   {statisticArray.map((item) => (
-                    <div key={item.name} className='itemStatistic'>
+                    <div
+                      key={item.name}
+                      className='itemStatistic'
+                      style={{ '--color-1': item.color1, '--color-2': item.color2 }}
+                    >
                       <div className='absolute'>
                         <span>{item.amount}</span>
                         <span>{item.name}</span>
@@ -476,27 +503,27 @@ export default function Profile() {
                   ))}
                 </div>
 
-                <div className='profile😢__introduce'>
-                  <VideoPlayer guid={`7ba74ab1-fc07-4a55-8394-2a1b1f771049`} />
+                {introduce && (
+                  <div className='profile😢__introduce'>
+                    <VideoPlayer guid={introduce.guid} />
 
-                  <div>
-                    <div>Epic Riddles Marathon Only Bravest Detectives Can Pass</div>
-                    <div>39 views • 8 days ago</div>
                     <div>
-                      Are you a fan of solving different puzzles, sudoku or crosswords? Here's a
-                      fresh set of riddles to entertain and train your brain. Let's see how many you
-                      can crack and share your number down. Here's a fresh set of riddles to
-                      entertain and train your brain. Let's see how many you can crack and share
-                      your number down. Here's a fresh set of riddles to entertain and train your
-                      brain. Let's see how many you can crack and share your number down.
+                      <div onClick={() => history.push(`/watchvideo?v=${introduce.short_id}`)}>
+                        {introduce.name}
+                      </div>
+                      <div>
+                        {introduce.views} views • {convertDateAgo(introduce.create_date)}
+                      </div>
+                      <div>{introduce.description}</div>
                     </div>
-
-                    <img src={menuSVG} alt='' />
                   </div>
-                </div>
+                )}
 
-                <div>
-                  <div className='profile😢__title'>Live</div>
+                {/* <div>
+                  <div className='profile😢__title'>
+                    <span>Live</span>
+                    <img src={titleSVG} alt='' />
+                  </div>
 
                   <div className='profile😢__introduce'>
                     <VideoPlayer guid={`7ba74ab1-fc07-4a55-8394-2a1b1f771049`} />
@@ -512,14 +539,15 @@ export default function Profile() {
                         your number down. Here's a fresh set of riddles to entertain and train your
                         brain. Let's see how many you can crack and share your number down.
                       </div>
-
-                      <img src={menuSVG} alt='' />
                     </div>
                   </div>
-                </div>
+                </div> */}
 
                 <div>
-                  <div className='profile😢__title'>Video Uploaded</div>
+                  <div className='profile😢__title'>
+                    <span>Video Uploaded</span>
+                    <img src={titleSVG} alt='' />
+                  </div>
 
                   {uploadList.length !== 0 && (
                     <>
@@ -540,7 +568,53 @@ export default function Profile() {
 
                             <div className='info'>
                               <div>{video.name}</div>
-                              <img src={menuSVG} alt='' />
+
+                              <img
+                                src={menuSVG}
+                                alt=''
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  e.target.nextElementSibling.classList.toggle('show')
+                                }}
+                              />
+
+                              <div
+                                className='menu'
+                                onClick={(e) => {
+                                  e.stopPropagation()
+                                  e.target.closest('.menu').classList.remove('show')
+                                }}
+                              >
+                                {/* <div className='item'>
+                                  <img src={edit2SVG} alt='' />
+                                  <span>Edit</span>
+                                </div> */}
+
+                                <div
+                                  className='item'
+                                  onClick={() => {
+                                    handleDeleteVideo(video._id)
+                                  }}
+                                >
+                                  <img src={trashSVG} alt='' />
+                                  <span>Delete</span>
+                                </div>
+
+                                {/* <div className='item'>
+                                  <img src={statisticSVG} alt='' />
+                                  <span>Statistics</span>
+                                </div> */}
+
+                                <div
+                                  className='item'
+                                  onClick={() => {
+                                    // handleSetIntroduce(video._id)
+                                  }}
+                                >
+                                  <img src={pintopSVG} alt='' />
+                                  <span>Pin top</span>
+                                </div>
+                              </div>
                             </div>
                           </div>
                         ))}

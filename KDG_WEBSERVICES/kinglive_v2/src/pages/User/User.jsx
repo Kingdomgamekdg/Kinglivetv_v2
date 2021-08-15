@@ -5,10 +5,12 @@ import avatarDefault from '../../assets/svg/avatarDefault.svg'
 import coverDefault from '../../assets/svg/coverDefault.jpg'
 import emptyGift from '../../assets/svg/emptyGift.svg'
 import thumb from '../../assets/svg/thumb.png'
+import titleSVG from '../../assets/svg/title.svg'
 import callAPI from '../../axios'
 import ButtonFollow from '../../components/ButtonFollow'
 import VideoPlayer from '../../components/VideoPlayer'
 import { STORAGE_DOMAIN } from '../../constant'
+import convertDateAgo from '../../helpers/convertDateAgo'
 import convertPositionIMG from '../../helpers/convertPositionIMG'
 import { statisticArray } from '../../mock/user'
 
@@ -24,6 +26,8 @@ export default function User() {
   const cover = userData?.kyc?.cover?.path
   const coverPos = userData?.kyc?.cover_pos
   const userName = `${userData?.kyc?.first_name} ${userData?.kyc?.last_name}`
+
+  const introduce = userData?.kinglive?.introduce
 
   const uid = new URLSearchParams(window.location.search).get('uid')
   if (!uid) history.push('/')
@@ -127,7 +131,11 @@ export default function User() {
 
       <div className='profile😢__statistic'>
         {statisticArray.map((item) => (
-          <div key={item.name} className='itemStatistic'>
+          <div
+            key={item.name}
+            className='itemStatistic'
+            style={{ '--color-1': item.color1, '--color-2': item.color2 }}
+          >
             <div className='absolute'>
               <span>{item.amount}</span>
               <span>{item.name}</span>
@@ -136,25 +144,27 @@ export default function User() {
         ))}
       </div>
 
-      <div className='profile😢__introduce'>
-        <VideoPlayer guid={`7ba74ab1-fc07-4a55-8394-2a1b1f771049`} />
+      {introduce && (
+        <div className='profile😢__introduce'>
+          <VideoPlayer guid={introduce.guid} />
 
-        <div>
-          <div>Epic Riddles Marathon Only Bravest Detectives Can Pass</div>
-          <div>39 views • 8 days ago</div>
           <div>
-            Are you a fan of solving different puzzles, sudoku or crosswords? Here's a fresh set of
-            riddles to entertain and train your brain. Let's see how many you can crack and share
-            your number down. Here's a fresh set of riddles to entertain and train your brain. Let's
-            see how many you can crack and share your number down. Here's a fresh set of riddles to
-            entertain and train your brain. Let's see how many you can crack and share your number
-            down.
+            <div onClick={() => history.push(`/watchvideo?v=${introduce.short_id}`)}>
+              {introduce.name}
+            </div>
+            <div>
+              {introduce.views} views • {convertDateAgo(introduce.create_date)}
+            </div>
+            <div>{introduce.description}</div>
           </div>
         </div>
-      </div>
+      )}
 
-      <div>
-        <div className='profile😢__title'>Live</div>
+      {/* <div>
+        <div className='profile😢__title'>
+          <span>Live</span>
+          <img src={titleSVG} alt='' />
+        </div>
 
         <div className='profile😢__introduce'>
           <VideoPlayer guid={`7ba74ab1-fc07-4a55-8394-2a1b1f771049`} />
@@ -172,10 +182,13 @@ export default function User() {
             </div>
           </div>
         </div>
-      </div>
+      </div> */}
 
       <div>
-        <div className='profile😢__title'>Video Uploaded</div>
+        <div className='profile😢__title'>
+          <span>Video Uploaded</span>
+          <img src={titleSVG} alt='' />
+        </div>
 
         {uploadList.length !== 0 && (
           <>
