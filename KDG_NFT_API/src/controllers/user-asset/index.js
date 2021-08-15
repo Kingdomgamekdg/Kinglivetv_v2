@@ -3,8 +3,26 @@
 const { isValidObjectId } = require('mongoose')
 const UserAssetsService = require('../../services/user-asset')
 const UsersService = require('../../services/user')
+const ObjectId = require('mongoose').Types.ObjectId; 
 
 const { query } = require('express')
+
+const sortObjectArray = ({ arr, field, order = 'desc' }) => {
+  arr.sort(function(a, b) {
+     const fieldA = typeof a[field] === 'string' ? a[field].toLowerCase() : a[field]
+     const fieldB = typeof b[field] === 'string' ? b[field].toLowerCase() : b[field]
+
+     let result
+     if (order === 'desc') {
+        result = fieldA > fieldB ? 1 : -1
+     } else {
+        result = fieldA < fieldB ? 1 : -1
+     }
+     return result
+  })
+  return arr
+}
+
 
 module.exports = class {
   /**
@@ -51,7 +69,7 @@ module.exports = class {
     }
 
     const data = await UserAssetsService.getUserAssets({ filter, match, limit })
-
+  
     return _res.status(200).json({ status: 1, data })
   }
 
@@ -70,4 +88,39 @@ module.exports = class {
   /**
    * Saves asset metadata into database
    */
+
+   static async getUserAssetByIds (_req, _res) {
+    const params = _req.query
+    const { _id } = _req
+    const match = {}
+    const user = await UsersService.findById(_id)
+
+    if (!Object.keys(user).length) {
+      return _res.send({ status: 1, data: [] })
+    }
+    const ids = params.ids ? params.ids.split(',') : []
+
+    const filter = {
+      _id: { $in: ids },
+    }
+    // let order = ids.map(id =>{
+    //   return new ObjectId(id);
+    // })
+    const data = await UserAssetsService.getUserAssets({ filter, match })
+    let order = {};
+
+    ids.forEach(function (a, i) { order[a] = i; });
+    console.log("order",order);
+    console.log("data.length",data.length);
+
+    data.sort(function (a, b) {
+        console.log("order[a._id]",order[a._id])
+        console.log("order[b._id]",order[b._id])
+
+        return order[a._id.toString()] - order[b._id.toString()];
+    });
+    // console.log("data",data);
+
+    return _res.status(200).json({ status: 1, data })
+  }
 }
