@@ -155,13 +155,35 @@ export default function Profile() {
   }
 
   const [uploadList, setUploadList] = useState([])
+  const [seeMoreCount, setSeeMoreCount] = useState(0)
 
   useEffect(() => {
     callAPI
       .get(`/videos?user=${userId}&limit=6`)
-      .then((res) => res.status === 1 && setUploadList(res.data))
+      .then((res) => {
+        if (res.status === 1) {
+          setUploadList(res.data)
+          const count = Math.ceil((res.total - 6) / 12)
+          if (count <= 0) return
+          setSeeMoreCount(count)
+        }
+      })
       .catch((error) => console.log(error))
   }, [userId])
+
+  const handleSeeMore = async () => {
+    if (uploadList.length === 0) return
+
+    try {
+      const lastVideoId = uploadList[uploadList.length - 1]._id
+      const res = await callAPI.get(`/videos?user=${userId}&limit=12&last=${lastVideoId}`)
+      console.log(res)
+      setUploadList((list) => [...list, ...res.data])
+      setSeeMoreCount((x) => x - 1)
+    } catch (error) {
+      console.log(error)
+    }
+  }
 
   return (
     <>
@@ -500,31 +522,36 @@ export default function Profile() {
                   <div className='profile😢__title'>Video Uploaded</div>
 
                   {uploadList.length !== 0 && (
-                    <div
-                      className='flexbox flex3'
-                      style={{ '--gap-col': '5px', '--gap-row': '25px' }}
-                    >
-                      {uploadList.map((video) => (
-                        <div
-                          key={video._id}
-                          className='flexbox__item profile😢__video'
-                          onClick={() => history.push(`/watchvideo?v=${video.short_id}`)}
-                        >
-                          <div className='thumbnail'>
-                            <img
-                              // src={`https://vz-3f44931c-ed0.b-cdn.net/${video.guid}/thumbnail.jpg`}
-                              src={thumb}
-                              alt=''
-                            />
-                          </div>
+                    <>
+                      <div className='flexbox flex3' style={{ '--gap-col': '5px' }}>
+                        {uploadList.map((video) => (
+                          <div
+                            key={video._id}
+                            className='flexbox__item profile😢__video'
+                            onClick={() => history.push(`/watchvideo?v=${video.short_id}`)}
+                          >
+                            <div className='thumbnail'>
+                              <img
+                                // src={`https://vz-3f44931c-ed0.b-cdn.net/${video.guid}/thumbnail.jpg`}
+                                src={thumb}
+                                alt=''
+                              />
+                            </div>
 
-                          <div className='info'>
-                            <div>{video.name}</div>
-                            <img src={menuSVG} alt='' />
+                            <div className='info'>
+                              <div>{video.name}</div>
+                              <img src={menuSVG} alt='' />
+                            </div>
                           </div>
+                        ))}
+                      </div>
+
+                      {seeMoreCount !== 0 && (
+                        <div className='buttonSeeMore pb-65' onClick={handleSeeMore}>
+                          See more
                         </div>
-                      ))}
-                    </div>
+                      )}
+                    </>
                   )}
 
                   {uploadList.length === 0 && (

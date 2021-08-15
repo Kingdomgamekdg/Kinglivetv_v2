@@ -469,3 +469,12 @@ main {
     border-radius: 50%;
   }
 }
+
+.buttonSeeMore {
+  cursor: pointer;
+  user-select: none;
+
+  text-align: center;
+  font-size: 20px;
+  color: $primary-color;
+}
