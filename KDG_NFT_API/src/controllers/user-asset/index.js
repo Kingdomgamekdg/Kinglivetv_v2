@@ -61,7 +61,7 @@ module.exports = class {
     const filter = {
       _id: { $nin: ids },
       user: user._id,
-      amount: { $gt: 0 }
+      amount: { $gt: 0 },
     }
 
     if (status === 0 && user?.isReviewer) {
