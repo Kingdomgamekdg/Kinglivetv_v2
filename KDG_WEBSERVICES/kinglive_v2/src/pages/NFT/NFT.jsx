@@ -85,18 +85,6 @@ export default function NFT() {
     })()
   }, [])
 
-  useEffect(() => {
-    ;(async () => {
-      const res = await callAPI.get(`/market/get-top-assets?limit=9`, true)
-      if (res?.data?.length) {
-        setTop9List(res.data)
-      }
-      const res2 = await callAPI.get(`/market/get-top-populate?limit=10`, true)
-      if (res2?.data?.length) {
-        setTopQuantityList(res.data)
-      }
-    })()
-  }, [])
 
   const handleBuy = async (e) => {
     e.preventDefault()

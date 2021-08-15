@@ -25,6 +25,9 @@ const MyArtworkDetail = () => {
     const [isOpenSell, setIsOpenSell] = useState(false)
     const [isApprovedForAll, setIsApprovedForAll] = useState(false)
     const isReviewer = useMemo(() => userRedux?.isReviewer, [userRedux])
+    const address = useMemo(() => userRedux?.address, [userRedux])
+
+    const [isOwer, setIsOwer] = useState(false)
 
     useEffect(() => {
         ;(async () => {
@@ -40,9 +43,16 @@ const MyArtworkDetail = () => {
             .then((approved) => {
               setIsApprovedForAll(approved)
             })
-        }
+          }
+
+          if(userAssetList[currentIndex] && address===userAssetList[currentIndex].user?.address){
+            setIsOwer(true)
+          } else {
+            setIsOwer(false)
+          }
         })()
-      }, [index])
+      }, [index,window.ethereum.selectedAddress])
+
 
     SwiperCore.use([Navigation , Lazy]);
 
@@ -117,23 +127,25 @@ const MyArtworkDetail = () => {
       //   setSellingItem(item)
       // }
     
-      const handleAccept = async (item) => {
+      const handleAccept = async () => {
         if(window.web3 && window.contractKL1155){
           const result = await window.contractKL1155.methods
-          .reviewAsset(item.asset.id, true)
+          .reviewAsset(userAssetList[currentIndex].asset.id, true)
           .send({ from: window.ethereum.selectedAddress })
         if (result) {
+            userAssetList[currentIndex].asset.status = 1
         }
         }
       }
 
 
-      const handleDeny = async (item) => {
+      const handleReject = async () => {
         if(window.web3 && window.contractKL1155){
           const result = await window.contractKL1155.Contract(ABIKL1155, addressKL1155).methods
-            .reviewAsset(item.asset.id, false)
+            .reviewAsset(userAssetList[currentIndex].asset.id, false)
             .send({ from: window.ethereum.selectedAddress })
           if (result) {
+            userAssetList[currentIndex].asset.status = 2
           }
         }
       }
@@ -272,12 +284,42 @@ const MyArtworkDetail = () => {
                                 </div>
                             </div>
                         </div>
-                        {userAssetList[currentIndex]?.asset?.status===1 && (
+                        {isOwer && isApprovedForAll && userAssetList[currentIndex]?.asset?.status === 1 && (
                             <div className="artist-content-button">
                             <button type="button" className="btn-sell" onClick={()=> setIsOpenSell(true)}>
                                 Sell
                             </button>
                         </div>
+                        )} 
+
+                        {isOwer && !isApprovedForAll && userAssetList[currentIndex]?.asset?.status === 1 && (
+                            <div className="artist-content-button">
+                            <button type="button" className="btn-sell" onClick={()=> handleApprove()}>
+                                Approval for sell
+                            </button>
+                        </div>
+                        )} 
+
+                        {isReviewer && userAssetList[currentIndex]?.asset?.status===0 && (
+                            <div className="artist-content-button">
+                            <button type="button" className="btn-accept" onClick={()=> handleAccept()}>
+                                Accept
+                            </button>
+                            <button type="button" className="btn-reject" onClick={()=> handleReject()}>
+                                Reject
+                            </button>
+                        </div>
+                        )} 
+
+                        {isReviewer && !isOwer && userAssetList[currentIndex]?.asset?.status===2 && (
+                            <div className="artist-content-status-reject">
+                                Rejected
+                            </div>
+                        )} 
+                        {isReviewer && !isOwer && userAssetList[currentIndex]?.asset?.status===1 && (
+                            <div className="artist-content-status-accept">
+                                Accepted
+                            </div>
                         )} 
                 
                     </div>

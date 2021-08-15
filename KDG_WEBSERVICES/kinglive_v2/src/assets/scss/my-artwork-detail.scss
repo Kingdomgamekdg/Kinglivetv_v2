@@ -167,40 +167,111 @@
 .box-artist-wrapper .artist-content .artist-content-bottom .artist-contract .contract-item .address-contract img {
     margin-left: 10px;
 }
-.box-artist-wrapper .artist-content .artist-content-button {
-    .btn-bid {
-        width: 107px;
-        height: 37px;
+.box-artist-wrapper .artist-content 
+{
+    .artist-content-button {
+        .btn-bid {
+            width: 107px;
+            height: 37px;
+            position: absolute;
+            bottom: 2%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: transparent;
+            border: 1px solid #98999A;
+            box-sizing: border-box;
+            border-radius: 5px;
+            font-size: 18px;
+            line-height: 150%;
+            text-align: center;
+            color: #98999A;
+            cursor: pointer;
+        }
+    
+        .btn-sell {
+            width: 107px;
+            height: 37px;
+            position: absolute;
+            bottom: 2%;
+            left: 50%;
+            transform: translateX(-50%);
+            background: transparent;
+            border: 1px solid #F52871;
+            box-sizing: border-box;
+            border-radius: 5px;
+            font-size: 18px;
+            line-height: 150%;
+            text-align: center;
+            color: #F52871;
+            cursor: pointer;
+        }
+    
+        .btn-accept {
+            width: 107px;
+            height: 37px;
+            position: absolute;
+            bottom: 2%;
+            left: 30%;
+            transform: translateX(-50%);
+            background: transparent;
+            border: 1px solid #F52871;
+            box-sizing: border-box;
+            border-radius: 5px;
+            font-size: 18px;
+            line-height: 150%;
+            text-align: center;
+            color: #F52871;
+            cursor: pointer;
+        }
+    
+        .btn-reject {
+            width: 107px;
+            height: 37px;
+            position: absolute;
+            bottom: 2%;
+            left: 70%;
+            transform: translateX(-50%);
+            background: transparent;
+            border: 1px solid #98999A;
+            box-sizing: border-box;
+            border-radius: 5px;
+            font-size: 18px;
+            line-height: 150%;
+            text-align: center;
+            color: #98999A;
+            cursor: pointer;
+        }
+    }
+    .artist-content-status-accept {
+        width: 77px;
+        height: 27px;
         position: absolute;
-        bottom: 35px;
-        left: 50%;
+        bottom: 2%;
+        left: 70%;
         transform: translateX(-50%);
         background: transparent;
-        border: 1px solid #98999A;
         box-sizing: border-box;
         border-radius: 5px;
         font-size: 18px;
         line-height: 150%;
         text-align: center;
-        color: #98999A;
+        color: #FF6A97;
         cursor: pointer;
     }
 
-    .btn-sell {
-        width: 107px;
-        height: 37px;
+    .artist-content-status-reject {
+        width: 77px;
+        height: 27px;
         position: absolute;
-        bottom: 35px;
-        left: 50%;
+        bottom: 2%;
+        left: 70%;
         transform: translateX(-50%);
         background: transparent;
-        border: 1px solid #F52871;
         box-sizing: border-box;
         border-radius: 5px;
         font-size: 18px;
         line-height: 150%;
-        text-align: center;
-        color: #F52871;
+        color: #FF6A97;
         cursor: pointer;
     }
 }
@@ -339,8 +410,22 @@
     .box-artist-wrapper .artist-content .artist-content-bottom .artist-contract .contract-item {
         display: block;
     }
-    .box-artist-wrapper .artist-content .artist-content-button .btn-bid {
-        bottom: 15px;
+    .box-artist-wrapper .artist-content .artist-content-button 
+    {
+        .btn-bid {
+            bottom: 15px;
+        }
+        .btn-sell {
+            bottom: 15px;
+        }
+        .btn-accept {
+            bottom: 15px;
+        }
+        .btn-reject {
+            bottom: 15px;
+            right: 15px;
+        }
+
     }
     .box-trading .content-trading {
         padding: 15px;
