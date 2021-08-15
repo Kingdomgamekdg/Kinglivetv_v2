@@ -18,6 +18,7 @@ import shortAddress from '../../helpers/shortAddress'
 import storage from '../../helpers/storage'
 import { actChangeAddress, asyncChangeUser } from '../../store/actions'
 import { EXPLORER_URL } from '../../constant'
+import UnlockButton from '../../components/ConnectWalletButton'
 
 export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false }) {
   const userRedux = useSelector((state) => state.user)
@@ -397,6 +398,7 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
           >
             {currentAddress ? shortAddress(currentAddress) : 'Connect'}
           </div>
+          <UnlockButton />
           <div onClick={() => setIsOpenProfile(!IsOpenProfile)} className='profile'>
             <span className='avatar'>
               <img src={logo} alt='' />
@@ -530,6 +532,7 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
               </div>
             </div>
           </div>
+         
         </div>
       </header>
     </>
