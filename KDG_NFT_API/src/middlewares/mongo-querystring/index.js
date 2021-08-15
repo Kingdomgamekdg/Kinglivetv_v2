@@ -20,7 +20,7 @@ const QueryString = new MongoQS({
 module.exports = (req, res, next) => {
   let limit = 10
   if (req.query.limit) {
-    limit = req.query.limit
+    limit = Number(req.query.limit)
     delete req.query.limit
   }
   req.paging = {

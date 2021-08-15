@@ -33,7 +33,7 @@ module.exports = class {
    */
   static async getUserAsset (_req, _res) {
     const { _id } = _req
-
+    console.log("_id",_id);
     const user = await UsersService.findById(_id)
 
     if (!Object.keys(user).length) {
@@ -49,7 +49,7 @@ module.exports = class {
     const {
       limit
     } = _req.paging
-
+    console.log("limit",limit);
     const ids = conditions.ids ? conditions.ids.split(',') : []
 
     const match = {}
