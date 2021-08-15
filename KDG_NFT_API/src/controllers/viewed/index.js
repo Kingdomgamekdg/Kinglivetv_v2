@@ -6,13 +6,9 @@ module.exports = class {
     try {
       const queries = _req.query
 
-      const condition = {}
+      const { ...conditions } = queries
 
-      if (queries.status) {
-        condition.status = queries.status
-      }
-
-      const totalVideos = await ViewedService.count(condition)
+      const totalVideos = await ViewedService.count(conditions)
 
       _res.status(200).json({
         total: totalVideos || 0

@@ -3,7 +3,7 @@ const BaseService = require('../../cores/base-service')
 const Model = require('../../models/ListingAsset')
 
 class ListingAssetsService extends BaseService {
-  async getListingAsset ({ ids, limit }) {
+  async getListingAsset ({ ids }, limit) {
     const data = await this
       .find({
         _id: { $nin: ids },
@@ -27,11 +27,9 @@ class ListingAssetsService extends BaseService {
     return data
   }
 
-  async getTopSellAssets ({ limit }) {
+  async getTopSellAssets (conditions, limit) {
     const data = await this
-      .find({
-        quantity: { $gt: 0 }
-      })
+      .find(conditions)
       .sort({ quantity: 1 })
       .limit(limit)
       .populate({

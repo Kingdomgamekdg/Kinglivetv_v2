@@ -26,11 +26,18 @@ module.exports = class {
 
   static async getTopSellerQuantity (_req, _res) {
     try {
-      const params = _req.query
+      const queries = _req.query
+
       const {
-        limit = 10
-      } = params
-      const data = await BidOrdersService.getTopSeller({ limit })
+        limit
+      } = _req.paging
+
+      const { ...conditions } = queries
+
+      if (!conditions.status) {
+        conditions.status = 2
+      }
+      const data = await BidOrdersService.getTopSeller(conditions, 'quantity', limit)
       _res.status(200).json({
         data
       })
@@ -41,13 +48,14 @@ module.exports = class {
 
   static async getTopSellerRevenue (_req, _res) {
     try {
-      const params = _req.query
+      const queries = _req.query
 
       const {
-        limit = 10
-      } = params
+        limit
+      } = _req.paging
 
-      const data = await BuysService.getTopSeller({ limit })
+      const { ...conditions } = queries
+      const data = await BuysService.getTopSeller(conditions, limit)
 
       _res.status(200).json({
         data

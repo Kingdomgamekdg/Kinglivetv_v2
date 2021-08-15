@@ -3,14 +3,12 @@ const BaseService = require('../../cores/base-service')
 const Model = require('../../models/BidOrders')
 
 class BidOrdersService extends BaseService {
-  async getTopSeller ({ limit, type }) {
+  async getTopSeller (conditions, type, limit) {
     const field = type === 'revenue' ? 'payment_token' : 'quantity'
 
     return this.aggregate([
       {
-        $match: {
-          status: 2
-        }
+        $match: conditions
       },
       {
         $group: {

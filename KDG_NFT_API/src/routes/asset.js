@@ -6,5 +6,5 @@ const { isAuthenticated } = require('../middlewares/auth')
 
 module.exports = router => {
   router.get('/assets/total', AssetValidation('getTotalAssets'), controller.getTotalAssets)
-  router.get('/assets',[isAuthenticated], controller.getAsset)
+  router.get('/assets', [isAuthenticated], controller.getAsset)
 }

@@ -3,12 +3,10 @@ const BaseService = require('../../cores/base-service')
 const Model = require('../../models/Buys')
 
 class BuysService extends BaseService {
-  async getTopSeller ({ limit }) {
+  async getTopSeller (conditions, limit) {
     return this.aggregate([
       {
-        $match: {
-          status: 1
-        }
+        $match: conditions
       },
       {
         $group: {
@@ -27,12 +25,10 @@ class BuysService extends BaseService {
     ])
   }
 
-  async getTotalAssetVolume ({ status = 1 }) {
+  async getTotalAssetVolume (conditions) {
     return this.aggregate([
       {
-        $match: {
-          status
-        }
+        $match: conditions
       },
       {
         $group: {

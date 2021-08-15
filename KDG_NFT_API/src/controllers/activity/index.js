@@ -5,13 +5,15 @@ const ActivityService = require('../../services/activities')
 module.exports = class {
   static async getVolumeDonate (_req, _res) {
     try {
-      const params = _req.query
+      const queries = _req.query
 
-      const {
-        type = 3
-      } = params
+      const { ...conditions } = queries
 
-      const data = await ActivityService.getVolumeDonate({ type })
+      if (!conditions.type) {
+        conditions.type = 3
+      }
+
+      const data = await ActivityService.getVolumeDonate(conditions)
 
       _res.status(200).json({
         total: data.length ? data[0].total : 0
