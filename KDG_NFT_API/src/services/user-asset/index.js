@@ -10,6 +10,10 @@ class UserAssetsService extends BaseService {
         path: 'asset',
         match
       })
+      .populate({
+        path: 'user',
+        match
+      })
       .sort({ _id: -1 })
       .lean()
     data.reverse()
