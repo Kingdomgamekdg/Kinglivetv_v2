@@ -43,6 +43,10 @@ const page = [
         route: '/mint-nft',
         name: 'Mint NFT',
       },
+      {
+        route: '/nft-detail',
+        name: 'NFT Detail',
+      }
     ],
   },
   {

@@ -42,7 +42,7 @@ class Server {
     } = config
 
     // let dbURI = `mongodb://localhost:27017/admin`
-    const auth = MONGO_USER && MONGO_PASSWORD ? MONGO_USER + ':' + MONGO_PASSWORD + '@' : ''
+    const auth = MONGO_USER && MONGO_PASSWORD ? MONGO_USER + ':' + encodeURIComponent(MONGO_PASSWORD) + '@' : ''
     const dbURI = `mongodb://${auth}${MONGO_HOST}:${MONGO_PORT}/${MONGO_DB}?authSource=admin`
     // let dbURI =`mongodb://KDG:Kingdomgame%40%40123@10.104.0.23:27017/KDG?authSource=admin`
     mongoose.connect(dbURI, {

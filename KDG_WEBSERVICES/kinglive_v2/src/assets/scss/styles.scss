@@ -126,9 +126,14 @@ main {
   line-height: inherit;
   font-weight: inherit;
   font-family: inherit;
+  text-align: center;
   background-color: $button-color;
 
   border-radius: 5px;
+
+  &.d-block {
+    display: block;
+  }
 
   &--cancel {
     color: $text-color-text;
@@ -356,7 +361,7 @@ main {
     }
   }
 
-  .ok😀 {
+  .okX {
     background-color: $primary-color;
   }
 }
@@ -457,4 +462,19 @@ main {
       text-align: center;
     }
   }
+}
+
+.avatarX {
+  .reactEasyCrop_CropArea {
+    border-radius: 50%;
+  }
+}
+
+.buttonSeeMore {
+  cursor: pointer;
+  user-select: none;
+
+  text-align: center;
+  font-size: 20px;
+  color: $primary-color;
 }

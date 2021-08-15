@@ -245,6 +245,9 @@
   }
 
   &__video {
+    cursor: pointer;
+    user-select: none;
+
     border-radius: 5px;
     overflow: hidden;
     background-color: #1e1f24;

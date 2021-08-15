@@ -1,82 +1,82 @@
-import { useEffect, useMemo, useState } from 'react'
-import { useSelector } from 'react-redux'
+import { useEffect, useState } from 'react'
 import { useHistory } from 'react-router-dom'
 import '../../assets/scss/profile.scss'
-import coverDefaultJPG from '../../assets/svg/coverDefault.jpg'
+import avatarDefault from '../../assets/svg/avatarDefault.svg'
+import coverDefault from '../../assets/svg/coverDefault.jpg'
+import emptyGift from '../../assets/svg/emptyGift.svg'
+import thumb from '../../assets/svg/thumb.png'
 import callAPI from '../../axios'
 import ButtonFollow from '../../components/ButtonFollow'
 import VideoPlayer from '../../components/VideoPlayer'
 import { STORAGE_DOMAIN } from '../../constant'
 import convertPositionIMG from '../../helpers/convertPositionIMG'
-
-const statisticArray = [
-  {
-    amount: 45,
-    name: 'Total Views',
-  },
-  {
-    amount: 2434,
-    name: 'Followers',
-  },
-  {
-    amount: 324,
-    name: 'Followings',
-  },
-]
+import { statisticArray } from '../../mock/user'
 
 export default function User() {
   const history = useHistory()
 
-  const userRedux = useSelector((state) => state.user)
   const [isFollow, setIsFollow] = useState(false)
   const [previewIMG, setPreviewIMG] = useState('')
 
   const [userData, setUserData] = useState({})
-  const avatar = useMemo(() => userData?.kyc?.avatar?.path, [userData])
-  const avatarPos = useMemo(() => userData?.kyc?.avatar_pos, [userData])
-  const cover = useMemo(() => userData?.kyc?.cover?.path, [userData])
-  const coverPos = useMemo(() => userData?.kyc?.cover_pos, [userData])
-  const userName = useMemo(
-    () => `${userData?.kyc?.first_name} ${userData?.kyc?.last_name}`,
-    [userData]
-  )
+  const avatar = userData?.kyc?.avatar?.path
+  const avatarPos = userData?.kyc?.avatar_pos
+  const cover = userData?.kyc?.cover?.path
+  const coverPos = userData?.kyc?.cover_pos
+  const userName = `${userData?.kyc?.first_name} ${userData?.kyc?.last_name}`
 
   const uid = new URLSearchParams(window.location.search).get('uid')
-  if (!uid) {
-    history.push('/')
-  }
+  if (!uid) history.push('/')
 
-  // Get Profile of user dependent uid
   useEffect(() => {
-    // if (uid === userRedux?._id) {
-    //   return history.push('/profile')
-    // }
-
-    ;(async () => {
-      try {
-        const res = await callAPI.get(`/user?uid=${uid}`)
-        console.log({ userData: res.data })
-        setUserData(res.data)
-
-        // Check Follow Yet
-        if (res.data.isFollowed) {
-          setIsFollow(true)
-        } else {
-          setIsFollow(false)
+    callAPI
+      .get(`/user?uid=${uid}`)
+      .then((res) => {
+        if (res.status === 1) {
+          setUserData(res.data)
+          setIsFollow(!!res.data.isFollowed)
         }
-      } catch (error) {
-        console.log('Error get user', error)
-      }
-    })()
-  }, [uid, userRedux, history])
+      })
+      .catch((error) => console.log(error))
+  }, [uid, history])
 
-  // Follow and Unfollow
   const handleFollow = async () => {
     try {
       const res = await callAPI.post(`follow?id=${userData?._id}`)
-      if (res.status === 1) setIsFollow((x) => !x)
+      res.status === 1 && setIsFollow((x) => !x)
     } catch (error) {
-      console.log('error follow or unfollow', error)
+      console.log(error)
+    }
+  }
+
+  const [uploadList, setUploadList] = useState([])
+  const [seeMoreCount, setSeeMoreCount] = useState(0)
+
+  useEffect(() => {
+    callAPI
+      .get(`/videos?user=${uid}&limit=6`)
+      .then((res) => {
+        if (res.status === 1) {
+          setUploadList(res.data)
+          const count = Math.ceil((res.total - 6) / 12)
+          if (count <= 0) return
+          setSeeMoreCount(count)
+        }
+      })
+      .catch((error) => console.log(error))
+  }, [uid])
+
+  const handleSeeMore = async () => {
+    if (uploadList.length === 0) return
+
+    try {
+      const lastVideoId = uploadList[uploadList.length - 1]._id
+      const res = await callAPI.get(`/videos?user=${uid}&limit=12&last=${lastVideoId}`)
+      console.log(res)
+      setUploadList((list) => [...list, ...res.data])
+      setSeeMoreCount((x) => x - 1)
+    } catch (error) {
+      console.log(error)
     }
   }
 
@@ -91,10 +91,10 @@ export default function User() {
 
         <div className='profile😢__cover'>
           <img
-            src={`${STORAGE_DOMAIN}${cover}`}
             alt=''
             style={convertPositionIMG(coverPos)}
-            onClick={() => setPreviewIMG(`${STORAGE_DOMAIN}${cover}`)}
+            onClick={(e) => setPreviewIMG(e.target.src)}
+            src={cover ? `${STORAGE_DOMAIN}${cover}` : coverDefault}
           />
           <span></span>
         </div>
@@ -109,10 +109,10 @@ export default function User() {
         >
           <div className='profile😢__avatar'>
             <img
-              src={`${STORAGE_DOMAIN}${avatar}`}
               alt=''
               style={convertPositionIMG(avatarPos)}
-              onClick={() => setPreviewIMG(`${STORAGE_DOMAIN}${avatar}`)}
+              onClick={(e) => setPreviewIMG(e.target.src)}
+              src={avatar ? `${STORAGE_DOMAIN}${avatar}` : avatarDefault}
             />
             <span></span>
           </div>
@@ -177,22 +177,50 @@ export default function User() {
       <div>
         <div className='profile😢__title'>Video Uploaded</div>
 
-        <div className='flexbox flex3' style={{ '--gap-col': '5px', '--gap-row': '25px' }}>
-          {[1, 2, 3].map((item) => (
-            <div key={item} className='flexbox__item profile😢__video'>
-              <div className='thumbnail'>
-                <img src={coverDefaultJPG} alt='' />
-              </div>
+        {uploadList.length !== 0 && (
+          <>
+            <div className='flexbox flex3' style={{ '--gap-col': '5px' }}>
+              {uploadList.map((video) => (
+                <div
+                  key={video._id}
+                  className='flexbox__item profile😢__video'
+                  onClick={() => history.push(`/watchvideo?v=${video.short_id}`)}
+                >
+                  <div className='thumbnail'>
+                    <img
+                      // src={`https://vz-3f44931c-ed0.b-cdn.net/${video.guid}/thumbnail.jpg`}
+                      src={thumb}
+                      alt=''
+                    />
+                  </div>
 
-              <div className='info'>
-                <div>
-                  Greatest Hits Game Of Popular Game Of All Time Greatest Hits Game Of Popular Game
-                  Of All Time Greatest Hits Game Of Popular Game Of All Time
+                  <div className='info'>
+                    <div>{video.name}</div>
+                  </div>
                 </div>
-              </div>
+              ))}
             </div>
-          ))}
-        </div>
+
+            {seeMoreCount !== 0 && (
+              <div className='buttonSeeMore pb-65' onClick={handleSeeMore}>
+                See more
+              </div>
+            )}
+          </>
+        )}
+
+        {uploadList.length === 0 && (
+          <div
+            style={{
+              height: 362,
+              display: 'flex',
+              justifyContent: 'center',
+              alignItems: 'center',
+            }}
+          >
+            <img src={emptyGift} alt='' />
+          </div>
+        )}
       </div>
     </div>
   )
