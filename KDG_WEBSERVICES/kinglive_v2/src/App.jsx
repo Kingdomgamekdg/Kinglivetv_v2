@@ -9,6 +9,8 @@ import Live from './pages/Live'
 import MintNFT from './pages/MintNFT'
 import MyArtwork from './pages/MyArtwork'
 import MyArtworkDetail from './pages/MyArtworkDetail'
+import NFTDetail from './pages/NFTDetail'
+
 import NFT from './pages/NFT'
 import Profile from './pages/Profile'
 import Setup from './pages/Setup'
@@ -33,7 +35,7 @@ function App() {
           <Route path='/my-artwork' component={MyArtwork} exact />
           <Route path='/my-artwork-detail' component={MyArtworkDetail} exact />
           <Route path='/mint-nft' component={MintNFT} exact />
-          <Route path='/nft-detail' component={MintNFT} exact />
+          <Route path='/nft-detail' component={NFTDetail} exact />
           <Route path='/upload' component={Upload} exact />
           <Route path='/setup' component={Setup} exact />
           <Route path='/profile' component={Profile} exact />

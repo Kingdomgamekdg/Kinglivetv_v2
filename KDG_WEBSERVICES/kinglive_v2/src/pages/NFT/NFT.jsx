@@ -20,7 +20,7 @@ export default function NFT() {
 
   const [netTotal, setNetTotal] = useState(0)
   const [netPaymentPrice, setNetPaymentPrice] = useState(0)
-
+  const [topRevenue, setRevenue] = useState([])
   const [topQuantity, setTopQuantityList] = useState([])
   const [ActiveTop9, setActiveTop9] = useState(0)
   const [ActiveRanking, setActiveRanking] = useState(0)
@@ -33,7 +33,7 @@ export default function NFT() {
   const getAssets = useCallback(async () => {
     var ids = PopulateList.map((o) => o._id)
 
-    const res = await callAPI.get(`/listing-asset?limit=9&${ids.length ? `ids=${ids}` : ''}`, true)
+    const res = await callAPI.get(`/market/get-top-populate?limit=9&${ids.length ? `ids=${ids}` : ''}`, true)
     if (res?.data?.length === 0) {
       isLoadMore.current = false
       setPopulateList([...PopulateList])
@@ -43,7 +43,7 @@ export default function NFT() {
   }, [PopulateList])
 
   const getTop9 = useCallback(async () => {
-    const res = await callAPI.get(`/listing-asset?limit=9`, true)
+    const res = await callAPI.get(`/market/get-top-assets?limit=9`, true)
 
     if (res?.data?.length === 0) {
       return
@@ -80,7 +80,15 @@ export default function NFT() {
       }
       const res2 = await callAPI.get(`/market/get-top-populate?limit=10`, true)
       if (res2?.data?.length) {
+        setPopulateList(res.data)
+      }
+      const res3 = await callAPI.get(`/top-sellers-quantity?limit=10`, true)
+      if (res2?.data?.length) {
         setTopQuantityList(res.data)
+      }
+      const res4 = await callAPI.get(`/top-sellers-revenue?limit=10`, true)
+      if (res2?.data?.length) {
+        setRevenue(res.data)
       }
     })()
   }, [])

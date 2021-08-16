@@ -26,8 +26,7 @@ const MyArtworkDetail = () => {
     const [isApprovedForAll, setIsApprovedForAll] = useState(false)
     const isReviewer = useMemo(() => userRedux?.isReviewer, [userRedux])
     const address = useMemo(() => userRedux?.address, [userRedux])
-
-    const [isOwer, setIsOwer] = useState(false)
+    const isOwner = useMemo(() => userRedux?.address==userAssetList[currentIndex]?.user?.address, [userAssetList,currentIndex])
 
     useEffect(() => {
         ;(async () => {
@@ -44,14 +43,8 @@ const MyArtworkDetail = () => {
               setIsApprovedForAll(approved)
             })
           }
-
-          if(userAssetList[currentIndex] && address===userAssetList[currentIndex].user?.address){
-            setIsOwer(true)
-          } else {
-            setIsOwer(false)
-          }
         })()
-      }, [index,window.ethereum.selectedAddress])
+      }, [currentIndex,address])
 
 
     SwiperCore.use([Navigation , Lazy]);
@@ -81,7 +74,7 @@ const MyArtworkDetail = () => {
                 slidesPerView={1}
                 initialSlide={currentIndex}
                 onSlideChange={(swiper) => {setCurrentIndex(swiper.realIndex)}}
-                onSwiper={(swiper) => console.log(swiper)}
+                onSwiper={()=>{}}
             >{ContentSwiper(userAssetList)}
             </Swiper>
         )
@@ -284,7 +277,7 @@ const MyArtworkDetail = () => {
                                 </div>
                             </div>
                         </div>
-                        {isOwer && isApprovedForAll && userAssetList[currentIndex]?.asset?.status === 1 && (
+                        {isOwner && isApprovedForAll && userAssetList[currentIndex]?.asset?.status === 1 && (
                             <div className="artist-content-button">
                             <button type="button" className="btn-sell" onClick={()=> setIsOpenSell(true)}>
                                 Sell
@@ -292,7 +285,7 @@ const MyArtworkDetail = () => {
                         </div>
                         )} 
 
-                        {isOwer && !isApprovedForAll && userAssetList[currentIndex]?.asset?.status === 1 && (
+                        {isOwner && !isApprovedForAll && userAssetList[currentIndex]?.asset?.status === 1 && (
                             <div className="artist-content-button">
                             <button type="button" className="btn-sell" onClick={()=> handleApprove()}>
                                 Approval for sell
@@ -311,12 +304,12 @@ const MyArtworkDetail = () => {
                         </div>
                         )} 
 
-                        {isReviewer && !isOwer && userAssetList[currentIndex]?.asset?.status===2 && (
+                        {isReviewer && !isOwner && userAssetList[currentIndex]?.asset?.status===2 && (
                             <div className="artist-content-status-reject">
                                 Rejected
                             </div>
                         )} 
-                        {isReviewer && !isOwer && userAssetList[currentIndex]?.asset?.status===1 && (
+                        {isReviewer && !isOwner && userAssetList[currentIndex]?.asset?.status===1 && (
                             <div className="artist-content-status-accept">
                                 Accepted
                             </div>
