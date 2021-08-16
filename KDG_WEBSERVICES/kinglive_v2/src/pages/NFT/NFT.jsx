@@ -5,6 +5,8 @@ import '../../assets/scss/nft-market.scss'
 import callAPI from '../../axios'
 import { ABIERC20, addressERC20, paymentList } from '../../contracts/ERC20'
 import { addressMarket } from '../../contracts/Market'
+import avatarDefault from '../../assets/svg/avatarDefault.svg'
+import { STORAGE_DOMAIN } from '../../constant'
 
 export default function NFT() {
   const history = useHistory()
@@ -21,7 +23,7 @@ export default function NFT() {
   const [netTotal, setNetTotal] = useState(0)
   const [netPaymentPrice, setNetPaymentPrice] = useState(0)
   const [topRevenue, setRevenue] = useState([])
-  const [topQuantity, setTopQuantityList] = useState([])
+  const [topQuantity, setTopQuantity] = useState([])
   const [ActiveTop9, setActiveTop9] = useState(0)
   const [ActiveRanking, setActiveRanking] = useState(0)
   const isLoadMore = useRef(true)
@@ -80,15 +82,15 @@ export default function NFT() {
       }
       const res2 = await callAPI.get(`/market/get-top-populate?limit=10`, true)
       if (res2?.data?.length) {
-        setPopulateList(res.data)
+        setPopulateList(res2.data)
       }
-      const res3 = await callAPI.get(`/top-sellers-quantity?limit=10`, true)
-      if (res2?.data?.length) {
-        setTopQuantityList(res.data)
+      const res3 = await callAPI.get(`/top-sellers-quantity?limit=6`, true)
+      if (res3?.data?.length) {
+        setTopQuantity(res3.data)
       }
-      const res4 = await callAPI.get(`/top-sellers-revenue?limit=10`, true)
-      if (res2?.data?.length) {
-        setRevenue(res.data)
+      const res4 = await callAPI.get(`/top-sellers-revenue?limit=6`, true)
+      if (res4?.data?.length) {
+        setRevenue(res4.data)
       }
     })()
   }, [])
@@ -660,25 +662,25 @@ export default function NFT() {
                   <div className='item'>
                     <span className='index'>{index + 1}</span>
                     <span className='avatar'>
-                      <img src={o.avatar} alt='' />
+                    <img src={o.user?.kyc?.avatar?.path ? `${STORAGE_DOMAIN}${o.user?.kyc?.avatar?.path}` : avatarDefault}/>
                     </span>
                     <span className='info'>
-                      <span className='name'>{o.name}</span>
-                      <span className='quatity'>{o.quatity} Artworks</span>
+                      <span className='name'>{o.user?.kyc?.last_name?o.user?.kyc?.last_name + ' ' +o.user?.kyc?.first_name:''}</span>
+                      <span className='quatity'>{o.quantity} Artworks</span>
                     </span>
                   </div>
                 ))}
               </div>
               <div className={`top-seller ${ActiveRanking === 1 ? 'show' : ''}`}>
-                {topQuantity.map((o, index) => (
+                {topRevenue.map((o, index) => (
                   <div className='item'>
                     <span className='index'>{index + 1}</span>
                     <span className='avatar'>
-                      <img src={o.avatar} alt='' />
+                      <img src={o.user?.kyc?.avatar?.path ? `${STORAGE_DOMAIN}${o.user?.kyc?.avatar?.path}` : avatarDefault}/>
                     </span>
                     <span className='info'>
                       <span className='name'>{o.name}</span>
-                      <span className='quatity'>{o.quatity} Artworks</span>
+                      {/* <span className='quatity'>{new Decimal(o?.payment_amount).div(new Decimal(10).pow(18))} KGD</span> */}
                     </span>
                   </div>
                 ))}
