@@ -1,3 +1,24 @@
+@import './common.scss';
+
+///----------new coding
+.bidding {
+    
+    .flex_column{
+
+        margin:0 3.07% 0 0;
+
+        &:nth-child(2n) {
+            width: 31.08%;
+            margin:0 3.07% 0 0;
+        }
+
+        &:nth-child(3n) {
+            margin-right:0;
+        }
+    }
+}
+///----------e:new coding
+
 .main-wrapper {
     display: flex;
     flex-wrap: wrap;
@@ -10,6 +31,7 @@
 }
 .box-slide-artwork {
     width: 60%;
+    height: 100%;
     text-align: center;
     padding: 40px 15px 50px 15px;
     position: relative;
@@ -35,19 +57,29 @@
     right: 20px;
     bottom: 0;
 }
-.box-slide-artwork .box-return {
-    display: flex;
-    align-items: center;
-    margin-bottom: 20px;
+.box-slide-artwork {
+    .box-return {
+        display: flex;
+        align-items: center;
+        margin-bottom: 20px;
+    }
 }
-.box-slide-artwork .box-return .text-return {
-    font-size: 16px;
-    line-height: 100%;
-    color: #FFFFFF;
-    margin-left: 10px;
+.box-slide-artwork {
+    .box-return {
+        .text-return {
+            font-size: 16px;
+            line-height: 100%;
+            color: #FFFFFF;
+            margin-left: 10px;
+        }
+    }
 }
-.box-slide-artwork .box-return img {
-    width: 25px;
+.box-slide-artwork {
+        .box-return {
+            img {
+                width: 25px;
+            }
+        }   
 }
 .swiper-container {
     width: 60%;
@@ -75,10 +107,13 @@
     font-weight: 500;
     color: #fff;
 }
-.box-slide-artwork .item-swiper-content {
-    max-width: 460px;
-    position: relative;
-    margin: auto;
+.box-slide-artwork {
+    .item-swiper-content {
+        @include img(1);
+        max-width: 460px;
+        border-radius: 10px;
+        overflow: hidden;
+    }
 }
 .box-artist-wrapper .artist-content .artist-content-top {
     margin-bottom: 30px;
@@ -152,23 +187,117 @@
 .box-artist-wrapper .artist-content .artist-content-bottom .artist-contract .contract-item .address-contract img {
     margin-left: 10px;
 }
-.box-artist-wrapper .artist-content .artist-content-button .btn-bid {
-    width: 107px;
-    height: 37px;
-    position: absolute;
-    bottom: 35px;
-    left: 50%;
-    transform: translateX(-50%);
-    background: transparent;
-    border: 1px solid #98999A;
-    box-sizing: border-box;
-    border-radius: 5px;
-    font-size: 18px;
-    line-height: 150%;
-    text-align: center;
-    color: #98999A;
-    cursor: pointer;
+.box-artist-wrapper .artist-content 
+ { 
+    .artist-content-button {
+        .btn-bid {
+            width: 107px;
+            height: 37px;
+            position: absolute;
+            bottom: 35px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: transparent;
+            border: 1px solid #98999A;
+            box-sizing: border-box;
+            border-radius: 5px;
+            font-size: 18px;
+            line-height: 150%;
+            text-align: center;
+            color: #98999A;
+            cursor: pointer;
+        }
+    
+        .btn-sell {
+            width: 107px;
+            height: 37px;
+            position: absolute;
+            bottom: 35px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: transparent;
+            border: 1px solid #F52871;
+            box-sizing: border-box;
+            border-radius: 5px;
+            font-size: 18px;
+            line-height: 150%;
+            text-align: center;
+            color: #F52871;
+            cursor: pointer;
+        }
+    
+        .btn-accept {
+            width: 107px;
+            height: 37px;
+            position: absolute;
+            bottom: 35px;
+            left: 35%;
+            transform: translateX(-50%);
+            background: transparent;
+            border: 1px solid #F52871;
+            box-sizing: border-box;
+            border-radius: 5px;
+            font-size: 18px;
+            line-height: 150%;
+            text-align: center;
+            color: #F52871;
+            cursor: pointer;
+        }
+    
+        .btn-reject {
+            width: 107px;
+            height: 37px;
+            position: absolute;
+            bottom: 35px;
+            left: 65%;
+            transform: translateX(-50%);
+            background: transparent;
+            border: 1px solid #e7dee1;
+            box-sizing: border-box;
+            border-radius: 5px;
+            font-size: 18px;
+            line-height: 150%;
+            text-align: center;
+            color: #e7dee1;
+            cursor: pointer;
+        }
+    }
+    // .artist-content-status-accept {
+    //     width: 107px;
+    //     height: 37px;
+    //     position: absolute;
+    //     bottom: 35px;
+    //     left: 50%;
+    //     transform: translateX(-50%);
+    //     background: transparent;
+    //     box-sizing: border-box;
+    //     border-radius: 5px;
+    //     font-size: 18px;
+    //     line-height: 150%;
+    //     text-align: center;
+    //     color: #FF6A97;
+    //     cursor: pointer;
+    
+    // }
+    
+    // .artist-content-status-reject{
+    //     width: 107px;
+    //     height: 37px;
+    //     position: absolute;
+    //     bottom: 35px;
+    //     left: 50%;
+    //     transform: translateX(-50%);
+    //     background: transparent;
+    //     box-sizing: border-box;
+    //     border-radius: 5px;
+    //     font-size: 18px;
+    //     line-height: 150%;
+    //     text-align: center;
+    //     color: #FF6A97;
+    //     cursor: pointer;
+    // }
 }
+
 .box-trading .title-trading {
     font-weight: 600;
     font-size: 18px;
@@ -301,8 +430,14 @@
         width: 100%;
         height: 60vh;
     }
-    .box-artist-wrapper .artist-content .artist-content-bottom .artist-contract .contract-item {
-        display: block;
+    .box-artist-wrapper .artist-content .artist-content-bottom 
+    {
+        .artist-contract {
+            contract-item {
+                display: block;
+             }
+        }
+        
     }
     .box-artist-wrapper .artist-content .artist-content-button .btn-bid {
         bottom: 15px;
