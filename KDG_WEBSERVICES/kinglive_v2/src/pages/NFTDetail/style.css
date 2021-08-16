@@ -220,6 +220,8 @@
 }
 .box-trading .table-history table tr td .info-user .avt{
     width: 65px;
+    height: 65px;
+
 }
 .box-trading .table-history table tr td .info-user .info {
     width: calc(100% - 80px);
