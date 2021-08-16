@@ -10,7 +10,6 @@ const imageConverter = require('../../libs/image')
 const AssetMetadataService = require('../../services/asset-metadata')
 const HttpError = require('../../libs/http-error')
 
-
  async function _uploadFile (_file, _image) {
   let name = _file.filename + path.extname(_file.originalname).toLowerCase()
 
@@ -86,7 +85,7 @@ class Controller {
       let thumbnail
 
       if (file) {
-        console.log("this",this);
+        console.log('this', this)
         const hashes = await _uploadFile(file, image)
         console.log('hashes', hashes)
         if (file.mimetype.startsWith('image')) {
@@ -144,10 +143,10 @@ class Controller {
       }
       response.success(_res, { hashes })
     }
-   
+
     /**
      * Uploads file and image to IPFS
-     */ 
+     */
 
     /**
      * Saves asset metadata into database
@@ -175,5 +174,4 @@ class Controller {
       ])
     }
 }
-module.exports = Controller;
-
+module.exports = Controller

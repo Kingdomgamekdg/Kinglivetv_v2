@@ -2,10 +2,12 @@
 
 const AssetService = require('../../services/asset')
 const ObjectId = require('mongoose').Types.ObjectId
-const mapOrder = (array, myorder, key) => {
-  var order = myorder.reduce((r, k, i) => (r[k] = i + 1, r), {})
-  const theSort = array.sort((a, b) => (order[a[key]] || Infinity) - (order[b[key]] || Infinity))
-  return theSort
+const mapOrder = (array, mOrder, key) => {
+  const order = mOrder.reduce((r, k, i) => {
+    r[k] = i + 1
+    return r
+  }, {})
+  return array.sort((a, b) => (order[a[key]] || Infinity) - (order[b[key]] || Infinity))
 }
 
 module.exports = class {
