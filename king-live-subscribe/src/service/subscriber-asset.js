@@ -213,11 +213,8 @@ class SubcripberAsset {
               
             } else if (data.channel === 'new_cancel_bid'){
                 const bidOrder = await BidOrders.findOne({ contract:payload.contract,id: Number(payload.bid_order_id)});
-                if(payload.is_accept=='false'){
-                    bidOrder.status=2;
-                    await bidOrder.save();
-                }
-              
+                bidOrder.status=2;
+                await bidOrder.save();
             } else if (data.channel === 'new_update_bid'){
                 const bidOrder = await BidOrders.findOne({ contract:payload.contract,id: payload.bid_order_id});
                 bidOrder.contract=  payload.contract,
