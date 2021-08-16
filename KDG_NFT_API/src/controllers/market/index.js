@@ -61,7 +61,6 @@ module.exports = class {
 
     const { ...conditions } = queries
 
-
     const user = await UsersService.findById(_id)
 
     if (IsEmpty(user)) {
@@ -70,7 +69,7 @@ module.exports = class {
 
     const ids = conditions.ids ? conditions.ids.split(',') : []
 
-    const data = await ListingAssetsService.getListingAssetsByIds({ids})
+    const data = await ListingAssetsService.getListingAssetsByIds({ ids })
 
     return _res.status(200).json({ status: 1, data })
   }

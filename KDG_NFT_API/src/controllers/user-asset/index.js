@@ -3,29 +3,28 @@
 const { isValidObjectId } = require('mongoose')
 const UserAssetsService = require('../../services/user-asset')
 const UsersService = require('../../services/user')
-const ObjectId = require('mongoose').Types.ObjectId
 
 const { query } = require('express')
 
-const sortObjectArray = ({
-  arr,
-  field,
-  order = 'desc'
-}) => {
-  arr.sort(function (a, b) {
-    const fieldA = typeof a[field] === 'string' ? a[field].toLowerCase() : a[field]
-    const fieldB = typeof b[field] === 'string' ? b[field].toLowerCase() : b[field]
-
-    let result
-    if (order === 'desc') {
-      result = fieldA > fieldB ? 1 : -1
-    } else {
-      result = fieldA < fieldB ? 1 : -1
-    }
-    return result
-  })
-  return arr
-}
+// const sortObjectArray = ({
+//   arr,
+//   field,
+//   order = 'desc'
+// }) => {
+//   arr.sort(function (a, b) {
+//     const fieldA = typeof a[field] === 'string' ? a[field].toLowerCase() : a[field]
+//     const fieldB = typeof b[field] === 'string' ? b[field].toLowerCase() : b[field]
+//
+//     let result
+//     if (order === 'desc') {
+//       result = fieldA > fieldB ? 1 : -1
+//     } else {
+//       result = fieldA < fieldB ? 1 : -1
+//     }
+//     return result
+//   })
+//   return arr
+// }
 
 module.exports = class {
   /**
@@ -33,7 +32,7 @@ module.exports = class {
    */
   static async getUserAsset (_req, _res) {
     const { _id } = _req
-    console.log("_id",_id);
+    console.log('_id', _id)
     const user = await UsersService.findById(_id)
 
     if (!Object.keys(user).length) {
@@ -49,7 +48,7 @@ module.exports = class {
     const {
       limit
     } = _req.paging
-    console.log("limit",limit);
+    console.log('limit', limit)
     const ids = conditions.ids ? conditions.ids.split(',') : []
 
     const match = {}
@@ -124,7 +123,7 @@ module.exports = class {
     const ids = params.ids ? params.ids.split(',') : []
 
     const filter = {
-      _id: { $in: ids },
+      _id: { $in: ids }
     }
     // let order = ids.map(id =>{
     //   return new ObjectId(id);
@@ -133,7 +132,7 @@ module.exports = class {
       filter,
       match
     })
-    let order = {}
+    const order = {}
 
     ids.forEach(function (a, i) { order[a] = i })
     console.log('order', order)
