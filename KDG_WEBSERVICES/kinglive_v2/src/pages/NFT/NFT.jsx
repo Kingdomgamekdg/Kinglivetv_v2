@@ -264,6 +264,15 @@ export default function NFT() {
     }
   }
 
+  const handleShowDetailTop9 = async () => {
+    var ids = top9List.map((o) => o?._id)
+    history.push(`/nft-detail?ids=${ids}&index=${ActiveTop9}`)
+  }
+  const handleShowDetailPopulate = async (index) => {
+    var ids = PopulateList.map((o) => o?._id)
+    history.push(`/nft-detail?ids=${ids}&index=${index}`)
+  }
+
   const handleMouseOverNFT = useCallback((e) => {
     let target = e.target
     while (true) {
@@ -714,7 +723,7 @@ export default function NFT() {
                       <span> {'Avaiable : ' + top9List[ActiveTop9]?.quantity} </span>
                     </div>
 
-                    <a href="#" className="open_detail_btn">{`Detail >>`}</a>
+                    <a href="#" className="open_detail_btn" onClick={()=> handleShowDetailTop9()}>{`Detail >>`}</a>
                   </div>
 
                   <span
@@ -772,7 +781,7 @@ export default function NFT() {
                       <img src={o.user?.kyc?.avatar?.path ? `${STORAGE_DOMAIN}${o.user?.kyc?.avatar?.path}` : avatarDefault}/>
                     </span>
                     <span className='info'>
-                      <span className='name'>{o.name}</span>
+                      <span className='name'>{o.user?.kyc?.last_name?o.user?.kyc?.last_name + ' ' +o.user?.kyc?.first_name:''}</span>
                       <span className='quatity'>{new Decimal(o?.payment_amount).div(new Decimal(10).pow(18)).toString()} KGD</span>
                     </span>
                   </div>
@@ -846,12 +855,7 @@ export default function NFT() {
                   <div
                     key={'btn' + index}
                     className='btn'
-                    onClick={async () => {
-                      await setItemBuy(o)
-                      await checkApproval(o)
-                      await handleChangeAmount(0)
-                      await setIsOpenBuy(true)
-                    }}
+                    onClick={ ()  => handleShowDetailPopulate(index)}
                   >
                     Buy
                   </div>

@@ -24,19 +24,21 @@ const NFTDetail = () => {
     const index = new URLSearchParams(window.location.search).get('index')
     const history = useHistory()
     if (!ids) history.push('/nft-market')
-    const [listingAssetList, setListingAssetList] = useState([])
+    const [marketList, setMarketList] = useState([])
     const [currentIndex, setCurrentIndex] = useState(Number(index))
     const [isOpenBuy, setIsOpenBuy] = useState(false)
     const [isApprovedForAll, setIsApprovedForAll] = useState(false)
     const isReviewer = useMemo(() => userRedux?.isReviewer, [userRedux])
     const address = useMemo(() => userRedux?.address, [userRedux])
-    const isOwner = useMemo(() => userRedux?.address==listingAssetList[currentIndex]?.user?.address, [listingAssetList,currentIndex])
+    const isOwner = useMemo(() => userRedux?.address==marketList[currentIndex]?.user?.address, [marketList,currentIndex])
+    const [amountBuy, setAmountBuy] = useState(false)
+    const [isApproval, setIsApproval] = useState(false)
 
     useEffect(() => {
         ;(async () => {
           try {
-            const res = await callAPI.get(`/listing-assets-by-ids?ids=${ids}`)
-            setListingAssetList(res?.data?res.data:[])
+            const res = await callAPI.get(`market/get-market-by-ids?ids=${ids}`)
+            setMarketList(res?.data?res.data:[])
           } catch (error) {}
 
           if (window.web3 && window.web3.eth && window.contractKL1155) {
@@ -53,14 +55,14 @@ const NFTDetail = () => {
 
     SwiperCore.use([Navigation , Lazy]);
 
-    const ContentSwiper = (listingAssetList) => {
+    const ContentSwiper = (marketList) => {
         const list=[];
-        listingAssetList.map((userAsset,index)=>{
+        marketList.map((listingAsset,index)=>{
             const key=`swiper-slide${index}`
             list.push(
                 <SwiperSlide key={key}>
                      <div className="item-swiper-content">
-                        <img src={userAsset?.asset?.metadata?.image_preview} alt="" />
+                        <img src={listingAsset?.asset?.metadata?.image_preview} alt="" />
                     </div>
                 </SwiperSlide>
             )
@@ -79,7 +81,7 @@ const NFTDetail = () => {
                 initialSlide={currentIndex}
                 onSlideChange={(swiper) => {setCurrentIndex(swiper.realIndex)}}
                 onSwiper={()=>{}}
-            >{ContentSwiper(listingAssetList)}
+            >{ContentSwiper(marketList)}
             </Swiper>
         )
         return swiper;
@@ -102,7 +104,7 @@ const NFTDetail = () => {
         const listId = e.target._listid.value
         const type = new Number(e.target._type.value)
         const amount = new Decimal(e.target._amount.value).toHex()
-        const paymentToken = listingAssetList[currentIndex].payment_token
+        const paymentToken = marketList[currentIndex].payment_token
         const netTotalPayment = new Decimal(e.target._netTotal.value).toHex()
         console.log('netTotalPayment', netTotalPayment)
         if (type == 1) {
@@ -138,19 +140,18 @@ const NFTDetail = () => {
           })
       }
     
-      const handleDelist = async (item) => {
+      const handleDelist = async () => {
         window.contractMarket.methods
-          .cancelListed(item)
+          .cancelListed(marketList[currentIndex].id)
           .send({ from: window.ethereum.selectedAddress })
           .then((result) => {
-            
           })
-      }
+        }
 
     return (
             <>
                 {isOpenBuy && (
-                    <div key={listingAssetList[currentIndex]._id} className='market-popupX' onClick={() => setIsOpenBuy(false)}>
+                    <div key={marketList[currentIndex]._id} className='market-popupX' onClick={() => setIsOpenBuy(false)}>
                     
                     <form
                         className='containerX'
@@ -165,24 +166,24 @@ const NFTDetail = () => {
                         <div className='contents_box'>
                         
                         <div className='form-control'>
-                            <img className='preview-image 25mb' src={listingAssetList[currentIndex]?.asset?.metadata?.image} alt='' />
+                            <img className='preview-image 25mb' src={marketList[currentIndex]?.asset?.metadata?.image} alt='' />
                             
                             {/* e:new element: items_information : contain items information */}
                             <div className="items_information">
 
                             {/* e:new element: item Name */}
-                            <h2>{listingAssetList[currentIndex]?.asset?.metadata?.name}</h2>
+                            <h2>{marketList[currentIndex]?.asset?.metadata?.name}</h2>
 
                             {/* e:new element: Type */}
-                            <p>{listingAssetList[currentIndex]?.type}<br />
+                            <p>{marketList[currentIndex]?.type}<br />
 
                             {/* e:new element: Price */}
                                 <strong>
                                 {paymentList.map((token) => {
-                                    if (token.address === listingAssetList[currentIndex]?.payment_token) {
+                                    if (token.address === marketList[currentIndex]?.payment_token) {
                                         return (
                                         <div className='price'>
-                                            {new Decimal(listingAssetList[currentIndex].price).div(new Decimal(10).pow(token.decimal)) +
+                                            {new Decimal(marketList[currentIndex]?.price?marketList[currentIndex]?.price:0).div(new Decimal(10).pow(token.decimal)) +
                                             ' ' +
                                             token.coin}{' '}
                                         </div>
@@ -205,15 +206,15 @@ const NFTDetail = () => {
                             type='hidden'
                             name='_contract'
                             readOnly
-                            value={listingAssetList[currentIndex]?.asset?.collection_id}
+                            value={marketList[currentIndex]?.asset?.collection_id}
                             />
-                            <input type='hidden' name='_type' readOnly value={listingAssetList[currentIndex]?.type} />
-                            <input type='hidden' name='_id' readOnly value={listingAssetList[currentIndex]?.asset?.id} />
-                            <input type='hidden' name='_listid' readOnly value={listingAssetList[currentIndex]?.id} />
+                            <input type='hidden' name='_type' readOnly value={marketList[currentIndex]?.type} />
+                            <input type='hidden' name='_id' readOnly value={marketList[currentIndex]?.asset?.id} />
+                            <input type='hidden' name='_listid' readOnly value={marketList[currentIndex]?.id} />
                             </div>
                         <div className='form-control'>
                             <div className='label'>Available</div>
-                            <input type='number' readOnly value={listingAssetList[currentIndex]?.quantity} name='_quantity' />
+                            <input type='number' readOnly value={marketList[currentIndex]?.quantity} name='_quantity' />
                         </div>*/}
                         <div className='form-control'>
                             <div className="flex_column">
@@ -226,9 +227,9 @@ const NFTDetail = () => {
                                 name='_amount'
                                 min='1'
                                 step='1'
-                                max={listingAssetList[currentIndex]?.quantity}
+                                max={marketList[currentIndex]?.quantity}
                                 value={amountBuy}
-                                onChange={(e) => handleChangeAmount(e.target.value)}
+                                onChange={(e) => {}}
                                 />
                                 <span className="increment"></span>
                                 <span className="decrement"></span>
@@ -253,7 +254,7 @@ const NFTDetail = () => {
 
                             <div className="extra_row">
                             <p>Estimated Amount:
-                                <strong>{total} KDG </strong>
+                                <strong>{0} KDG </strong>
                             </p>
                         </div>{/* ---e:extra_row---*/}
 
@@ -261,14 +262,14 @@ const NFTDetail = () => {
 
                         
                         {/*
-                        {listingAssetList[currentIndex]?.type == 1 && (
+                        {marketList[currentIndex]?.type == 1 && (
                         <div className='form-control'>
                             <div className='label'>Price</div>
                             {paymentList.map((token) => {
-                            if (token.address === listingAssetList[currentIndex]?.payment_token) {
+                            if (token.address === marketList[currentIndex]?.payment_token) {
                                 return (
                                 <div className='price'>
-                                    {new Decimal(listingAssetList[currentIndex].price).div(new Decimal(10).pow(token.decimal)) +
+                                    {new Decimal(marketList[currentIndex].price).div(new Decimal(10).pow(token.decimal)) +
                                     ' ' +
                                     token.coin}{' '}
                                 </div>
@@ -279,18 +280,18 @@ const NFTDetail = () => {
                         </div>
                         )}{/* --------------e:form-control------------------------ */}
                         {/*
-                        {listingAssetList[currentIndex]?.type == 2 && (
+                        {marketList[currentIndex]?.type == 2 && (
                         <div className='form-control'>
                             <div className='label'>Price</div>
                             {paymentList.map((token) => {
-                            if (token.address === listingAssetList[currentIndex]?.payment_token) {
+                            if (token.address === marketList[currentIndex]?.payment_token) {
                                 return (
                                 <div className='price'>
                                     <input
                                     type='number'
                                     id='_price'
                                     name='_price'
-                                    min={new Decimal(listingAssetList[currentIndex].price)
+                                    min={new Decimal(marketList[currentIndex].price)
                                         .div(new Decimal(10).pow(token.decimal))
                                         .toString()}
                                     max={5000000}
@@ -317,16 +318,16 @@ const NFTDetail = () => {
                         <input type='hidden' readOnly name='_netTotal' value={netTotal} />
                         </div>{/* --------------e:form-control------------------------ */}
                         {isOwner && (
-                        <button className='buttonX' onClick={() => handleDelist(listingAssetList[currentIndex].id)}>
+                        <button className='buttonX' onClick={() => handleDelist(marketList[currentIndex].id)}>
                             Delisting
                         </button>
                         )}
-                        {!isOwner && listingAssetList[currentIndex]?.type == 1 && isApproval && (
+                        {!isOwner && marketList[currentIndex]?.type == 1 && isApproval && (
                         <button type='submit' className='buttonX'>
                             Buy
                         </button>
                         )}
-                        {!isOwner && listingAssetList[currentIndex]?.type == 2 && isApproval && (
+                        {!isOwner && marketList[currentIndex]?.type == 2 && isApproval && (
                         <button type='submit' className='buttonX'>
                             Bid orders
                         </button>
@@ -342,7 +343,7 @@ const NFTDetail = () => {
                         </div>
                         )}{/* ------e:form-control------------- */}
                         {/*
-                        {listingAssetList[currentIndex]?.type == 1 && (
+                        {marketList[currentIndex]?.type == 1 && (
                         <>
                             <div className='label'>Transaction history</div>
                             <table className='market-tableX'>
@@ -351,7 +352,7 @@ const NFTDetail = () => {
                                 <th>Amount</th>
                                 <th>Payment Amount</th>
                             </thead>
-                            {listingAssetList[currentIndex]?.buys.map((b) => (
+                            {marketList[currentIndex]?.buys.map((b) => (
                                 <>
                                 <tbody>
                                     <td>
@@ -361,7 +362,7 @@ const NFTDetail = () => {
                                     </td>
                                     <td>{b?.quantity}</td>
                                     {paymentList.map((token) => {
-                                    if (token.address === listingAssetList[currentIndex]?.payment_token) {
+                                    if (token.address === marketList[currentIndex]?.payment_token) {
                                         return (
                                         <td>
                                             {new Decimal(b?.payment_amount).div(
@@ -380,7 +381,7 @@ const NFTDetail = () => {
                         </>
                         )}{/* --------------e:label------------------------ */}
                         
-                        {/*listingAssetList[currentIndex]?.type == 2 && (
+                        {/*marketList[currentIndex]?.type == 2 && (
                         <>{}
                             <div className='label'>Bid orders</div>
                             <table className='market-tableX'>
@@ -390,7 +391,7 @@ const NFTDetail = () => {
                                 <th>Price</th>
                                 <th>Action</th>
                             </thead>
-                            {listingAssetList[currentIndex]?.bid_orders.map((b) => (
+                            {marketList[currentIndex]?.bid_orders.map((b) => (
                                 <>
                                 <tbody>
                                     <td>
@@ -400,7 +401,7 @@ const NFTDetail = () => {
                                     </td>
                                     <td>{b?.quantity}</td>
                                     {paymentList.map((token) => {
-                                    if (token.address === listingAssetList[currentIndex]?.payment_token) {
+                                    if (token.address === marketList[currentIndex]?.payment_token) {
                                         return (
                                         <td>
                                             {new Decimal(b?.payment_price).div(
@@ -437,10 +438,10 @@ const NFTDetail = () => {
                     <div className="box-slide-artwork">
                         <div className="box-return" onClick={() => history.push('/my-artwork')}>
                             <img src={arrowLeft} alt="" /> 
-                            <span className="text-return">{listingAssetList[currentIndex]?.asset?.metadata?.name}</span>
+                            <span className="text-return">{marketList[currentIndex]?.asset?.metadata?.name}</span>
                         </div>
                        <SwiperComponent/>
-                        <div className="box-img" onClick={()=> window.open(listingAssetList[currentIndex]?.asset?.metadata?.image,'_blank')}>
+                        <div className="box-img" onClick={()=> window.open(marketList[currentIndex]?.asset?.metadata?.image,'_blank')}>
                             <img src={zoom} alt="" />
                         </div>
                     </div>
@@ -451,35 +452,35 @@ const NFTDetail = () => {
                                 Artists
                             </p>
                             <h2 className="title-artist">
-                                {listingAssetList[currentIndex]?.asset?.metadata?.name}
+                                {marketList[currentIndex]?.asset?.metadata?.name}
                             </h2>
                             <p className="desc-artist">
                                 <span className="desc">
-                                    {new Decimal(listingAssetList[currentIndex].price.div(new Decimal(10).pow(18)))} KDG
+                                    {new Decimal(marketList[currentIndex]?.price?marketList[currentIndex]?.price:0).div(new Decimal(10).pow(18)).toString()} KDG
                                 </span>
                                 {/* <span className="txt">
                                     $1000
                                 </span> */}
                                 <span className="txt">
-                                    {listingAssetList[currentIndex]?.amount} of {listingAssetList[currentIndex]?.asset.total_editions}
+                                    {marketList[currentIndex]?.amount} of {marketList[currentIndex]?.asset.total_editions}
                                 </span>
                             </p> 
                         </div>
                         <div className="artist-content-body">
                             <div className="desciption-artist">
                                 <p className="desc">
-                                    Artist: <span className="color-fff"> {listingAssetList[currentIndex]?.user?.kyc?.last_name?listingAssetList[currentIndex]?.user?.kyc?.last_name + ' '+listingAssetList[currentIndex]?.user?.kyc?.first_name:listingAssetList[currentIndex]?.user?.address   } </span>
+                                    Artist: <span className="color-fff"> {marketList[currentIndex]?.user?.kyc?.last_name?marketList[currentIndex]?.user?.kyc?.last_name + ' '+marketList[currentIndex]?.user?.kyc?.first_name:marketList[currentIndex]?.user?.address   } </span>
                                 </p>
                                 {/* <p className="desc">
                                     Size: <span className="color-fff"> 366x435px </span>
                                 </p> */}
                                 <p className="desc">
-                                    Created: <span className="color-fff"> {new Date(listingAssetList[currentIndex]?.asset?.time*1000).toDateString()}</span>
+                                    Created: <span className="color-fff"> {new Date(marketList[currentIndex]?.asset?.time*1000).toDateString()}</span>
                                 </p>
                                 <p className="desc mar-t-10">
                                     Description: 
                                     <span className="color-fff d-block mar-t-10"> 
-                                    {listingAssetList[currentIndex]?.asset?.metadata?.description}
+                                    {marketList[currentIndex]?.asset?.metadata?.description}
                                     </span>
                                     <span className="color-fff d-block mar-t-10"> 
                                         NFT coins: BSCS
@@ -500,7 +501,7 @@ const NFTDetail = () => {
                                         NFT Contract ID:
                                     </p>
                                     <p className="address-contract">
-                                        {listingAssetList[currentIndex]?.asset?.collection_id?.substring(0,5)+ '...' +listingAssetList[currentIndex]?.asset?.collection_id?.substring(listingAssetList[currentIndex]?.asset?.collection_id.length-9,listingAssetList[currentIndex]?.asset?.collection_id.length) } <img src={address} alt="" /> 
+                                        {marketList[currentIndex]?.asset?.collection_id?.substring(0,5)+ '...' +marketList[currentIndex]?.asset?.collection_id?.substring(marketList[currentIndex]?.asset?.collection_id.length-9,marketList[currentIndex]?.asset?.collection_id.length) } <img src={address} alt="" /> 
                                     </p>
                                 </div>
                                 <div className="contract-item">
@@ -508,7 +509,7 @@ const NFTDetail = () => {
                                         Token ID:
                                     </p>
                                     <p className="address-contract">
-                                    {listingAssetList[currentIndex]?.asset?.id } <img src={address} alt="" /> 
+                                    {marketList[currentIndex]?.asset?.id } <img src={address} alt="" /> 
                                     </p>
                                 </div>
                                 <div className="contract-item">
@@ -516,20 +517,20 @@ const NFTDetail = () => {
                                         Creator's Address:
                                     </p>
                                     <p className="address-contract">
-                                        {listingAssetList[currentIndex]?.user?.address.substring(0,5)+ '...' +listingAssetList[currentIndex]?.user?.address.substring(listingAssetList[currentIndex]?.user?.address.length-9,listingAssetList[currentIndex]?.user?.address.length) }  <img src={address} alt="" /> 
+                                        {marketList[currentIndex]?.user?.address.substring(0,5)+ '...' +marketList[currentIndex]?.user?.address.substring(marketList[currentIndex]?.user?.address.length-9,marketList[currentIndex]?.user?.address.length) }  <img src={address} alt="" /> 
                                     </p>
                                 </div>
                             </div>
                         </div>
-                        {isOwner && isApprovedForAll && listingAssetList[currentIndex]?.asset?.status === 1 && (
+                        {isOwner && isApprovedForAll && marketList[currentIndex]?.asset?.status === 1 && (
                             <div className="artist-content-button">
-                            <button type="button" className="btn-sell" onClick={()=> setIsOpenSell(true)}>
-                                Sell
+                            <button type="button" className="btn-sell" onClick={()=> handleDelist()}>
+                                Delist
                             </button>
                         </div>
                         )} 
 
-                        {isOwner && !isApprovedForAll && listingAssetList[currentIndex]?.asset?.status === 1 && (
+                        {isOwner && !isApprovedForAll && marketList[currentIndex]?.asset?.status === 1 && (
                             <div className="artist-content-button">
                             <button type="button" className="btn-sell" onClick={()=> handleApprove()}>
                                 Delist
@@ -537,27 +538,6 @@ const NFTDetail = () => {
                         </div>
                         )} 
 
-                        {isReviewer && listingAssetList[currentIndex]?.asset?.status===0 && (
-                            <div className="artist-content-button">
-                            <button type="button" className="btn-accept" onClick={()=> handleAccept()}>
-                                Buy
-                            </button>
-                            <button type="button" className="btn-reject" onClick={()=> handleReject()}>
-                                Reject
-                            </button>
-                        </div>
-                        )} 
-
-                        {isReviewer && !isOwner && listingAssetList[currentIndex]?.asset?.status===2 && (
-                            <div className="artist-content-status-reject">
-                                Rejected
-                            </div>
-                        )} 
-                        {isReviewer && !isOwner && listingAssetList[currentIndex]?.asset?.status===1 && (
-                            <div className="artist-content-status-accept">
-                                Accepted
-                            </div>
-                        )} 
                 
                     </div>
                 </div>
