@@ -17,6 +17,20 @@ class ListingAssetsService extends BaseService {
           path: 'kyc.avatar uploads'
         }
       })
+      .lean()
+    data.reverse()
+
+    return data
+  }
+
+  async getListingAssetsByIds ({ ids }) {
+    const data = await this
+      .find({
+        _id: { $in: ids },
+      })
+      .populate({
+        path: 'asset owner',
+      })
       .populate({
         path: 'buys',
         populate: {
@@ -37,6 +51,16 @@ class ListingAssetsService extends BaseService {
       })
       .lean()
     data.reverse()
+    let order = {};
+
+    ids.forEach(function (a, i) { order[a] = i; });
+    
+
+    data.sort(function (a, b) {
+        console.log("order[a._id]",order[a._id])
+        console.log("order[b._id]",order[b._id])
+        return order[a._id.toString()] - order[b._id.toString()];
+    });
 
     return data
   }

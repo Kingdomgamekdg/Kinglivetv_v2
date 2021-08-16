@@ -53,4 +53,25 @@ module.exports = class {
 
     return _res.status(200).json({ status: 1, data })
   }
+
+  static async getMarketByIds (_req, _res) {
+    const { _id } = _req
+
+    const queries = _req.query
+
+    const { ...conditions } = queries
+
+
+    const user = await UsersService.findById(_id)
+
+    if (IsEmpty(user)) {
+      _res.status(200).json({ status: 1, data: [] })
+    }
+
+    const ids = conditions.ids ? conditions.ids.split(',') : []
+
+    const data = await ListingAssetsService.getListingAssetsByIds(ids)
+
+    return _res.status(200).json({ status: 1, data })
+  }
 }
