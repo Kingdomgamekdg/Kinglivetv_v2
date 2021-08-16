@@ -8,7 +8,7 @@ BEGIN
 	-----------------------------------------------------------------
 
 	-- Open Edition smart contract on Rinkeby and Mainnet
-	PERFORM PG_NOTIFY('new_cancel_bid', '{"contract":"' || NEW.CONTRACT || '","list_id":"' || NEW.LIST_ID || '" ,"bid_order_id":"' || NEW.BID_ORDER_ID || '"  ,"is_cancel":"' || NEW.IS_CANCEL ||  '" }');
+	PERFORM PG_NOTIFY('new_cancel_bid', '{"contract":"' || NEW.CONTRACT || '" ,"bid_order_id":"' || NEW.BID_ORDER_ID || '"   ,"is_cancel":"' || NEW.IS_CANCEL ||  '" }');
 	RETURN NEW;
 END;
 $$
