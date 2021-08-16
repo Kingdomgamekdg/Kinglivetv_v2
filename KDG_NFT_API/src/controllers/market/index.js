@@ -61,7 +61,6 @@ module.exports = class {
 
     const { ...conditions } = queries
 
-
     const user = await UsersService.findById(_id)
 
     if (IsEmpty(user)) {

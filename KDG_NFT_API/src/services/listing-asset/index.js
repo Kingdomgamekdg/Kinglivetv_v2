@@ -26,10 +26,13 @@ class ListingAssetsService extends BaseService {
   async getListingAssetsByIds ({ ids }) {
     const data = await this
       .find({
-        _id: { $in: ids },
+        _id: { $in: ids }
       })
       .populate({
         path: 'asset owner',
+        populate: {
+          path: 'kyc.avatar uploads'
+        }
       })
       .populate({
         path: 'buys',
@@ -51,16 +54,17 @@ class ListingAssetsService extends BaseService {
       })
       .lean()
     data.reverse()
-    let order = {};
 
-    ids.forEach(function (a, i) { order[a] = i; });
-    
+    const order = ids.reduce((obj, o, i) => {
+      obj[o] = i
+      return obj
+    }, {})
 
     data.sort(function (a, b) {
-        console.log("order[a._id]",order[a._id])
-        console.log("order[b._id]",order[b._id])
-        return order[a._id.toString()] - order[b._id.toString()];
-    });
+      console.log('order[a._id]', order[a._id])
+      console.log('order[b._id]', order[b._id])
+      return order[a._id.toString()] - order[b._id.toString()]
+    })
 
     return data
   }
