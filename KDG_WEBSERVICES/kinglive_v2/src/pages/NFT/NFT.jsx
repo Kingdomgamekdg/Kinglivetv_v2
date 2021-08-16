@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react'
+import { useCallback, useEffect, useRef, useState ,useMemo} from 'react'
 import { useHistory } from 'react-router-dom'
 import banner from '../../assets/images/nft-market/banner.jpg'
 import '../../assets/scss/nft-market.scss'
@@ -13,7 +13,6 @@ export default function NFT() {
   const history = useHistory()
   const [PopulateList, setPopulateList] = useState([])
   const [top9List, setTop9List] = useState([])
-  const [total, setTotal] = useState(0)
   const [itemBuy, setItemBuy] = useState({})
   const [isApproval, setIsApproval] = useState(false)
   const [isOwner, setIsOwner] = useState(false)
@@ -21,8 +20,7 @@ export default function NFT() {
   const [amountBuy, setAmountBuy] = useState(0)
   const [price, setPrice] = useState(0)
 
-  const [netTotal, setNetTotal] = useState(0)
-  const [netPaymentPrice, setNetPaymentPrice] = useState(0)
+
   const [topRevenue, setRevenue] = useState([])
   const [topQuantity, setTopQuantity] = useState([])
   const [ActiveTop9, setActiveTop9] = useState(0)
@@ -33,6 +31,14 @@ export default function NFT() {
   const { Decimal } = require('decimal.js')
   const [isOpenBuy, setIsOpenBuy] = useState(false)
 
+  const total = useMemo(() => {
+      if(itemBuy?.type==1 && amountBuy && itemBuy?.price) {
+        return new Decimal(amountBuy).mul(itemBuy?.price).div(new Decimal(10).pow(18)).toNumber()
+      }
+      if(itemBuy?.type==2 && amountBuy && price) {
+        return new Decimal(amountBuy).mul(price).toNumber()
+      }
+  }, [amountBuy,itemBuy,price])
 
 
 
@@ -105,9 +111,9 @@ export default function NFT() {
     const listId = e.target._listid.value
     const type = new Number(e.target._type.value)
     const amount = new Decimal(e.target._amount.value).toHex()
-    const paymentToken = itemBuy.payment_token
-    const netTotalPayment = new Decimal(e.target._netTotal.value).toHex()
-    console.log('netTotalPayment', netTotalPayment)
+    const token = paymentList[e.target._paymentToken.value]
+    const paymentToken = token.address
+    const netTotalPayment = new Decimal(total).mul(new Decimal(10).pow(token.decimal)).toHex()
     if (type == 1) {
       window.contractMarket.methods
         .buy(listId, amount, paymentToken, netTotalPayment)
@@ -122,7 +128,7 @@ export default function NFT() {
           }
         })
     } else {
-      const netPaymentPrice = new Decimal(e.target._netPaymentPrice.value).toHex()
+      const netPaymentPrice = new Decimal(price).mul(new Decimal(10).pow(token.decimal)).toHex()
       window.contractMarket.methods
         .bid(listId, amount, paymentToken, netPaymentPrice, 100000000)
         .send({ from: window.ethereum.selectedAddress })
@@ -212,57 +218,19 @@ export default function NFT() {
     },
     [Decimal]
   )
-
-  const handleChangeAmount = async (amount) => {
-    const { Decimal } = require('decimal.js')
-    if (amount && amount.length && !isNaN(amount)) {
-      paymentList.forEach((token) => {
-        if (token.address === itemBuy.payment_token) {
-          if (new Decimal(amount).gt(itemBuy.quantity)) {
-            setAmountBuy(itemBuy.quantity)
-            setTotal(
-              new Decimal(itemBuy.quantity).mul(
-                Decimal(itemBuy.price).div(new Decimal(10).pow(token.decimal))
-              )
-            )
-            setNetTotal(new Decimal(itemBuy.quantity).mul(Decimal(itemBuy.price)))
-            return
-          } else {
-            setAmountBuy(new Decimal(amount))
-            setTotal(
-              new Decimal(amount).mul(
-                Decimal(itemBuy.price).div(new Decimal(10).pow(token.decimal))
-              )
-            )
-            setNetTotal(new Decimal(amount).mul(Decimal(itemBuy.price)))
-            return
-          }
-        }
-      })
-    } else {
-      setTotal(0)
-      setAmountBuy(0)
-      return
-    }
+  const handleChangeAmount= (event) => {
+    let { value, min, max } = event.target;
+    value = Math.max(Number(min), Math.min(Number(max), Number(value)));
+    setAmountBuy(value)
   }
 
-  const handleChangePriceOrder = async (price) => {
-    const { Decimal } = require('decimal.js')
-    if (price && price.length && !isNaN(price)) {
-      paymentList.forEach((token) => {
-        if (token.address === itemBuy.payment_token) {
-          setPrice(new Decimal(price))
-          setTotal(new Decimal(price).mul(Decimal(amountBuy)))
-          setNetPaymentPrice(new Decimal(price).mul(new Decimal(10).pow(token.decimal)))
-          return
-        }
-      })
-    } else {
-      setTotal(0)
-      setPrice(0)
-      return
-    }
+  const handleChangePrice= (event) => {
+    let { value, min, max } = event.target;
+    value = Math.max(Number(min), Math.min(Number(max), Number(value)));
+    setPrice(value)
   }
+
+
 
   const handleShowDetailTop9 = async () => {
     var ids = top9List.map((o) => o?._id)
@@ -320,8 +288,13 @@ export default function NFT() {
             onClick={(e) => e.stopPropagation()}
           >
             {/*new element: popup name */}
+            {itemBuy?.type == 1 && (
             <h1>Checkout</h1>
-            <span className='close_popup'></span>
+            )} 
+            {itemBuy?.type == 2 && (
+            <h1>Bidding</h1>
+            )} 
+            <span className='close_popup' onClick={() => setIsOpenBuy(false)}></span>
             
             {/* e:new element: content container */}
             <div className='contents_box'>
@@ -336,7 +309,7 @@ export default function NFT() {
                   <h2>{itemBuy?.asset?.metadata?.name}</h2>
 
                   {/* e:new element: Type */}
-                  <p>{itemBuy?.type}<br />
+                  <p>Avaiable {itemBuy?.quantity}<br />
 
                   {/* e:new element: Price */}
                     <strong>
@@ -381,7 +354,18 @@ export default function NFT() {
                 <div className="flex_column">
                   <label>Quantity</label>
                   <div className="input_boundingbox">
-                    
+                  <input
+                      type='hidden'
+                      id='_listid'
+                      name='_listid'
+                      value={itemBuy?.id}
+                      />
+                    <input
+                      type='hidden'
+                      id='_type'
+                      name='_type'
+                      value={itemBuy?.type}
+                    />
                     <input
                       type='number'
                       id='_amount'
@@ -390,13 +374,49 @@ export default function NFT() {
                       step='1'
                       max={itemBuy?.quantity}
                       value={amountBuy}
-                      onChange={(e) => handleChangeAmount(e.target.value)}
+                      onChange={(e) => handleChangeAmount(e)}
                       />
-                      <span className="increment"></span>
-                      <span className="decrement"></span>
+                     <span className="increment" onClick={()=> {
+                              if(amountBuy>= itemBuy?.quantity) return 
+                              setAmountBuy(amountBuy+1)
+                          }
+                      }></span>
+                      <span className="decrement" onClick={()=> {
+                              if(amountBuy<= 1) return 
+                              setAmountBuy(amountBuy-1)
+                        }
+                      }></span>
                     </div>{/* ---e:input_boundingbox---*/}  
 
                 </div>{/* ---e:flex_column---*/}
+                {itemBuy?.type == 2 && (
+                <div className="flex_column">
+                  <label className='label'>Price</label>
+                  <div className="input_boundingbox">
+                  <input
+                      type='number'
+                      id='_price'
+                      name='_price'
+                      min={new Decimal(itemBuy.price).div(new Decimal(10).pow(18)).toNumber()}
+                      max='100000'
+                      readOnly={itemBuy.type==1}
+                      value={price}
+                      onChange={(e) => handleChangePrice(e)}
+                      />
+                      <span className="increment" onClick={()=> {
+                              if(price>= 100000) return 
+                              setPrice(price+1)
+                          }
+                      }></span>
+                      <span className="decrement" onClick={()=> {
+                              if(price<= new Decimal(itemBuy.price).div(new Decimal(10).pow(18)).toNumber()) return 
+                              setPrice(price-1)
+                        }
+                      }></span>
+                    </div>{/* ---e:input_boundingbox---*/}  
+
+                </div>
+                )}
 
                 <div className="flex_column">
                   <label className='label'>Payment Token</label>
@@ -440,38 +460,8 @@ export default function NFT() {
                 })}
               </div>
             )}{/* --------------e:form-control------------------------ */}
-            {/*
-            {itemBuy?.type == 2 && (
-              <div className='form-control'>
-                <div className='label'>Price</div>
-                {paymentList.map((token) => {
-                  if (token.address === itemBuy?.payment_token) {
-                    return (
-                      <div className='price'>
-                        <input
-                          type='number'
-                          id='_price'
-                          name='_price'
-                          min={new Decimal(itemBuy.price)
-                            .div(new Decimal(10).pow(token.decimal))
-                            .toString()}
-                          max={5000000}
-                          value={price}
-                          onChange={(e) => handleChangePriceOrder(e.target.value)}
-                        />
-                        <input
-                          type='hidden'
-                          id='_netPaymentPrice'
-                          name='_netPaymentPrice'
-                          value={netPaymentPrice}
-                        />
-                      </div>
-                    )
-                  }
-                  return null
-                })}
-              </div>
-            )}{/* --------------e:form-control------------------------ */}
+            
+           {/* --------------e:form-control------------------------
             {/*
             <div className='form-control'>
               <div className='label'>Total</div>
@@ -496,10 +486,10 @@ export default function NFT() {
             {!isOwner && !isApproval && (
               <div className='form-control submit_box'>
                 <button className='buttonX' onClick={handleApproval}>
-                  Comfirm
+                  Approval
                 </button>
-                <button className='buttonX--cancel' >
-                  cancel
+                <button className='buttonX--cancel' onClick={() => setIsOpenBuy(false)}>
+                  Cancel
                 </button>             
               </div>
             )}{/* ------e:form-control------------- */}
@@ -624,7 +614,6 @@ export default function NFT() {
               </svg>
               Create New NFT
             </div>
-            {top9List.length && (
               <div className='list'>
                 <div className='left'>
                   {top9List.map((o, index) => (
@@ -731,15 +720,15 @@ export default function NFT() {
                     onClick={async () => {
                       await setItemBuy(top9List[ActiveTop9])
                       await checkApproval(top9List[ActiveTop9])
-                      await handleChangeAmount(0)
                       await setIsOpenBuy(true)
+                      await setAmountBuy(0)
+                      setPrice(new Decimal(top9List[ActiveTop9]?.price).div(new Decimal(10).pow(18)).toNumber())
                     }}
                   >
                     Buy Now
                   </span>
                 </div>
               </div>
-            )}
           </div>
 
           <div className='ranking'>
@@ -857,7 +846,7 @@ export default function NFT() {
                     className='btn'
                     onClick={ ()  => handleShowDetailPopulate(index)}
                   >
-                    Buy
+                    Detail
                   </div>
                 </div>
               ))}

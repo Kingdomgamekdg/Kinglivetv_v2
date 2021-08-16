@@ -42,8 +42,14 @@ const MyArtworkDetail = () => {
             const res = await callAPI.get(`/user-assets-by-ids?ids=${ids}`)
             setUserAssetList(res?.data?res.data:[])
           } catch (error) {}
+        })()
+      }, [])
 
-          if (window.web3 && window.web3.eth && window.contractKL1155) {
+
+
+    useEffect(() => {
+        ;(async () => {
+          if (window.web3 && window.web3.eth && window.contractKL1155 && address) {
             window.contractKL1155.methods
             .isApprovedForAll(window.ethereum.selectedAddress, addressMarket)
             .call()
@@ -52,9 +58,9 @@ const MyArtworkDetail = () => {
             })
           }
         })()
-      }, [currentIndex,address])
+      }, [address])
 
-
+    
 
 
     SwiperCore.use([Navigation , Lazy]);

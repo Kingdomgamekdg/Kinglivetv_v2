@@ -349,6 +349,8 @@
 }
 .box-trading .table-history table tr td .info-user .avt{
     width: 65px;
+    height: 65px;
+    @include img(0.3);
 }
 .box-trading .table-history table tr td .info-user .info {
     width: calc(100% - 80px);
@@ -465,6 +467,9 @@
     }
     .box-trading .table-history table tr td .info-user .info {
         width: calc(100% - 45px);
+    }
+    .box-trading .table-history table tr td .box-data .non-data {
+        padding-top: 25px;
     }
     .box-trading .table-history table tr td .info-user .info .info-name {
         font-size: 10px;
