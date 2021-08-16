@@ -1,6 +1,7 @@
 'use strict'
 const BaseService = require('../../cores/base-service')
 const Model = require('../../models/Buys')
+const UploadsService = require('../../services/upload')
 
 class BuysService extends BaseService {
   async getTotalAssetVolume (conditions) {
@@ -18,7 +19,7 @@ class BuysService extends BaseService {
   }
 
   async getTopSeller (conditions, type, limit) {
-    return this.aggregate([
+    let topSeller = await this.aggregate([
       {
         $match: conditions
       },
@@ -46,6 +47,11 @@ class BuysService extends BaseService {
         $limit: limit
       }
     ])
+
+    if (topSeller.length) {
+      topSeller = await UploadsService.mappingAvatar({ data: topSeller, key: 'user' })
+    }
+    return topSeller
   }
 }
 

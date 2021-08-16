@@ -1,10 +1,11 @@
 'use strict'
 const BaseService = require('../../cores/base-service')
 const Model = require('../../models/ListingAsset')
+const UploadsService = require('../../services/upload')
 
 class ListingAssetsService extends BaseService {
   async getListingAsset ({ ids }, limit) {
-    const data = await this
+    let data = await this
       .find({
         _id: { $nin: ids },
         quantity: { $gt: 0 }
@@ -24,11 +25,15 @@ class ListingAssetsService extends BaseService {
       })
       .lean()
     data.reverse()
+
+    if (data.length) {
+      data = await UploadsService.mappingAvatar({ data, key: 'owner' })
+    }
     return data
   }
 
   async getTopSellAssets (conditions, limit) {
-    const data = await this
+    let data = await this
       .find(conditions)
       .sort({ quantity: 1 })
       .limit(limit)
@@ -45,6 +50,10 @@ class ListingAssetsService extends BaseService {
       })
       .lean()
     data.reverse()
+
+    if (data.length) {
+      data = await UploadsService.mappingAvatar({ data, key: 'owner' })
+    }
     return data
   }
 }
