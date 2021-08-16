@@ -12,9 +12,36 @@ class ListingAssetsService extends BaseService {
       .sort({ quantity: 1 })
       .limit(limit)
       .populate({
-        path: 'asset owner',
+        path: 'owner users',
         populate: {
           path: 'kyc.avatar uploads'
+        }
+      })
+      .populate({
+        path: 'asset',
+        populate: {
+          path: 'owner users',
+          populate: {
+            path: 'kyc.avatar uploads'
+          }
+        }
+      })
+      .populate({
+        path: 'buys',
+        populate: {
+          path: 'from to',
+          populate: {
+            path: 'kyc.avatar uploads'
+          }
+        }
+      })
+      .populate({
+        path: 'bid_orders',
+        populate: {
+          path: 'from to',
+          populate: {
+            path: 'kyc.avatar uploads'
+          }
         }
       })
       .lean()
