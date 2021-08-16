@@ -44,9 +44,8 @@ export default function MyArtwork() {
 
       const res = await callAPI.get(
         `/user-asset?limit=20&${ids.length ? `ids=${ids}` : ''}&status=${status}`,
-        true,{headers:{'x-authenticated-id-by-kdg':'6103e1f7fc50dc02cf05b619'}}
-      )
-
+        true) 
+      
       if (res?.data?.length === 0) {
         isLoadMore.current = false
         setAssetList([...AssetList])
@@ -57,6 +56,8 @@ export default function MyArtwork() {
     },
     [AssetList]
   )
+
+  
 
   useEffect(() => {
     const handleLoad = async () => {

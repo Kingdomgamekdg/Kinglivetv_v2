@@ -113,48 +113,166 @@ main {
     }
   }
 }
-
+/// ----------new coding:edited
 .buttonX {
   cursor: pointer;
   user-select: none;
 
   display: inline-block;
-  padding: 5px 22px;
+  padding: 8px 22px;
 
   color: #fff;
   font-size: 18px;
-  line-height: inherit;
-  font-weight: inherit;
-  font-family: inherit;
+  line-height: 150%;
   text-align: center;
-  background-color: $button-color;
-
+  background-color: $primary-color;
+  margin:0 15px 0 0;
   border-radius: 5px;
+  -webkit-transition: all .5s ease-in-out;
+  -moz-transition: all .5s ease-in-out;
+  -ms-transition: all .5s ease-in-out;
+  -o-transition: all .5s ease-in-out;
+  transition: all .5s ease-in-out;
 
   &.d-block {
     display: block;
   }
 
   &--cancel {
+    cursor: pointer;
+    padding: 5px 22px;
     color: $text-color-text;
     background-color: transparent;
     border: 1px solid $text-color-text;
+    font-size: 18px;
+    border-radius: 5px;
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -ms-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+
+    &:hover{
+      background:$primary-color ;
+      color:#FFFFFF;
+      border-color: $primary-color;
+    }
   }
 
   &--disabled {
     color: $text-color-dark;
     background-color: #353849;
   }
+  &:hover{
+    background:$button-color ;
+  }
+}
+/// ----------e:new coding:edited
+
+/// ----------new coding:popup container:edited
+
+.containerX {
+
+
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+
+  width: 615px;
+  max-height: 700px;
+  overflow-y: auto;
+
+  display: flex;
+  flex-wrap: wrap;
+
+  background:#171a2b url(../images/nft-market/popup_background.jpg) top right no-repeat ;
+
+  border-radius: 5px;
+
+  ///new element
+  h1 {
+    display: block;
+    width: 100%;
+    height: 63px;
+    font: normal 24px "Work Sans", sans-serif;
+    line-height: 63px;
+    text-align: center;
+    color:#FFFFFF;
+    border-bottom: 1px solid #353849;
+  }
 }
 
+///new element
+.contents_box {
+  width: 100%;
+  padding: 34px;
+}
+
+.submit_box {
+  margin-top: 25px;
+  justify-content:center ;
+}
+
+.close_popup {
+  cursor: pointer;
+  position: absolute;
+  top:15px;
+  right: 15px;
+  width: 35px;
+  height: 35px;
+  background: url(../images/nft-market/close.png) center center no-repeat;
+  -webkit-transition: all .5s ease-in-out;
+  -moz-transition: all .5s ease-in-out;
+  -ms-transition: all .5s ease-in-out;
+  -o-transition: all .5s ease-in-out;
+  transition: all .5s ease-in-out;
+
+  &:hover {
+    background: url(../images/nft-market/close_hover.png) center center no-repeat;
+  }
+
+}
+/// ----------e:new coding:popup container:edited
+
+/// ----------new coding:form-control:edited
 .form-control {
+  width: 100%;
   display: flex;
-  align-items: center;
+  margin-bottom: 15px;
+  flex-wrap: wrap;
+  
 
-  font-size: 18px;
+  ///new element
+  img {
+    width: 31.08%;
+    margin: 0 4.07% 0 0;
+  }
+  ///new element
+  .items_information {
+    font: normal 24px "Work Sans", sans-serif;
+    width: 64.17%;
 
-  margin-bottom: 25px;
+    h2 {
+      font-weight: 500;
+      line-height: 100%;
+      color:#ffffff;
+      overflow: hidden;
+    }
+    p {
+      font-size: 18px;
+      line-height: 150%;
+      color: #98999A;
+      strong {
+        font-size: 18px;
+        font-weight: 500;
+        line-height: 150%;
+        color: #F52871;
+      }
+    }
+  }
 
+  /*
   > *:nth-child(1) {
     width: 140px;
   }
@@ -163,24 +281,157 @@ main {
     width: calc(100% - 140px);
   }
 
-  > .label {
-    color: #c4c4c4;
+ 
+  */
+  ///new element
+  .box {
+    width: 100%;
+    position: relative;
+  }
+  
+  ///new element
+  .box select {
+    -webkit-appearance: none;
+    appearance: none;
+    cursor: pointer;
+  }
+  
+  ///new element
+  .box::before {
+    content: "";
+    width: 25px;
+    height: 20px;
+    display: block;
+    background:url(../images/nft-market/arrow.png) center center no-repeat;
+    position: absolute;
+    right:15px;
+    top:15px;
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -ms-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+    z-index: 99999;
+    -moz-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);
+  }
+  
+  ///new element
+  .box:hover::before {
+    background: url(../images/nft-market/arrow_hover.png) center center no-repeat;
+  }
+  
+  ///new element
+  .box select option {
+    padding: 30px;
   }
 
-  > input[type='text'],
-  input[type='number'] {
+  ///new element
+  .extra_row {
+    width: 100% ;
+    margin-top: 12px;
+
+    p {
+      font-size: 16px;
+      line-height: 150%;
+      color: #98999A;
+      text-align: right;  
+
+      strong {
+        font: normal 16px;
+        font-weight: normal;
+        line-height: 100%;
+        color: #FFFFFF;
+        margin-left: 14px;
+      }
+    }
+  }
+
+  label {
+    color: #c4c4c4;
+    font-size: 16px;
+    line-height: 150%;
+    margin-bottom: 8px;
+    display: block;
+    
+  }
+  .flex_column {
+    width: 31.08%;
+    margin:0 4.07% 0 0;
+    
+    &:nth-child(2n) {
+      width: 64.17%;
+      margin-right: 0;
+    }
+    
+  }
+  ///new element
+  .input_boundingbox {
+    width: 100%;
+    position: relative;
+  }
+  ///new element
+  .box select,
+  input[type=number] {
+    width: 100%;
     display: block;
     height: 50px;
     padding: 0 15px;
     border: 1px solid #353849;
     border-radius: 5px;
+    -webkit-border-radius: 5px;
+    -moz-border-radius: 5px;
+    -o-border-radius: 5px;
 
     font-size: inherit;
     line-height: inherit;
     font-family: inherit;
     color: $text-color-text;
-    background-color: #171a2b;
+    background: #353849;
+    position: relative;
+    
+    &::-webkit-inner-spin-button,
+    &::-webkit-outer-spin-button {
+        -webkit-appearance: none;
+    }
   }
+
+  ///new element
+  .increment,
+  .decrement {
+    width: 25px;
+    height: 20px;
+    display: block;
+    background: url(../images/nft-market/arrow.png) center center no-repeat;
+    position: absolute;
+    right:15px;
+    top:5px;
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -ms-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+
+    &:hover {
+      background: url(../images/nft-market/arrow_hover.png) center center no-repeat;
+    }
+  }
+
+  .decrement {
+    top: auto;
+    bottom: 5px;
+    -moz-transform: rotate(180deg);
+    -webkit-transform: rotate(180deg);
+    -o-transform: rotate(180deg);
+    -ms-transform: rotate(180deg);
+    transform: rotate(180deg);      
+  }
+/// ----------e:new coding:form-control:edited
+
+
 
   .radioContainer {
     user-select: none;
@@ -310,61 +561,47 @@ main {
   bottom: 0;
 
   background-color: rgba($color: #000, $alpha: 0.5);
+}
 
-  .containerX {
+
+
+
+.closeX {
+  position: absolute;
+  top: 7px;
+  right: 15px;
+
+  cursor: pointer;
+  user-select: none;
+
+  padding: 10px;
+}
+
+.titleX {
+  color: $text-color-light;
+  font-size: 18px;
+  line-height: 1;
+
+  margin-bottom: 20px;
+}
+
+.descriptionX {
+  position: relative;
+
+  margin-bottom: 30px;
+
+  > img {
     position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-
-    width: 500px;
-    max-height: 700px;
-    overflow-y: auto;
-    padding: 25px 80px;
-
-    display: flex;
-    flex-flow: column nowrap;
-
-    background-color: #171a2b;
-
-    border-radius: 5px;
-  }
-
-  .closeX {
-    position: absolute;
-    top: 7px;
-    right: 15px;
-
-    cursor: pointer;
-    user-select: none;
-
-    padding: 10px;
-  }
-
-  .titleX {
-    color: $text-color-light;
-    font-size: 18px;
-    line-height: 1;
-
-    margin-bottom: 20px;
-  }
-
-  .descriptionX {
-    position: relative;
-
-    margin-bottom: 30px;
-
-    > img {
-      position: absolute;
-      top: 0;
-      left: -60px;
-    }
-  }
-
-  .okX {
-    background-color: $primary-color;
+    top: 0;
+    left: -60px;
   }
 }
+
+
+.okX {
+  background-color: $primary-color;
+}
+
 
 .popupGift {
   z-index: 99999;

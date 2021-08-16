@@ -1,5 +1,21 @@
 @import "./common.scss";
 
+.open_detail_btn {
+    font:16px normal "Worksans";
+    font-weight: normal;
+    line-height: 100%;
+    text-decoration-line: underline;
+    color: #24B7E8;
+    -webkit-transition: all .5s ease-in-out;
+    -moz-transition: all .5s ease-in-out;
+    -ms-transition: all .5s ease-in-out;
+    -o-transition: all .5s ease-in-out;
+    transition: all .5s ease-in-out;
+    &:hover {
+        color: $primary-color;
+    }
+}
+
 .market-popupX {
     z-index: 99999;
     position: fixed;
@@ -10,16 +26,16 @@
   
     background-color: rgba($color: #000, $alpha: 0.5);
   
-    .market-containerX {
+    .containerX {
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
   
-      width: 800px;
+      width: 615px;
       max-height: 700px;
       overflow-y: auto;
-      padding: 25px 80px;
+    
   
       display: flex;
       flex-flow: column nowrap;
