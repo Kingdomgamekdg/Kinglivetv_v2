@@ -193,28 +193,28 @@ class SubcripberAsset {
                     payment_token: payload.bid_token,
                     expiration: payload.expiration,
                     time: payload.time,
-                    status: 1,//1 order, 2 accept, 3 cancel
+                    status: 0,//0 order, 1 accept, 2 cancel
                 });
                 currentList.bid_orders.push(bidOrder);
                 await currentList.save();
             } else if (data.channel === 'new_accept_bid'){
-                const bidOrder = await BidOrders.findOne({ contract:payload.contract, id: payload.bid_order_id});
+                const bidOrder = await BidOrders.findOne({ contract:payload.contract, id:Number(payload.bid_order_id)});
                 const currentList = await ListingAssets.findOne({_id:ObjectId(bidOrder.list_id) }).populate('assets').populate('bid-orders');
 
                 console.log("bidOrder",bidOrder);
                 console.log("currentList",currentList);
 
-                if(payload.is_accept){
-                    bidOrder.status = 2;
+                if(payload.is_accept=='true'){
+                    bidOrder.status = 1;
                     await bidOrder.save();
                     currentList.quantity=new Number(currentList.quantity) - new Number(bidOrder.quantity);
                     await currentList.save();
                 }
               
             } else if (data.channel === 'new_cancel_bid'){
-                const bidOrder = await BidOrders.findOne({ contract:payload.contract,id: payload.bid_order_id});
-                if(payload.is_accept){
-                    bidOrder.status=3;
+                const bidOrder = await BidOrders.findOne({ contract:payload.contract,id: Number(payload.bid_order_id)});
+                if(payload.is_accept=='false'){
+                    bidOrder.status=2;
                     await bidOrder.save();
                 }
               
