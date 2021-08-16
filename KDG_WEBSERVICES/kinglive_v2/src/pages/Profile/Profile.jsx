@@ -205,7 +205,14 @@ export default function Profile() {
   }
 
   const handleDeleteVideo = async (videoId) => {
-    console.log('handleDeleteVideo', videoId)
+    try {
+      const res = await callAPI.delete(`/video?id=${videoId}`)
+      if (res.status === 1) {
+        setUploadList(uploadList.filter((video) => video._id !== videoId))
+      }
+    } catch (error) {
+      console.log(error)
+    }
   }
 
   return (
