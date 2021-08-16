@@ -3,12 +3,12 @@ const Validation = require('../middlewares/validation')
 
 const schema = {
   mimetype: Joi.string(),
-  id:Joi.string(),
+  id: Joi.string()
 }
 
 const actions = {
   getTotalAssets: [],
-  getAsset:[]
+  getAsset: []
 }
 
 module.exports = Validation(schema, actions)

@@ -12,9 +12,18 @@ class ListingAssetsService extends BaseService {
       .sort({ quantity: 1 })
       .limit(limit)
       .populate({
-        path: 'asset owner',
+        path: 'owner users',
         populate: {
           path: 'kyc.avatar uploads'
+        }
+      })
+      .populate({
+        path: 'asset',
+        populate: {
+          path: 'owner users',
+          populate: {
+            path: 'kyc.avatar uploads'
+          }
         }
       })
       .populate({
@@ -41,15 +50,77 @@ class ListingAssetsService extends BaseService {
     return data
   }
 
+  async getListingAssetsByIds ({ ids }) {
+    const data = await this
+      .find({
+        _id: { $in: ids }
+      })
+      .populate({
+        path: 'owner users',
+        populate: {
+          path: 'kyc.avatar uploads'
+        }
+      })
+      .populate({
+        path: 'asset',
+        populate: {
+          path: 'owner users',
+          populate: {
+            path: 'kyc.avatar uploads'
+          }
+        }
+      })
+      .populate({
+        path: 'buys',
+        populate: {
+          path: 'from to',
+          populate: {
+            path: 'kyc.avatar uploads'
+          }
+        }
+      })
+      .populate({
+        path: 'bid_orders',
+        populate: {
+          path: 'from to',
+          populate: {
+            path: 'kyc.avatar uploads'
+          }
+        }
+      })
+      .lean()
+    data.reverse()
+
+    const order = ids.reduce((obj, o, i) => {
+      obj[o] = i
+      return obj
+    }, {})
+
+    data.sort(function (a, b) {
+      return order[a._id.toString()] - order[b._id.toString()]
+    })
+
+    return data
+  }
+
   async getTopSellAssets (conditions, limit) {
     const data = await this
       .find(conditions)
       .sort({ quantity: 1 })
       .limit(limit)
       .populate({
-        path: 'asset owner',
+        path: 'owner users',
         populate: {
           path: 'kyc.avatar uploads'
+        }
+      })
+      .populate({
+        path: 'asset',
+        populate: {
+          path: 'owner users',
+          populate: {
+            path: 'kyc.avatar uploads'
+          }
         }
       })
       .populate({
