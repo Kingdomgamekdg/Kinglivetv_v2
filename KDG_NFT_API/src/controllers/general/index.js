@@ -35,9 +35,10 @@ module.exports = class {
       const { ...conditions } = queries
 
       if (!conditions.status) {
-        conditions.status = 2
+        conditions.status = 1
       }
-      const data = await BidOrdersService.getTopSeller(conditions, 'quantity', limit)
+      const type = 'quantity'
+      const data = await BuysService.getTopSeller(conditions, type, limit)
       _res.status(200).json({
         data
       })
@@ -55,7 +56,8 @@ module.exports = class {
       } = _req.paging
 
       const { ...conditions } = queries
-      const data = await BuysService.getTopSeller(conditions, limit)
+      const type = 'payment_amount'
+      const data = await BuysService.getTopSeller(conditions, type, limit)
 
       _res.status(200).json({
         data
