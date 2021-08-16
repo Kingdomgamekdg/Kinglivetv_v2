@@ -24,14 +24,24 @@ class ListingAssetsService extends BaseService {
   }
 
   async getListingAssetsByIds ({ ids }) {
+    console.log(ids)
     const data = await this
       .find({
         _id: { $in: ids }
       })
       .populate({
-        path: 'asset owner',
+        path: 'owner users',
         populate: {
           path: 'kyc.avatar uploads'
+        }
+      })
+      .populate({
+        path: 'asset',
+        populate: {
+          path: 'owner users',
+          populate: {
+            path: 'kyc.avatar uploads'
+          }
         }
       })
       .populate({
@@ -75,9 +85,18 @@ class ListingAssetsService extends BaseService {
       .sort({ quantity: 1 })
       .limit(limit)
       .populate({
-        path: 'asset owner',
+        path: 'owner users',
         populate: {
           path: 'kyc.avatar uploads'
+        }
+      })
+      .populate({
+        path: 'asset',
+        populate: {
+          path: 'owner users',
+          populate: {
+            path: 'kyc.avatar uploads'
+          }
         }
       })
       .populate({
