@@ -7,5 +7,4 @@ const UserAssetValidation = require('../validations/user-asset')
 module.exports = router => {
     router.get('/user-asset', isAuthenticated, UserAssetValidation('getAssets'), controller.getUserAsset)
     router.get('/user-assets-by-ids', isAuthenticated, controller.getUserAssetByIds)
-
 }

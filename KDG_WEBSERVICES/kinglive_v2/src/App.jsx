@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Route, Switch } from 'react-router'
 import './assets/scss/profile.scss'
 import './assets/scss/styles.scss'
@@ -21,6 +21,14 @@ import WatchVideo from './pages/WatchVideo'
 
 function App() {
   const [IsOpenSidebar, setIsOpenSidebar] = useState(false)
+
+  useEffect(() => {
+    window.addEventListener('click', () =>
+      document
+        .querySelectorAll('.profile😢__video .menu')
+        .forEach((menu) => menu.classList.remove('show'))
+    )
+  }, [])
 
   return (
     <>

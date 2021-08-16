@@ -1,38 +1,13 @@
 'use strict'
 const BaseService = require('../../cores/base-service')
 const Model = require('../../models/Buys')
+const UploadsService = require('../../services/upload')
 
 class BuysService extends BaseService {
-  async getTopSeller ({ limit }) {
+  async getTotalAssetVolume (conditions) {
     return this.aggregate([
       {
-        $match: {
-          status: 1
-        }
-      },
-      {
-        $group: {
-          _id: '$from',
-          payment_amount: { $sum: '$payment_amount' }
-        }
-      },
-      {
-        $sort: {
-          payment_amount: -1
-        }
-      },
-      {
-        $limit: limit
-      }
-    ])
-  }
-
-  async getTotalAssetVolume ({ status = 1 }) {
-    return this.aggregate([
-      {
-        $match: {
-          status
-        }
+        $match: conditions
       },
       {
         $group: {
@@ -41,6 +16,42 @@ class BuysService extends BaseService {
         }
       }
     ])
+  }
+
+  async getTopSeller (conditions, type, limit) {
+    let topSeller = await this.aggregate([
+      {
+        $match: conditions
+      },
+      {
+        $group: {
+          _id: '$to',
+          [type]: { $sum: `$${type}` }
+        }
+      },
+      {
+        $lookup: {
+          from: 'users',
+          localField: '_id',
+          foreignField: '_id',
+          as: 'user'
+        }
+      },
+      { $unwind: { path: '$user', preserveNullAndEmptyArrays: true } },
+      {
+        $sort: {
+          quantity: -1
+        }
+      },
+      {
+        $limit: limit
+      }
+    ])
+
+    if (topSeller.length) {
+      topSeller = await UploadsService.mappingAvatar({ data: topSeller, key: 'user' })
+    }
+    return topSeller
   }
 }
 

@@ -54,27 +54,9 @@ module.exports = class {
     try {
       const queries = _req.query
 
-      const {
-        isLock,
-        isReviewer,
-        kycStatus
-      } = queries
+      const { ...conditions } = queries
 
-      const condition = {}
-
-      if (isLock !== undefined) {
-        condition.isLock = isLock
-      }
-
-      if (isReviewer !== undefined) {
-        condition.isReviewer = isReviewer
-      }
-
-      if (kycStatus !== undefined) {
-        condition['kyc.status'] = kycStatus
-      }
-
-      const totalUsers = await UsersService.count(condition)
+      const totalUsers = await UsersService.count(conditions)
 
       _res.status(200).json({
         total: totalUsers || 0

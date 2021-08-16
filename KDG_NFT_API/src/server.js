@@ -21,6 +21,7 @@ const database = require('./libs/database')
 const events = require('events')
 const eventEmitter = new events.EventEmitter()
 const mongoose = require('mongoose')
+const mongoQueryString = require('../src/middlewares/mongo-querystring')
 
 class Server {
   /**
@@ -52,6 +53,8 @@ class Server {
     })
     // Defines api routes
     app.use('/api', router)
+
+    router.use(mongoQueryString)
 
     const models = fs.readdirSync(Path.join(__dirname, '/models'))
 
