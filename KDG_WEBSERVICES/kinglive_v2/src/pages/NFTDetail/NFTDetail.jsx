@@ -172,6 +172,8 @@ const NFTDetail = () => {
         .cancelListed(marketList[currentIndex].id)
         .send({ from: window.ethereum.selectedAddress })
         .then((result) => {
+            reloadList()
+            setIsOpenBuy(false)
         })
     }
 
@@ -180,6 +182,8 @@ const NFTDetail = () => {
             .acceptBid(bidId)
             .send({ from: window.ethereum.selectedAddress })
             .then((result) => { 
+                reloadList()
+                setIsOpenBuy(false)
             })
         }
     const handleCancelBid = async (bidId) => {
@@ -187,6 +191,8 @@ const NFTDetail = () => {
             .cancelBid(bidId)
             .send({ from: window.ethereum.selectedAddress })
             .then((result) => {
+                reloadList()
+                setIsOpenBuy(false)
             })
     }   
 
