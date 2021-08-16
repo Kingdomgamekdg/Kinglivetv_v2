@@ -3,13 +3,211 @@ aside {
     position: fixed;
     width: 76px ;
     transition: .3s ;
+
+    
+
+    .bottom_box {
+        border-top:1px solid #353849;
+        width: 100%;
+        display: flex;
+        position: absolute;
+        bottom: 0;
+        flex-wrap: wrap;
+        padding: 15px 0 0 0;
+        min-height: 73px;
+
+
+        &::before {
+            content: '';
+            width:25px;
+            height: 25px;
+            bottom: 25px;
+            background:url(../images/sidebar/settings.png) center center no-repeat ;
+            right: 25px;
+            display: block;
+            position: absolute;
+            -webkit-transition: all .5s ease-in-out;
+            -moz-transition: all .5s ease-in-out;
+            -ms-transition: all .5s ease-in-out;
+            -o-transition: all .5s ease-in-out;
+            transition: all .5s ease-in-out; 
+            cursor: pointer;
+        }
+
+        
+        &:hover{
+
+            &::before{
+                background:url(../images/sidebar/settings_hover.png) center center no-repeat ;
+            }
+            
+        }
+
+        div {
+            width: 50%;
+            padding: 7px 0;
+            display: none;
+            justify-content: center;
+
+            .coin_KDG {
+                width: 25px;
+                height: 25px;
+                background: url(../images/sidebar/KDG_coin.png) center center no-repeat;
+                margin: 0 5px 0 0;
+            }
+
+            p{
+                line-height: 25px;
+                font:18px normal "Worksans";
+                font-weight: 500;
+                color: #C4C4C4;
+            }
+
+            a {
+                width: 25px;
+                height: 25px;
+                display: block;
+                margin:0 4px;
+            }
+
+            .medium {
+                background: url(../images/sidebar/medium.png) center center no-repeat;
+                &:hover,&.active {
+                    background: url(../images/sidebar/medium_hover.png) center center no-repeat;
+                }
+            }
+
+            .telegram {
+                background: url(../images/sidebar/telegram.png) center center no-repeat;
+                &:hover,&.active {
+                    background: url(../images/sidebar/telegram_hover.png) center center no-repeat;
+                }
+            }
+
+            .twitter {
+                background: url(../images/sidebar/twitter.png) center center no-repeat;
+                &:hover,&.active {
+                    background: url(../images/sidebar/twitter_hover.png) center center no-repeat;
+                }
+            }
+
+            .global {
+                background: url(../images/sidebar/global.png) center center no-repeat;
+                &:hover,&.active {
+                    background: url(../images/sidebar/global_hover.png) center center no-repeat;
+                }
+            }
+
+            .en {
+                background: url(../images/sidebar/EN.png) center center no-repeat;
+                &:hover {
+                    background: url(../images/sidebar/EN_hover.png) center center no-repeat;
+                }
+            }
+        }
+
+
+        /* switch */
+        #display_mode {
+            input:checked + .slider {
+              background: linear-gradient(114.16deg, #0F0077 16.1%, #B4138B 84.83%) !important;
+            }
+          
+            .slider:after {
+              position: absolute;
+              content: "";
+              height: 18px;
+              width: 18px;
+              left: 7px;
+              bottom: 6px;
+              display: block;
+              z-index: 998;
+            }
+          }
+          
+          .switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+            
+          
+            input {
+              opacity: 0;
+              width: 0;
+              height: 0;
+            }
+          }
+          
+          .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: #242832;
+            -webkit-transition: .4s;
+            transition: .4s;
+          
+            &:before {
+              position: absolute;
+              content: "";
+              height: 20px;
+              width: 20px;
+              left: 2px;
+              bottom: 1px;
+              background-color: #F1F3F4;
+              -webkit-transition: .4s;
+              transition: .4s;
+              z-index: 999;
+            }
+          }
+          
+          input:checked + .slider {
+            background-color: #FAC800;
+          
+            &:before {
+              -webkit-transform: translateX(24px);
+              -ms-transform: translateX(24px);
+              transform: translateX(24px);
+            }
+          }
+          
+          .slider.round {
+            border-radius: 34px;
+            border: 1px solid #C4C4C4;
+          
+            &:before {
+              border-radius: 50%;
+            }
+          }
+        
+        
+        
+    }
+
+
+
+    ._transit {
+        -webkit-transition: all .5s ease-in-out;
+        -moz-transition: all .5s ease-in-out;
+        -ms-transition: all .5s ease-in-out;
+        -o-transition: all .5s ease-in-out;
+        transition: all .5s ease-in-out;  
+    }
     .item {
         display: flex;
         align-items: center;
-        padding: 30px;
+        padding: 26px;
         cursor: pointer;
         position: relative;
         flex-wrap: wrap;
+        -webkit-transition: all .5s ease-in-out;
+        -moz-transition: all .5s ease-in-out;
+        -ms-transition: all .5s ease-in-out;
+        -o-transition: all .5s ease-in-out;
+        transition: all .5s ease-in-out;
         img {
             transition: .3s;
             width: 22px;
@@ -18,7 +216,6 @@ aside {
             opacity: 0;
             pointer-events: none;
             transition: .3s;
-            margin-left: 20px;
             position: absolute;
             left: -100%;
             top: 50%;
@@ -32,7 +229,8 @@ aside {
             height: 100%;
             top: 0;
             left: 0;
-            background: linear-gradient(274.68deg, rgba(1, 197, 255, 0) 3.94%, rgba(254, 2, 247, 0.55) 96.54%);
+            /*background: linear-gradient(274.68deg, rgba(1, 197, 255, 0) 3.94%, rgba(254, 2, 247, 0.55) 96.54%);*/
+            background: linear-gradient(90deg, rgba(254, 2, 247, 0.55) 0%, rgba(1,197,255,0.15)  96.54%);
             transition: .3s;
         }
         &:hover, &.active {
@@ -42,6 +240,32 @@ aside {
             >span {
                 color: #F52871;
             }
+            
+        }
+        .arrow {
+            display: none;
+            width: 25px;
+            height: 25px;
+            background: url(../images/nft-market/arrow_hover.png) center center no-repeat;
+            position: absolute;
+            right:26px;
+            top: 30%;
+            -moz-transform: rotate(180deg);
+            -webkit-transform: rotate(180deg);
+            -o-transform: rotate(180deg);
+            -ms-transform: rotate(180deg);
+            transform: rotate(180deg);
+            &:hover {
+                top: 35%;
+                -moz-transform: rotate(0);
+                -webkit-transform: rotate(0);
+                -o-transform: rotate(0);
+                -ms-transform: rotate(0);
+                transform: rotate(0);
+                
+            }
+
+            
         }
         .child {
             display: flex;
@@ -51,10 +275,30 @@ aside {
             left: -100%;
             transition: .3s;
             transform: translate(-100% , 0);
+
+            .child-item {
+                padding:15px 0;
+                
+                &:hover {
+                    color: #F52871;
+                }
+            }
+            
         }
     }
     &.large {
         width: 240px;
+        .bottom_box {
+
+            &::before {
+                display: none;
+            }
+            
+            div {
+                display: flex;
+            }
+        }
+
         .item {
             // justify-content: flex-start;
             span {
@@ -67,9 +311,12 @@ aside {
                 flex-direction: column;
                 position: absolute;
                 top: 100%;
-                left: 90px;
+                left: 70px;
                 transition: .3s;
                 transform: translate(0 , 0);
+            }
+            .arrow {
+                display: block;
             }
         }
     }
