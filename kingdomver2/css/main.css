@@ -114,11 +114,11 @@ body{background:#14151a url(../resources/images/main_bg.png) top center no-repea
 .kingliveTV img {display:block;margin:0 auto;position:relative;}
 .kingliveTV .pos1 {top:59px;left:324px;animation-delay: -0.2s;}
 .kingliveTV .pos2 {top:69px;right:310px;animation-delay: -0.4s;}
-.kingliveTV .pos3 {top:250px;left:237px;animation-delay: -0.6s;}
+.kingliveTV .pos3 {top:250px;left:330px;animation-delay: -0.6s;}
 .kingliveTV .pos4 {top:250px;right:237px;animation-delay: -0.8s;}
 
 /* --MAIN-CONTAINER:NFT  -- */
-.NFT ._desc {width:763px;float:left;}
+.NFT ._desc {width:763px;float:left;margin:70px 0 0 0;}
 .NFT ._desc h2 {text-align:left;}
 .NFT ._desc p {text-align:left;margin:15px 0 30px 0;}
 .NFT ._desc ul {display:block;}
@@ -249,6 +249,9 @@ body{background:#14151a url(../resources/images/main_bg.png) top center no-repea
 
 
 /* ----FOOTER:right content ----*/
-.footer ._right_content {width:856px;float:right;min-height:30px;padding-top:82px;}
-.footer ._right_content a {display:block;float:left;color:#C3C3C3;font-size:20px;min-width:230px;margin:0 0 32px 0;text-align:left;}
+.footer ._right_content {width:856px;float:right;min-height:30px;padding-top:3px;display:flex;justify-content:center;}
+.footer ._right_content ul {width:33.33%;display:flex;flex-wrap:wrap;}
+.footer ._right_content ul li {width:100%;font-size:20px;color:#C3C3C3;font-weight:bold;margin:0 0 32px 0;display:block;overflow:hidden;line-height:24px;}
+.footer ._right_content ul li:first-child {height:30px;}
+.footer ._right_content a {display:block;width:100%;color:#C3C3C3;text-align:left;font-weight:normal;}
 .footer ._right_content a:hover, .footer ._right_content a:active {color:#FAC800;}

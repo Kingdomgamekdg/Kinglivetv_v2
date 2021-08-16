@@ -221,7 +221,7 @@
 	.kingliveTV .pos1 {top:19.35%;left:19.22%;}
 	.kingliveTV .pos2 {top:21.7%;right:18.13%;}
 	.kingliveTV .pos3 {top:59.82%;left:12.95%;}
-	.kingliveTV .pos4 {top:59.82%;right:11.55%;}
+	.kingliveTV .pos4 {top:59.82%;right:16.55%;}
 	
 	
 	/* --MAIN-CONTAINER:NFT  -- */
@@ -232,7 +232,7 @@
 	.NFT ._illustration img {margin:63px auto 0 auto;width:63.94%;}
 	.NFT ._desc ._btn {margin:20px 0 0 0;}
 
-	.NFT .pos1 {top:27.63%;left:22.14%;padding:10px 11px;}
+	.NFT .pos1 {top:27.63%;left:8.14%;padding:10px 11px;}
 	.NFT .pos2 {top:50.35%;left:5.54%;padding:21px;}
 	.NFT .pos3 {top:68%%;right:3.1%;padding:25px;}
 	.boxes {width:114px;height:114px;margin:15px 15px 15px 0;padding:22px 0;}
@@ -390,7 +390,7 @@
 	
 	/* --MAIN-CONTAINER:NFT  -- */
 
-	.NFT ._desc {width:100%;}
+	.NFT ._desc {width:100%;margin-top:0;}
 	.NFT ._desc p {margin:15px 0 20px 0;}
 	.NFT ._desc ul li {font-size:14px;line-height:1.25em;}
 	.NFT ._desc ul li span {background-size:22px;margin:0 8px 0 0;width:22px;height:22px;}
@@ -398,7 +398,7 @@
 	.NFT ._illustration img {display:block;margin:35px auto 0 auto;width:39.08%;}
 	.NFT ._desc ._btn {margin:20px 0 0 0;}
 	
-	.NFT .pos1 {top:76px;left:10.34%;}
+	.NFT .pos1 {top:76px;left:17.34%;}
 	.NFT .pos2 {top:185px;left:5.58%;padding:25px;}
 	.NFT .pos3 {top:238px;right:4.27%;padding:25px;}
 	.boxes {width:126px;height:126px;margin:0px 20px 0 0;}
@@ -492,15 +492,15 @@
 	.partners ._illustration a:nth-child(6) img {max-height:7.81vw;}
 	
 	/* ----FOOTER:left content ----*/
-	.footer ._left_content {width:49.92%;}
+	.footer ._left_content {width:40.92%;}
 	.footer ._left_content p {font-size:14px;line-height:20px;}
 	.footer ._left_content ul li {margin:40px 23px 0 0;}
 	.footer ._left_content ul li:last-child {margin:40px 0 0 0;}
 
 	
 	/* ----FOOTER:right content ----*/
-	.footer ._right_content {width:49.92%;float:right;min-height:30px;padding-top:30px;}
-	.footer ._right_content a {float:left;font-size:18px;min-width:50.0%;text-align:left;margin:0 0 38px 0;}
+	.footer ._right_content {width:58.92%;float:right;min-height:30px;padding-top:0;}
+	.footer ._right_content a {float:left;font-size:14px;text-align:left;}
 
 }
 
@@ -666,7 +666,7 @@
 	.footer ._left_content ul {display:block;margin:0 auto;max-width:265px;}
 	/* ----FOOTER:right content ----*/
 	.footer ._right_content {width:100%;float:right;min-height:30px;padding-top:41px;}
-	.footer ._right_content a {float:left;font-size:18px;width:50%;text-align:left;margin:0 0 20px 0;min-width:0;box-sizing:border-box;padding-left:12%;}
+	.footer ._right_content ul li {font-size:16px;}
+	.footer ._right_content a {float:left;font-size:12px;text-align:left;min-width:0;box-sizing:border-box;}
 	.footer ._right_content a:hover, .footer ._right_content a:active {color:#FAC800;}
-	.footer ._right_content a:nth-child(4n) {max-width:50%;}
 }
