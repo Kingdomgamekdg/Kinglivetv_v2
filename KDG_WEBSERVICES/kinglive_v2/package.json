@@ -3,8 +3,6 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
-    "@bscsswap/sdk": "^0.2.3",
-    "@bscsswap/uikit": "^0.14.15",
     "@ethersproject/contracts": "^5.4.1",
     "@ethersproject/providers": "^5.4.3",
     "@ethersproject/solidity": "^5.4.0",

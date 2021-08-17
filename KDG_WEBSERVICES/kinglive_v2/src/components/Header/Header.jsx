@@ -43,121 +43,117 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
   const [isWrongNetwork, setIsWrongNetwork] = useState(false)
   const [balance, setBalance] = useState(0)
 
-  const createUser = useCallback(async () => {
-    if (!window.ethereum.selectedAddress) return
+  // const createUser = useCallback(async () => {
+  //   if (!window.ethereum.selectedAddress) return
 
-    try {
-      await callAPI.post('/user', { address: window.ethereum.selectedAddress })
-    } catch (error) {
-      console.log('error create')
-      console.log(error)
-    }
-  }, [])
+  //   try {
+  //     await callAPI.post('/user', { address: window.ethereum.selectedAddress })
+  //   } catch (error) {
+  //     console.log('error create')
+  //     console.log(error)
+  //   }
+  // }, [])
 
-  const loginUser = useCallback(async () => {
-    if (!window.ethereum.selectedAddress) return
+  // const loginUser = useCallback(async () => {
+  //   if (!window.ethereum.selectedAddress) return
 
-    try {
-      const res = await callAPI.post('/login', { address: window.ethereum.selectedAddress })
+  //   try {
+  //     const res = await callAPI.post('/login', { address: window.ethereum.selectedAddress })
 
-      if (res.status === 1) {
-        storage.setToken(res.jwt)
-        storage.setRefresh(res.refreshToken)
-        dispatch(asyncChangeUser())
-      }
+  //     if (res.status === 1) {
+  //       storage.setToken(res.jwt)
+  //       storage.setRefresh(res.refreshToken)
+  //       dispatch(asyncChangeUser())
+  //     }
 
-      if (res.status === 100) {
-        await createUser()
-        await loginUser()
-      }
-    } catch (error) {
-      console.log('error login')
-      console.log(error)
-    }
-  }, [createUser, dispatch])
+  //     if (res.status === 100) {
+  //       await createUser()
+  //       await loginUser()
+  //     }
+  //   } catch (error) {
+  //     console.log('error login')
+  //     console.log(error)
+  //   }
+  // }, [createUser, dispatch])
 
-  const setupMetaMask = useCallback(async () => {
-    const { Decimal } = require('decimal.js')
-    if (!window.ethereum) return
-    if (!window.ethereum.isMetaMask) return
+  // const setupMetaMask = useCallback(async () => {
+  //   const { Decimal } = require('decimal.js')
+  //   if (!window.ethereum) return
+  //   if (!window.ethereum.isMetaMask) return
 
-    window.web3 = new Web3(window.ethereum)
-    // if (window.ethereum.networkVersion && window.ethereum.networkVersion !== 97) {
-    //   setIsWrongNetwork(true)
-    // } else {
-    //   setIsWrongNetwork(false)
-    // }
-    window.contractKL1155 = new window.web3.eth.Contract(ABIKL1155, addressKL1155)
-    window.contractMarket = new window.web3.eth.Contract(ABIMarket, addressMarket)
-    window.contractERC20 = new window.web3.eth.Contract(ABIERC20, addressERC20)
-    if (window.ethereum.selectedAddress && window.contractERC20) {
-      const balance = await window.contractERC20.methods
-        .balanceOf(window.ethereum.selectedAddress)
-        .call()
-      const grossBalance = new Decimal(balance).div(new Decimal(10).pow(18))
-      setBalance(grossBalance.toNumber())
-    }
-    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
-    dispatch(actChangeAddress(accounts[0]))
-  }, [dispatch])
+  //   window.web3 = new Web3(window.ethereum)
+  //   window.contractKL1155 = new window.web3.eth.Contract(ABIKL1155, addressKL1155)
+  //   window.contractMarket = new window.web3.eth.Contract(ABIMarket, addressMarket)
+  //   window.contractERC20 = new window.web3.eth.Contract(ABIERC20, addressERC20)
 
-  // accountsChanged
-  useEffect(() => {
-    const { Decimal } = require('decimal.js')
-    if (!window.ethereum) return
-    if (!window.ethereum.isMetaMask) return
+  //   if (window.ethereum.selectedAddress && window.contractERC20) {
+  //     const balance = await window.contractERC20.methods
+  //       .balanceOf(window.ethereum.selectedAddress)
+  //       .call()
+  //     const grossBalance = new Decimal(balance).div(new Decimal(10).pow(18))
+  //     setBalance(grossBalance.toNumber())
+  //   }
 
-    window.ethereum.on('accountsChanged', async function (accounts) {
-      dispatch(actChangeAddress(accounts[0]))
-      await loginUser()
-      if (window.ethereum && window.contractERC20) {
-        const balance = await window.contractERC20.methods.balanceOf(accounts[0]).call()
-        const grossBalance = new Decimal(balance).div(new Decimal(10).pow(18))
-        setBalance(grossBalance.toNumber())
-      }
-      if (accounts[0]) return
-      storage.clearToken()
-      storage.clearRefresh()
-    })
+  //   const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
+  //   dispatch(actChangeAddress(accounts[0]))
+  // }, [dispatch])
 
-    window.ethereum.on('networkChanged', async function (networkId) {
-      console.log('networkId ', networkId)
-      if (networkId === 97) {
-        setIsWrongNetwork(false)
-      } else {
-        setIsWrongNetwork(true)
-      }
-    })
-  }, [dispatch, loginUser])
+  // useEffect(() => {
+  //   const { Decimal } = require('decimal.js')
+  //   if (!window.ethereum) return
+  //   if (!window.ethereum.isMetaMask) return
 
-  useEffect(() => {
-    async function xxx() {
-      if (window.ethereum && window.ethereum.isMetaMask) {
-        await setupMetaMask()
-        await loginUser()
-      }
-    }
-    xxx()
-  }, [setupMetaMask, loginUser])
+  //   window.ethereum.on('accountsChanged', async function (accounts) {
+  //     dispatch(actChangeAddress(accounts[0]))
+  //     await loginUser()
+  //     if (window.ethereum && window.contractERC20) {
+  //       const balance = await window.contractERC20.methods.balanceOf(accounts[0]).call()
+  //       const grossBalance = new Decimal(balance).div(new Decimal(10).pow(18))
+  //       setBalance(grossBalance.toNumber())
+  //     }
+  //     if (accounts[0]) return
+  //     storage.clearToken()
+  //     storage.clearRefresh()
+  //   })
 
-  const connectMetaMask = useCallback(async () => {
-    setIsOpenConnect(false)
+  //   window.ethereum.on('networkChanged', async function (networkId) {
+  //     console.log('networkId ', networkId)
+  //     if (networkId === 97) {
+  //       setIsWrongNetwork(false)
+  //     } else {
+  //       setIsWrongNetwork(true)
+  //     }
+  //   })
+  // }, [dispatch, loginUser])
 
-    if (window.ethereum && window.ethereum.isMetaMask) {
-      await setupMetaMask()
-      await loginUser()
-      return
-    }
+  // useEffect(() => {
+  //   async function xxx() {
+  //     if (window.ethereum && window.ethereum.isMetaMask) {
+  //       await setupMetaMask()
+  //       await loginUser()
+  //     }
+  //   }
+  //   xxx()
+  // }, [setupMetaMask, loginUser])
 
-    setInsMetaMask(true)
-  }, [setupMetaMask, loginUser])
+  // const connectMetaMask = useCallback(async () => {
+  //   setIsOpenConnect(false)
 
-  const handleLogout = async () => {
-    dispatch(actChangeAddress(null))
-    window.web3 = null
-    storage.clearToken()
-    storage.clearRefresh()
-  }
+  //   if (window.ethereum && window.ethereum.isMetaMask) {
+  //     await setupMetaMask()
+  //     await loginUser()
+  //     return
+  //   }
+
+  //   setInsMetaMask(true)
+  // }, [setupMetaMask, loginUser])
+
+  // const handleLogout = async () => {
+  //   dispatch(actChangeAddress(null))
+  //   window.web3 = null
+  //   storage.clearToken()
+  //   storage.clearRefresh()
+  // }
 
   return (
     <>
@@ -206,7 +202,7 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
           <p>
             Connect to a wallet <span onClick={() => setIsOpenConnect(false)}></span>
           </p>
-          <div className='item' onClick={connectMetaMask}>
+          <div className='item'>
             <span>Metamask</span>
             <div className='icon'>
               <img src={metamask} alt='' />
@@ -392,18 +388,23 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
               </div>
             </div>
           </div>
-          <div
+
+          {/* <div
             onClick={() => setIsOpenConnect(true)}
             className={`connect ${currentAddress ? 'disabled' : ''}`}
           >
             {currentAddress ? shortAddress(currentAddress) : 'Connect'}
-          </div>
+          </div> */}
+
           <UnlockButton />
+
           <div onClick={() => setIsOpenProfile(!IsOpenProfile)} className='profile'>
             <span className='avatar'>
               <img src={logo} alt='' />
             </span>
+
             <span className='name'>{userName}</span>
+
             <svg
               width='10'
               height='6'
@@ -416,6 +417,7 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
                 fill='#C4C4C4'
               />
             </svg>
+
             <div className={`dropdown ${IsOpenProfile ? 'show' : ''}`}>
               <div className='top'>
                 <div className='avatar-name'>
@@ -498,7 +500,7 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
               </div>
 
               <div className='bot'>
-                <div className='item' onClick={() => handleLogout()}>
+                <div className='item'>
                   <svg
                     width='15'
                     height='15'
@@ -532,7 +534,6 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
               </div>
             </div>
           </div>
-         
         </div>
       </header>
     </>
