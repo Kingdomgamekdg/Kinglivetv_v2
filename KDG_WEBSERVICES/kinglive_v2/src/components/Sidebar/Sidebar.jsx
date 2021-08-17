@@ -10,7 +10,13 @@ import swap from '../../assets/images/sidebar/swap.svg'
 import swapactive from '../../assets/images/sidebar/swapactive.svg'
 import book from '../../assets/images/sidebar/book.svg'
 import bookactive from '../../assets/images/sidebar/bookactive.svg'
+import more from '../../assets/images/sidebar/more.svg'
+import moreactive from '../../assets/images/sidebar/moreactive.svg'
 import { useHistory, useLocation } from 'react-router'
+
+const state = {
+  isChecked: true,
+};
 
 const page = [
   {
@@ -57,6 +63,26 @@ const page = [
     icon: book,
     active: bookactive,
   },
+  {
+    route: '/more',
+    name: 'More',
+    icon: more,
+    active: moreactive,
+    child: [
+      {
+        route: '/Audit',
+        name: 'Audit',
+      },
+      {
+        route: '/Docs',
+        name: 'Docs',
+      },
+      {
+        route: '/Github',
+        name: 'Github',
+      },
+    ],
+  },
 ]
 
 export default function Sidebar({ IsOpenSidebar }) {
@@ -82,6 +108,8 @@ export default function Sidebar({ IsOpenSidebar }) {
     })
   }, [IsOpenSidebar])
 
+  
+
   const location = useLocation()
   const history = useHistory()
 
@@ -92,12 +120,17 @@ export default function Sidebar({ IsOpenSidebar }) {
           <div
             key={o.route}
             onClick={() => history.push(o.route)}
-            className={`item ${location.pathname === o.route ? 'active' : ''}`}
+            className={`item _transit ${location.pathname === o.route ? 'active' : ''}`}
           >
             <img src={location.pathname === o.route ? o.active : o.icon} alt='' />
             <span>{o.name}</span>
-            {o.child && (
+            {/*---------btn:arrow onclick show/hide child_box---------*/}
+            {o.child ? <a href="#" className='_transit arrow'></a> 
+            : null}{/*-----e:arrow------ */}  
+            {o.child && (              
+              
               <div className='child'>
+                
                 {o.child.map((child) => (
                   <div
                     key={child.route}
@@ -105,15 +138,47 @@ export default function Sidebar({ IsOpenSidebar }) {
                       e.stopPropagation()
                       history.push(child.route)
                     }}
-                    className='child-item'
+                    className='child-item _transit'
                   >
                     <span>{child.name}</span>
                   </div>
                 ))}
               </div>
-            )}
+            )}{/*-----e:child------ */}  
           </div>
         ))}
+        {/*---------bottom box:arrow onclick show/hide child_box---------*/}
+
+        <div className="bottom_box">
+          <span className="setting_ico" ></span>
+          <div>
+            <span className="coin_KDG"></span>
+            <p>12,370</p>
+          </div>
+
+          <div>
+            <a href="#" class="_transit link medium"></a>
+            <a href="#" class="_transit link telegram"></a>
+            <a href="#" class="_transit link twitter"></a>
+          </div>
+
+          <div>
+            <form>
+              <label class="switch" id="display_mode">
+                <input type="checkbox" 
+                  defaultChecked={state.isChecked}
+                  />
+                <span class="slider round"></span>
+              </label>{/*---e:display_mode---*/}      
+            </form>
+          </div>
+
+          <div>
+            <a href="#" class="_transit global"></a>
+            <a href="#" class="_transit en "></a>
+          </div>
+
+        </div>{/*-----e:bottom_box------ */}  
       </aside>
     </>
   )
