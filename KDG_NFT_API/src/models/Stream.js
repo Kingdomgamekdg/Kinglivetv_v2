@@ -19,4 +19,4 @@ const StreamSchema = new Schema({
     viewing: { type: Number, default: 0 }
 })
 
-mongoose.model('streams', StreamSchema)
+module.exports = mongoose.model('streams', StreamSchema)

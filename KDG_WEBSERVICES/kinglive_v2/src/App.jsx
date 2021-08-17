@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { Route, Switch } from 'react-router'
 import './assets/scss/profile.scss'
 import './assets/scss/styles.scss'
@@ -8,6 +8,9 @@ import Home from './pages/Home'
 import Live from './pages/Live'
 import MintNFT from './pages/MintNFT'
 import MyArtwork from './pages/MyArtwork'
+import MyArtworkDetail from './pages/MyArtworkDetail'
+import NFTDetail from './pages/NFTDetail'
+
 import NFT from './pages/NFT'
 import Profile from './pages/Profile'
 import Setup from './pages/Setup'
@@ -18,6 +21,14 @@ import WatchVideo from './pages/WatchVideo'
 
 function App() {
   const [IsOpenSidebar, setIsOpenSidebar] = useState(false)
+
+  useEffect(() => {
+    window.addEventListener('click', () =>
+      document
+        .querySelectorAll('.profile😢__video .menu')
+        .forEach((menu) => menu.classList.remove('show'))
+    )
+  }, [])
 
   return (
     <>
@@ -30,8 +41,9 @@ function App() {
           <Route path='/live' component={Live} exact />
           <Route path='/nft-market' component={NFT} exact />
           <Route path='/my-artwork' component={MyArtwork} exact />
+          <Route path='/my-artwork-detail' component={MyArtworkDetail} exact />
           <Route path='/mint-nft' component={MintNFT} exact />
-
+          <Route path='/nft-detail' component={NFTDetail} exact />
           <Route path='/upload' component={Upload} exact />
           <Route path='/setup' component={Setup} exact />
           <Route path='/profile' component={Profile} exact />

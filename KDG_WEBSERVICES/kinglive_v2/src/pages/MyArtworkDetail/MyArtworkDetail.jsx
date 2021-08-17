@@ -9,12 +9,13 @@ import arrowLeft from '../../assets/images/nft-market/arrow-left.png'
 import imgSlide from '../../assets/images/nft-market/img-slide.png'
 import zoom from '../../assets/images/nft-market/zoom.png'
 import '../../assets/scss/my-artwork-detail.scss'
-import '../../assets/scss/styles.scss'
 import address from '../../assets/images/nft-market/Vector.png'
 import callAPI from '../../axios'
 import { ABIKL1155, addressKL1155 } from '../../contracts/KL1155'
 import { paymentList } from '../../contracts/ERC20'
 import { ABIMarket, addressMarket } from '../../contracts/Market'
+const { Decimal } = require('decimal.js')
+
 const MyArtworkDetail = () => {
     const userRedux = useSelector((state) => state.user)
     const ids = new URLSearchParams(window.location.search).get('ids')
@@ -26,6 +27,14 @@ const MyArtworkDetail = () => {
     const [isOpenSell, setIsOpenSell] = useState(false)
     const [isApprovedForAll, setIsApprovedForAll] = useState(false)
     const isReviewer = useMemo(() => userRedux?.isReviewer, [userRedux])
+    const address = useMemo(() => userRedux?.address, [userRedux])
+    const isOwner = useMemo(() => userRedux?.address==userAssetList[currentIndex]?.user?.address, [userAssetList,currentIndex])
+    const [priceSell, setPriceSell] = useState(0)
+    const [quantitySell, setQuantitySell] = useState(0)
+    const totalPayment = useMemo(() => {
+        return new Decimal(priceSell).mul(quantitySell).toNumber()
+    }, [priceSell,quantitySell])
+
 
     useEffect(() => {
         ;(async () => {
@@ -33,17 +42,26 @@ const MyArtworkDetail = () => {
             const res = await callAPI.get(`/user-assets-by-ids?ids=${ids}`)
             setUserAssetList(res?.data?res.data:[])
           } catch (error) {}
+        })()
+      }, [])
 
-          if (window.web3 && window.web3.eth && window.contractKL1155) {
+
+
+    useEffect(() => {
+        ;(async () => {
+          if (window.web3 && window.web3.eth && window.contractKL1155 && address) {
             window.contractKL1155.methods
             .isApprovedForAll(window.ethereum.selectedAddress, addressMarket)
             .call()
             .then((approved) => {
               setIsApprovedForAll(approved)
             })
-        }
+          }
         })()
-      }, [index])
+      }, [address])
+
+    
+
 
     SwiperCore.use([Navigation , Lazy]);
 
@@ -72,7 +90,7 @@ const MyArtworkDetail = () => {
                 slidesPerView={1}
                 initialSlide={currentIndex}
                 onSlideChange={(swiper) => {setCurrentIndex(swiper.realIndex)}}
-                onSwiper={(swiper) => console.log(swiper)}
+                onSwiper={()=>{}}
             >{ContentSwiper(userAssetList)}
             </Swiper>
         )
@@ -109,7 +127,7 @@ const MyArtworkDetail = () => {
               100000000
             )
             .send({ from: window.ethereum.selectedAddress })
-
+            history.push('/my-artwork')
           }
       }
     
@@ -118,26 +136,49 @@ const MyArtworkDetail = () => {
       //   setSellingItem(item)
       // }
     
-      const handleAccept = async (item) => {
+      const handleAccept = async () => {
         if(window.web3 && window.contractKL1155){
           const result = await window.contractKL1155.methods
-          .reviewAsset(item.asset.id, true)
+          .reviewAsset(userAssetList[currentIndex].asset.id, true)
           .send({ from: window.ethereum.selectedAddress })
         if (result) {
+            let newList=[...userAssetList]
+            let item = {...newList[currentIndex]};
+            item.asset.status = 1
+            newList[currentIndex]=item
+            setUserAssetList(newList)
         }
         }
       }
 
 
-      const handleDeny = async (item) => {
+      const handleReject = async () => {
         if(window.web3 && window.contractKL1155){
           const result = await window.contractKL1155.Contract(ABIKL1155, addressKL1155).methods
-            .reviewAsset(item.asset.id, false)
+            .reviewAsset(userAssetList[currentIndex].asset.id, false)
             .send({ from: window.ethereum.selectedAddress })
           if (result) {
+            let newList=[...userAssetList]
+            let item = {...newList[currentIndex]};
+            item.asset.status = 2
+            newList[currentIndex]=item
+            setUserAssetList(newList)
           }
         }
       }
+
+      const handleChangeAmount = (event) => {
+        let { value, min, max } = event.target;
+        value = Math.max(Number(min), Math.min(Number(max), Number(value)));
+        setQuantitySell(value)
+        
+      };
+
+      const handleChangePrice = (event) => {
+        let { value, min, max } = event.target;
+        value = Math.max(Number(min), Math.min(Number(max), Number(value)));
+        setPriceSell(value)
+      };
 
     return (
             <>
@@ -147,8 +188,8 @@ const MyArtworkDetail = () => {
                         <form className='containerX' onSubmit={handleSell} onClick={(e) => e.stopPropagation()}>
 
                             {/*new element: popup name */}
-                            <h1>Bidding</h1>
-                            <span className='close_popup'></span>
+                            <h1>Sell</h1>
+                            <span className='close_popup' onClick={()=> setIsOpenSell(false)}></span>
                             {/*---------e:popup name ------------------*/}
 
                             <div className='contents_box'>
@@ -159,11 +200,7 @@ const MyArtworkDetail = () => {
                                     {/* e:new element: items_information : contain items information */}
                                     <div className="items_information">
                                         <h2>{userAssetList[currentIndex]?.asset?.metadata?.name}</h2>
-                                        <p>gif<br />
-                                            {/* e:new element: Price */}
-                                            <strong>
-                                                100.000 KDG
-                                            </strong>{/* ---e:Price--- */}
+                                        <p>{userAssetList[currentIndex]?.asset?.metadata?.mimetype}<br />
                                         </p>{/* ---e:Type--- */}
 
                                     </div>{/* --e:form-items_information-- */}
@@ -184,18 +221,36 @@ const MyArtworkDetail = () => {
                                     <div className="flex_column">
                                         <label>Quantity</label>
                                         <div className="input_boundingbox">
-                                            <input type='number' min='1' max={userAssetList[currentIndex].amount} name='_quantity' />
-                                            <span className="increment"></span>
-                                            <span className="decrement"></span>
+                                            <input type='hidden' id='_contract' name='_contract' value={userAssetList[currentIndex]?.asset?.collection_id}/>
+                                            <input type='hidden' id='_id' name='_id' value={userAssetList[currentIndex]?.asset?.id}/>
+
+                                            <input type='number' id='_quantity' min='1' max={userAssetList[currentIndex].amount}  onChange={(e)=> handleChangeAmount(e) } name='_quantity' value={quantitySell}/>
+                                            <span className="increment" onClick={()=> {
+                                                    if(quantitySell>= userAssetList[currentIndex].amount) return 
+                                                    setQuantitySell(quantitySell+1)
+                                                }
+                                            }></span>
+                                            <span className="decrement" onClick={()=>  {
+                                                    if(quantitySell <= 1) return 
+                                                    setQuantitySell(quantitySell-1)
+                                                }}></span>
                                         </div>{/* ---e:input_boundingbox---*/} 
                                     </div>{/* ---e:flex_column--- */}
 
                                     <div className="flex_column">
                                         <label>Price</label>
                                         <div className="input_boundingbox">
-                                            <input type='number' min='1'name='_price' />
-                                            <span className="increment"></span>
-                                            <span className="decrement"></span>
+                                            <input type='number' id='_price' name='_price' min='1' max='50000' name='_price' onChange={(e)=> handleChangePrice(e) } value={priceSell} />
+                                            <span className="increment" onClick={()=> {
+                                                    if(priceSell>= 50000) return 
+                                                    setPriceSell(priceSell+1)
+                                                }
+                                            }></span>
+                                            <span className="decrement" onClick={()=> {
+                                                    if(priceSell<= 1) return 
+                                                    setPriceSell(priceSell-1)
+                                                }
+                                            }></span>
                                         </div>{/* ---e:input_boundingbox---*/} 
                                     </div>{/* ---e:flex_column--- */}
 
@@ -213,10 +268,25 @@ const MyArtworkDetail = () => {
 
                                     </div>{/* ---e:flex_column--- */}
 
+                                    <div className="flex_column">
+                                        <label>Type</label>
+                                        <div className="box">
+                                            <select name='_mask'>
+                                                <option value="1">Sell</option>
+                                                <option value="2">Aution</option>
+                                            </select>
+                                        </div>{/* ---e:box---*/}
+
+                                        
+
+                                    </div>{/* ---e:flex_column--- */}
+
+    
+
                                     
                                     <div className="extra_row">
                                         <p>Estimated Amount:
-                                            <strong>0 KDG </strong>
+                                            <strong>{totalPayment} KDG </strong>
                                         </p>
                                     </div>{/* ---e:extra_row---*/}
 
@@ -227,7 +297,7 @@ const MyArtworkDetail = () => {
                                 <div className='form-control submit_box'>
 
                                     <button type="submit" className='buttonX'>Comfirm</button>
-                                    <button className='buttonX--cancel' >Cancel </button>   
+                                    <button className='buttonX--cancel' onClick={()=> setIsOpenSell(false)}>Cancel </button>   
 
                                 </div>{/* --------------e:form-control------------------------ */}
 
@@ -260,6 +330,7 @@ const MyArtworkDetail = () => {
                         </form>{/* --------------e:containerX------------------------ */}
                     </div>
                  )}{/* --------------e:popupX------------------------ */}
+
                 <div className="main-wrapper">
                     <div className="box-slide-artwork">
                         <div className="box-return" onClick={() => history.push('/my-artwork')}>
@@ -348,12 +419,47 @@ const MyArtworkDetail = () => {
                                 </div>
                             </div>
                         </div>
-                        {userAssetList[currentIndex]?.asset?.status===1 && (
+                        {isOwner && isApprovedForAll && userAssetList[currentIndex]?.asset?.status === 1 && (
                             <div className="artist-content-button">
                             <button type="button" className="btn-sell" onClick={()=> setIsOpenSell(true)}>
                                 Sell
                             </button>
                         </div>
+                        )} 
+
+                        {isOwner && !isApprovedForAll && userAssetList[currentIndex]?.asset?.status === 1 && (
+                            <div className="artist-content-button">
+                            <button type="button" className="btn-sell" onClick={()=> handleApprove()}>
+                                Approval for sell
+                            </button>
+                        </div>
+                        )} 
+
+                        {isReviewer && userAssetList[currentIndex]?.asset?.status===0 && (
+                            <>
+                            <div className="artist-content-button">
+                            <button type="button" className="btn-accept" onClick={()=> handleAccept()}>
+                                Accept
+                            </button>
+                            </div>
+                            <div className="artist-content-button">
+                            <button type="button" className="btn-reject" onClick={()=> handleReject()}>
+                                Reject
+                            </button>
+                            </div>
+                            </>
+                       
+                        )} 
+
+                        {isReviewer && !isOwner && userAssetList[currentIndex]?.asset?.status === 2 && (
+                            <div className="artist-content-status-reject">
+                                Rejected
+                            </div>
+                        )} 
+                        {isReviewer && !isOwner && userAssetList[currentIndex]?.asset?.status === 1 && (
+                            <div className="artist-content-status-accept">
+                                Accepted
+                            </div>
                         )} 
                 
                     </div>

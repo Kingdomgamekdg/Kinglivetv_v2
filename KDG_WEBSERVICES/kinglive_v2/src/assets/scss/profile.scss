@@ -130,6 +130,9 @@
   }
 
   &__statistic {
+    --color-1: #01c5ff;
+    --color-2: #fe02f7;
+
     display: flex;
     flex-flow: row wrap;
     margin-bottom: 25px;
@@ -164,7 +167,7 @@
           font-size: 26px;
           line-height: 1;
           font-weight: 700;
-          background: linear-gradient(to right, #01c5ff, #fe02f7);
+          background: linear-gradient(to right, var(--color-1), var(--color-2));
           background-clip: text;
           -webkit-background-clip: text;
           -webkit-text-fill-color: transparent;
@@ -201,6 +204,9 @@
       position: relative;
 
       > *:nth-child(1) {
+        cursor: pointer;
+        user-select: none;
+
         color: #fff;
         font-size: 18px;
 
@@ -242,9 +248,19 @@
     font-weight: 500;
 
     margin-bottom: 25px;
+
+    display: flex;
+    align-items: center;
+
+    > span:nth-child(1) {
+      margin-right: 8px;
+    }
   }
 
   &__video {
+    cursor: pointer;
+    user-select: none;
+
     border-radius: 5px;
     overflow: hidden;
     background-color: #1e1f24;
@@ -271,10 +287,8 @@
     > .info {
       position: relative;
 
-      margin-top: 10px;
-      padding-left: 10px;
+      padding: 10px;
       padding-right: 30px;
-      padding-bottom: 10px;
 
       > *:nth-child(1) {
         color: $text-color-light;
@@ -292,7 +306,43 @@
         top: 0;
         right: 0;
 
-        padding: 0 13px;
+        padding: 9px 13px;
+      }
+
+      > .menu {
+        display: none;
+
+        position: absolute;
+        bottom: 100%;
+        right: 0;
+        padding: 5px 0;
+
+        background-color: #353849;
+        border-radius: 5px;
+
+        &.show {
+          display: block;
+        }
+
+        > .item {
+          padding: 5px 15px;
+
+          color: #c4c4c4;
+          font-size: 16px;
+          line-height: 1;
+
+          > * {
+            vertical-align: middle;
+          }
+
+          > img {
+            margin-right: 10px;
+          }
+
+          &:hover {
+            background-color: rgba(255, 255, 255, 0.1);
+          }
+        }
       }
     }
   }
