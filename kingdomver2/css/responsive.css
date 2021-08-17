@@ -60,7 +60,7 @@
 	.kingliveTV .pos1 {top:19.27%;left:21.21%;}
 	.kingliveTV .pos2 {top:21.51%;right:22.07%;}
 	.kingliveTV .pos3 {top:59.78%;left:15.52%;}
-	.kingliveTV .pos4 {top:59.78%;right:15.52%;}
+	.kingliveTV .pos4 {top:59.78%;right:20.52%;}
 	
 	
 	/* --MAIN-CONTAINER:NFT  -- */
@@ -169,6 +169,10 @@
 	/* ----FOOTER:right content ----*/
 	.footer ._right_content {width:64.16%;float:right;min-height:30px;padding-top:76px;}
 	.footer ._right_content a {float:left;font-size:18px;min-width:25.0%;text-align:left;margin:0 0 28px 0;}
+	
+	
+	/*----SUBPAGE----------*/
+	.fixed_content {font-size:14px;}
 
 }
 
@@ -309,6 +313,10 @@
 	/* ----FOOTER:right content ----*/
 	.footer ._right_content {width:64.16%;float:right;min-height:30px;padding-top:76px;}
 	.footer ._right_content a {float:left;font-size:18px;min-width:25.0%;text-align:left;margin:0 0 28px 0;}
+	
+	/*----SUBPAGE----------*/
+	.fixed_content {font-size:14px;}
+
 
 }
 
@@ -383,9 +391,9 @@
 	.kingliveTV ._attribute {padding:0.375em 0.625em;}
 	.kingliveTV img {width:63.88%;margin-top:1.25em;}
 	.kingliveTV .pos1 {top:50.2px;left:13.96%;}
-	.kingliveTV .pos2 {top:67.4px;right:8.54%;}
+	.kingliveTV .pos2 {top:67.4px;right:17.54%;}
 	.kingliveTV .pos3 {top:140.7px;left:5.91%;}
-	.kingliveTV .pos4 {top:121px;right:3.78%;}
+	.kingliveTV .pos4 {top:121px;right:12.78%;}
 	
 	
 	/* --MAIN-CONTAINER:NFT  -- */
@@ -501,6 +509,10 @@
 	/* ----FOOTER:right content ----*/
 	.footer ._right_content {width:58.92%;float:right;min-height:30px;padding-top:0;}
 	.footer ._right_content a {float:left;font-size:14px;text-align:left;}
+	
+	/*----SUBPAGE----------*/
+	.fixed_content {font-size:13px;}
+
 
 }
 
@@ -669,4 +681,13 @@
 	.footer ._right_content ul li {font-size:16px;}
 	.footer ._right_content a {float:left;font-size:12px;text-align:left;min-width:0;box-sizing:border-box;}
 	.footer ._right_content a:hover, .footer ._right_content a:active {color:#FAC800;}
+	
+	/*----SUBPAGE----------*/
+	.fixed_content {font-size:11px;}
+	._left_content .fcontent_list li a {font-size:0.75em;}
+	.fixed_content h1  {font-size:1em /*30px*/;line-height:1.6em;}
+	.fixed_content ._right_content h5 {font-size:0.75em;}
+	.fixed_content ._right_content h3 {font-size:1.2em;}
+	.fixed_content ._right_content p {font-size:1em;}
+
 }
