@@ -295,7 +295,7 @@ export default function MintNFT() {
             />
           </div>
 
-          <div className='upload__right'>
+          <div className='upload__right fbox_custom'>
             <div className='upload__label'>Name</div>
 
             <input
@@ -314,6 +314,15 @@ export default function MintNFT() {
               className='upload__textarea'
               placeholder='Enter description for video'
             ></textarea>
+
+            <input 
+              type="checkbox"
+              className="upload__checkbox"
+            />
+            <label>I declare that this is an original artwork.
+I understand that no plagiarism is allowed, and that the artwork can be removed anytime if detected.<br />
+            <span>*** Note: </span>Mint an NFT charges 0.01BNB, please do not upload my sensitive content
+            </label>
           </div>
         </div>
 
