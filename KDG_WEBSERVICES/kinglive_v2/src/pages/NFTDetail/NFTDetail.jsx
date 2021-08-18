@@ -730,7 +730,7 @@ const NFTDetail = () => {
                                                 {buy.from?.kyc?.last_name?buy.from?.kyc?.last_name + ' '+buy.from?.kyc?.first_name : '0x.....' + buy.from?.address?.substring(buy.from?.address?.length - 8,buy.from?.address?.length)}
                                                 </span>
                                                 <span className="info-date">
-                                                    {new Date(buy?.time*1000).toDateString}
+                                                    {new Date(buy?.time).toDateString}
                                                 </span>
                                             </div>
                                         </div>
