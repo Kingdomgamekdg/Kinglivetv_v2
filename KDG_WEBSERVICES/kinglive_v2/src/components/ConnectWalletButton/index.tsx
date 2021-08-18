@@ -7,8 +7,12 @@ import useI18n from '../../hooks/useI18n'
 const UnlockButton: React.FC<ButtonProps> = (props) => {
   const TranslateString = useI18n()
   const { account, activate, deactivate } = useWeb3React()
+  console.log({ account })
+  // console.log({ walletconnect, bsc, injected })
 
   const handleLogin = (connectorId: ConnectorId) => {
+    console.log('runnnn')
+
     if (connectorId === 'walletconnect') {
       return activate(walletconnect)
     }
@@ -34,7 +38,6 @@ const UnlockButton: React.FC<ButtonProps> = (props) => {
         </>
       ) : (
         <>
-          {' '}
           <Button
             className='connect-custom'
             onClick={onPresentConnectModal}
