@@ -386,14 +386,8 @@ const MyArtworkDetail = () => {
                                     {userAssetList[currentIndex]?.asset?.metadata?.description}
                                     </span>
                                     <span className="color-fff d-block mar-t-10"> 
-                                        NFT coins: BSCS
-                                    </span>
-                                    <span className="color-fff d-block mar-t-10"> 
                                         Channel: KingLive
-                                    </span>
-                                    <span className="color-blue d-block mar-t-10"> 
-                                        #characters #weapon #pat
-                                    </span>
+                                    </span>      
                                 </p>
                             </div>
                         </div>
