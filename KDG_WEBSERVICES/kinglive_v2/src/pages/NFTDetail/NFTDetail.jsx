@@ -645,7 +645,7 @@ const NFTDetail = () => {
                                 return (
                                     <tr>
                                     <td >
-                                        {bid.from?.kyc?.last_name?bid.from?.kyc?.last_name + ' '+bid.from?.kyc?.first_name : bid.from?.address?.substring(bid.from?.address?.length - 8,bid.from?.address?.length)}
+                                        {bid.from?.kyc?.last_name?bid.from?.kyc?.last_name + ' '+bid.from?.kyc?.first_name :'0x.....'+ bid.from?.address?.substring(bid.from?.address?.length - 8,bid.from?.address?.length)}
                                     </td>
                                     <td>
                                     {bid.quantity}

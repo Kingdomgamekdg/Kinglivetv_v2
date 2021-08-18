@@ -40,19 +40,32 @@ export default function MyArtwork() {
 
   const getAssets = useCallback(
     async (status) => {
-      var ids = AssetList.map((o) => o._id)
+      if(status !==3)
+      {
+        var ids = AssetList.map((o) => o._id)
+        const res = await callAPI.get(
+          `/user-asset?limit=20&${ids.length ? `ids=${ids}` : ''}&status=${status}`,
+          true) 
+        if (res?.data?.length === 0) {
+          isLoadMore.current = false
+          setAssetList([...AssetList])
+          return
+        }
+        setAssetList([...AssetList, ...(res?.data ? res.data : [])])
+      } else {
+        var ids = AssetList.map((o) => o._id)
+        const res = await callAPI.get(
+          `/buys/bidding?limit=20&${ids.length ? `ids=${ids}` : ''}`,
+          true) 
+        if (res?.data?.length === 0) {
+          isLoadMore.current = false
+          setAssetList([...AssetList])
+          return
+        }
+        setAssetList([...AssetList, ...(res?.data ? res.data : [])])
 
-      const res = await callAPI.get(
-        `/user-asset?limit=20&${ids.length ? `ids=${ids}` : ''}&status=${status}`,
-        true) 
-      
-      if (res?.data?.length === 0) {
-        isLoadMore.current = false
-        setAssetList([...AssetList])
-        return
       }
-
-      setAssetList([...AssetList, ...(res?.data ? res.data : [])])
+      
     },
     [AssetList]
   )
