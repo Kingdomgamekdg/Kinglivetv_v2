@@ -4,7 +4,7 @@ import { useSelector } from 'react-redux'
 import { useHistory } from "react-router-dom";
 import 'swiper/swiper.scss';
 import "swiper/components/navigation/navigation.min.css"
-import SwiperCore, {Navigation , Lazy} from 'swiper/core';
+import SwiperCore, {Navigation , Lazy , EffectFlip} from 'swiper/core';
 import arrowLeft from '../../assets/images/nft-market/arrow-left.png'
 import imgSlide from '../../assets/images/nft-market/img-slide.png'
 import zoom from '../../assets/images/nft-market/zoom.png'
@@ -63,7 +63,7 @@ const MyArtworkDetail = () => {
     
 
 
-    SwiperCore.use([Navigation , Lazy]);
+    SwiperCore.use([Navigation , Lazy , EffectFlip]);
 
     const ContentSwiper = () => {
         const list=[];
