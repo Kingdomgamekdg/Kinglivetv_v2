@@ -18,8 +18,12 @@ import Upload from './pages/Upload'
 import User from './pages/User'
 import WatchLive from './pages/WatchLive'
 import WatchVideo from './pages/WatchVideo'
+import { useMemo } from 'react'
+import { useDispatch } from 'react-redux'
+import { asyncGetNoti } from './store/actions'
 
 function App() {
+  const dispatch = useDispatch()
   const [IsOpenSidebar, setIsOpenSidebar] = useState(false)
 
   useEffect(() => {
@@ -29,6 +33,10 @@ function App() {
         .forEach((menu) => menu.classList.remove('show'))
     )
   }, [])
+
+  useMemo(() => {
+    dispatch(asyncGetNoti())
+  },[])
 
   return (
     <>

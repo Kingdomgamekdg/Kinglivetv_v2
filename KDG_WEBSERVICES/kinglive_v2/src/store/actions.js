@@ -28,14 +28,25 @@ export function actChangeAddress(address) {
 }
 
 export const CHANGE_NOTI = 'CHANGE_NOTI'
+export const CHANGE_UNREAD_NOTI = 'CHANGE_UNREAD_NOTI';
+
+export function actChangeUnreadNoti(unreadNoti) {
+  return {
+    type: CHANGE_UNREAD_NOTI,
+    payload: unreadNoti,
+  };
+}
+export function actChangeNoties(noties) {
+  return {
+    type: CHANGE_NOTI,
+    payload: noties,
+  };
+}
 export function asyncGetNoti() {
-  return async (dispatch) => {
-    try {
-      console.log(123);
-      const res = await callAPI.get('/noti')
-      console.log(res);
-      dispatch({ type: CHANGE_NOTI, payload: res.data })
-    } catch (error) {
-    }
-  }
+  return async dispatch => {
+    const res = await callAPI.get('/noti');
+    console.log(res);
+    dispatch(actChangeNoties(res.data));
+    dispatch(actChangeUnreadNoti(res.unread));
+  };
 }
