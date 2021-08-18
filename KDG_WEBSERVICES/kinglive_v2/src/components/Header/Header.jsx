@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom'
 import Web3 from 'web3'
 import kdg from '../../assets/images/header/kdg.png'
 import logo from '../../assets/images/header/logo.svg'
+import logoSVG from '../../assets/svg/logo.svg'
 import metamask from '../../assets/images/header/metamask.png'
 import trust from '../../assets/images/header/trust.png'
 import '../../assets/scss/header.scss'
@@ -169,6 +170,7 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
           </div>
         </div>
       )}
+
       {insMetaMask && (
         <div className='popupX'>
           <div className='containerX'>
@@ -249,9 +251,11 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
             <span></span>
             <span></span>
           </div>
-          <a href='/' className='logo'>
-            <img src={logo} alt='' />
-          </a>
+
+          <div className='logo' onClick={() => history.push('/')}>
+            <img src={logoSVG} alt='' />
+          </div>
+
           <div className='search-box'>
             <svg
               width='17'
