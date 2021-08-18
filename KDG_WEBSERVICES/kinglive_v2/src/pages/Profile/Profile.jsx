@@ -597,12 +597,7 @@ export default function Profile() {
                                   <span>Edit</span>
                                 </div> */}
 
-                                <div
-                                  className='item'
-                                  onClick={() => {
-                                    handleDeleteVideo(video._id)
-                                  }}
-                                >
+                                <div className='item' onClick={() => handleDeleteVideo(video._id)}>
                                   <img src={trashSVG} alt='' />
                                   <span>Delete</span>
                                 </div>
@@ -612,15 +607,10 @@ export default function Profile() {
                                   <span>Statistics</span>
                                 </div> */}
 
-                                <div
-                                  className='item'
-                                  onClick={() => {
-                                    // handleSetIntroduce(video._id)
-                                  }}
-                                >
+                                {/* <div className='item' onClick={() => handleSetIntroduce(video._id)}>
                                   <img src={pintopSVG} alt='' />
                                   <span>Pin top</span>
-                                </div>
+                                </div> */}
                               </div>
                             </div>
                           </div>

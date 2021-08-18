@@ -2,7 +2,7 @@ import '../../assets/css/home.css'
 import banner01 from '../../assets/images/home/b01.jpg'
 import banner02 from '../../assets/images/home/b02.jpg'
 import banner03 from '../../assets/images/home/b03.jpg'
-import kingIMG from '../../assets/images/home/King1.png'
+import kingIMG from '../../assets/images/home/King.gif'
 
 
 import { useCallback, useEffect, useRef, useState } from 'react'
@@ -12,8 +12,10 @@ import coverDefault from '../../assets/svg/coverDefault.jpg'
 import avatarDefault from '../../assets/svg/avatarDefault.svg'
 import { STORAGE_DOMAIN } from '../../constant'
 import convertDateAgo from '../../helpers/convertDateAgo'
+import { useMemo } from 'react'
+import { useHistory } from 'react-router-dom'
 
-
+import axios from 'axios'
 
 
 const slide = [banner01, banner02, banner03]
@@ -25,11 +27,22 @@ for (let index = 0; index < 100; index++) {
 
 
 export default function Home() {
-
+  const history = useHistory()
   
   const [ActiveSlide, setActiveSlide] = useState(0)
-  const [ActiveLive, setActiveLive] = useState(0)
+  const [Dashboard, setDashboard] = useState({})
+  const [MarketCap, setMarketCap] = useState({})
   
+  useMemo(() => {
+    callAPI.get('/dashboard')
+    .then(res => {
+      setDashboard(res.data)
+    })
+    axios.get('https://api.coingecko.com/api/v3/coins/markets?vs_currency=usd&ids=kingdom-game-4-0')
+    .then(res => {
+      setMarketCap(res.data[0])
+    })
+  },[])
   
   const timeout = useRef(null)
   useEffect(() => {
@@ -48,19 +61,6 @@ export default function Home() {
       clearTimeout(timeout.current)
     }
     setActiveSlide(index)
-  }, [])
-
-  const handlePlusSlideLive = useCallback(() => {
-    setActiveLive((_active) => {
-      if (_active === live.length - 1) return 0
-      return _active + 1
-    })
-  }, [])
-  const handleMinusSlideLive = useCallback(() => {
-    setActiveLive((_active) => {
-      if (_active === 0) return live.length - 1
-      return _active - 1
-    })
   }, [])
 
  
@@ -98,10 +98,10 @@ export default function Home() {
             <h3>For passionate community of streamers, gamers, fans & developers</h3>
 
             <ul className="home_navigator">
-              <li><a href="#" className='_transit'>Livestreaming</a><span></span></li>
-              <li><a href="#" className='_transit'>Mint NFT</a><span></span></li>
-              <li><a href="#" className='_transit'>Donate</a><span></span></li>
-              <li><a href="#" className='_transit'>Buy/Sell/Auction NFT</a><span></span></li>
+              <li><a href="#" onClick={()=>history.push('/setup')} className='_transit'>Livestreaming</a><span></span></li>
+              <li><a href="#" onClick={()=>history.push('/mint-nft')} className='_transit'>Mint NFT</a><span></span></li>
+              <li><a href="#" onClick={()=>history.push('/live')} className='_transit'>Donate</a><span></span></li>
+              <li><a href="#" onClick={()=>history.push('/nft-market')} className='_transit'>Buy/Sell/Auction NFT</a><span></span></li>
             </ul>
           </div>{/* --- e:split -----------------------*/}
 
@@ -115,19 +115,19 @@ export default function Home() {
 
           {/* ------------------------div: split -----------------------*/}
           <div className='split info_box'>
-            <span>Number of streamers<strong>2 million</strong></span>
-            <span>Number of videos<strong>2 million</strong></span>
-            <span>Number of hours watched<strong>2 million</strong></span>
-            <span>Number of views<strong>2 million</strong></span>
+            <span>Number of streamers<strong>{Dashboard.total_stream}</strong></span>
+            <span>Number of videos<strong>{Dashboard.total_video}</strong></span>
+            <span>Number of hours watched<strong>{Dashboard.watched_time}</strong></span>
+            <span>Number of views<strong>{Dashboard.total_view}</strong></span>
             
           </div>{/* --- e:split -----------------------*/}
 
           {/* ------------------------div: split -----------------------*/}
           <div className='split info_box'>
-            <span>Minted NFT<strong>2 million</strong></span>
-            <span>NFT transaction<strong>2 million</strong></span>
-            <span>NFT Trading volume<strong>2 million</strong></span>
-            <span>Volume donate<strong>2 million</strong></span>
+            <span>Minted NFT<strong>{Dashboard.minted_nft}</strong></span>
+            <span>NFT transaction<strong>{Dashboard.transaction}</strong></span>
+            <span>NFT Trading volume<strong>{Dashboard.volumn_transaction}</strong></span>
+            <span>Volume donate<strong>{Dashboard.watched_time}</strong></span>
            
           </div>{/* --- e:split -----------------------*/}
 
@@ -136,9 +136,9 @@ export default function Home() {
 
         <div className='bottom_line'>
           <div className='container'>
-            <span>Total supply:<strong>2 million</strong></span>
-            <span>Circulating:<strong>2 million</strong></span>
-            <span>Marketcap:<strong>2 million</strong></span>
+            <span>Total supply:<strong>988,125,000 KDG</strong></span>
+            <span>Circulating:<strong>{MarketCap.circulating_supply}</strong></span>
+            <span>Marketcap:<strong>{MarketCap.market_cap}</strong></span>
 
           </div>{/* --- e:bottom_line -----------------------*/} 
         </div>{/* --- e:bottom_line -----------------------*/}  

@@ -1,5 +1,8 @@
 import '../../assets/scss/live.scss'
-import banner from '../../assets/images/live/banner.png'
+// import banner from '../../assets/images/live/banner.png'
+import banner01 from '../../assets/images/home/b01.jpg'
+import banner02 from '../../assets/images/home/b02.jpg'
+import banner03 from '../../assets/images/home/b03.jpg'
 import { useCallback, useEffect, useRef, useState } from 'react'
 import callAPI from '../../axios'
 import emptyGift from '../../assets/svg/emptyGift.svg'
@@ -9,7 +12,8 @@ import { STORAGE_DOMAIN } from '../../constant'
 import convertDateAgo from '../../helpers/convertDateAgo'
 import { useHistory } from 'react-router-dom'
 
-const slide = [banner, banner, banner]
+// const slide = [banner, banner, banner]
+const slide = [banner01, banner02, banner03]
 
 const live = []
 for (let index = 0; index < 100; index++) {
@@ -265,7 +269,7 @@ export default function Live() {
                   <div className='tab-item'>
                     <div className='item'>
                       <div className='avatar'>
-                        <img src={banner} alt='' />
+                        <img src={avatarDefault} alt='' />
                       </div>
                       <div className='info'>
                         <div className='name'>Tên nà</div>
@@ -276,7 +280,7 @@ export default function Live() {
                   <div className='tab-item'>
                     <div className='item'>
                       <div className='avatar'>
-                        <img src={banner} alt='' />
+                        <img src={avatarDefault} alt='' />
                       </div>
                       <div className='info'>
                         <div className='name'>Tên nà</div>

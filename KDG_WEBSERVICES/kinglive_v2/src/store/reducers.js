@@ -1,4 +1,4 @@
-import { CHANGE_USER, CHANGE_ADDRESS } from './actions'
+import { CHANGE_USER, CHANGE_ADDRESS ,CHANGE_NOTI ,CHANGE_UNREAD_NOTI } from './actions'
 
 const initialState = {}
 
@@ -15,6 +15,19 @@ export default function reducers(state = initialState, action) {
       return {
         ...state,
         address: action.payload,
+      }
+    }
+
+    case CHANGE_NOTI: {
+      return {
+        ...state,
+        noties: action.payload,
+      }
+    }
+    case CHANGE_UNREAD_NOTI: {
+      return {
+        ...state,
+        unread_noti: action.payload,
       }
     }
 
