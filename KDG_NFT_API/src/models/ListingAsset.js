@@ -13,7 +13,7 @@ const ListingAssetSchema = new Schema({
     time: { type: Date },
     expiration: { type: Number },
     transaction: { type: String },
-    bid_orders: [{ type: Types.ObjectId, ref: 'bid-orders' }],
+    bid_orders: [{ type: Types.ObjectId, ref: 'buys' }],
     buys: [{ type: Types.ObjectId, ref: 'buys' }]
 
 })
