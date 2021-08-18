@@ -26,3 +26,16 @@ export const CHANGE_ADDRESS = 'CHANGE_ADDRESS'
 export function actChangeAddress(address) {
   return { type: CHANGE_ADDRESS, payload: address }
 }
+
+export const CHANGE_NOTI = 'CHANGE_NOTI'
+export function asyncGetNoti() {
+  return async (dispatch) => {
+    try {
+      console.log(123);
+      const res = await callAPI.get('/noti')
+      console.log(res);
+      dispatch({ type: CHANGE_NOTI, payload: res.data })
+    } catch (error) {
+    }
+  }
+}

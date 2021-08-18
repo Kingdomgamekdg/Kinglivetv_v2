@@ -17,7 +17,7 @@ import { ABIKL1155, addressKL1155 } from '../../contracts/KL1155'
 import { ABIMarket, addressMarket } from '../../contracts/Market'
 import shortAddress from '../../helpers/shortAddress'
 import storage from '../../helpers/storage'
-import { actChangeAddress, asyncChangeUser } from '../../store/actions'
+import { actChangeAddress, asyncChangeUser, asyncGetNoti } from '../../store/actions'
 import { EXPLORER_URL } from '../../constant'
 
 export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false }) {
@@ -159,6 +159,12 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
     storage.clearRefresh()
   }
 
+  const handleOpenNoti = useCallback(() => {
+    console.log(123);
+    setIsOpenNoti(!IsOpenNoti)
+    dispatch(asyncGetNoti())
+  },[IsOpenNoti])
+
   return (
     <>
       {isWrongNetwork && (
@@ -284,7 +290,7 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
           </div>
         </div>
         <div className='right'>
-          <div onClick={() => setIsOpenNoti(!IsOpenNoti)} className='noti'>
+          <div onClick={handleOpenNoti} className='noti'>
             <span>2</span>
             <svg
               width='18'
