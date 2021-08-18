@@ -61,8 +61,16 @@ export default function MyArtwork() {
           isLoadMore.current = false
           setAssetList([...AssetList])
           return
+        } else {
+          const bidings = res?.data.map(bid =>{
+            return {
+              user :bid.from,
+              asset: bid.asset,
+              listId: bid.list_id?._id
+            }
+          })
+          setAssetList([...AssetList, ...bidings])
         }
-        setAssetList([...AssetList, ...(res?.data ? res.data : [])])
 
       }
       
@@ -117,8 +125,13 @@ export default function MyArtwork() {
   
 
   const handleShowDetail = async (index) => {
-    var ids = AssetList.map((o) => o?._id)
-    history.push(`/my-artwork-detail?ids=${ids}&index=${index}`)
+    if(status === 3 ){
+      var ids = AssetList.map((o) => o?.listId)
+      history.push(`/nft-detail?ids=${ids}&index=${index}`)
+    } else {
+      var ids = AssetList.map((o) => o?._id)
+      history.push(`/my-artwork-detail?ids=${ids}&index=${index}`)
+    }
   }
 
   
