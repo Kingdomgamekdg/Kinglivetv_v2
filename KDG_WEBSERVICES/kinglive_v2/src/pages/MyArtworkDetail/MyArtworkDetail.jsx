@@ -79,6 +79,7 @@ const MyArtworkDetail = () => {
         })
         return list;
     }
+
     
     const SwiperComponent = () =>{
         const swiper = (

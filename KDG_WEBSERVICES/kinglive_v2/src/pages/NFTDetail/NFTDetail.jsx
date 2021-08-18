@@ -4,7 +4,8 @@ import { useSelector } from 'react-redux'
 import { useHistory } from "react-router-dom";
 import 'swiper/swiper.scss';
 import "swiper/components/navigation/navigation.min.css"
-import SwiperCore, {Navigation , Lazy} from 'swiper/core';
+import SwiperCore, {Navigation , Lazy , EffectFlip} from 'swiper/core';
+import "swiper/components/effect-flip/effect-flip.min.css"
 import arrowLeft from '../../assets/images/nft-market/arrow-left.png'
 import imgSlide from '../../assets/images/nft-market/img-slide.png'
 import zoom from '../../assets/images/nft-market/zoom.png'
@@ -49,6 +50,7 @@ const NFTDetail = () => {
     const [amountBuy, setAmountBuy] = useState(0)
     const [price, setPrice] = useState(0)    
     const { Decimal } = require('decimal.js')
+    
     const total = useMemo(() => {
         if(marketList[currentIndex]?.type==1 && amountBuy && marketList[currentIndex]?.price) {
           return new Decimal(amountBuy).mul(marketList[currentIndex]?.price).div(new Decimal(10).pow(18)).toNumber()
@@ -74,7 +76,7 @@ const NFTDetail = () => {
           } catch (error) {}
     }
 
-    SwiperCore.use([Navigation , Lazy]);
+    SwiperCore.use([Navigation , Lazy , EffectFlip]);
 
     const ContentSwiper = (marketList) => {
         const list=[];
@@ -94,13 +96,18 @@ const NFTDetail = () => {
     const SwiperComponent = () =>{
         const swiper = (
             <Swiper 
-                loop={true}
                 lazy={true}
-                navigation={true}
-                spaceBetween={0}
+                // effect={'flip'}
+                loop={true}
+                mousewheel
+                grabCursor={true}
+                centeredSlides
+                navigation
+                spaceBetween={70}
                 slidesPerView={1}
                 initialSlide={currentIndex}
-                onSlideChange={(swiper) => {setCurrentIndex(swiper.realIndex)}}
+                onSlideChange={() => console.log('slide change')}
+                // onSlideChange={(swiper) => {setCurrentIndex(swiper.realIndex)}}
                 onSwiper={()=>{}}
             >{ContentSwiper(marketList)}
             </Swiper>
