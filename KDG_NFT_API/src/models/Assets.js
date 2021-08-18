@@ -6,7 +6,8 @@ const AssetSchema = new Schema({
     metadata: { type: JSON },
     owner: { type: Types.ObjectId, ref: 'users' },
     editions: { type: Number },
-    total_editions: { type: Number }
+    total_editions: { type: Number },
+    time: { type: Date },
 })
 
 module.exports = model('assets', AssetSchema)

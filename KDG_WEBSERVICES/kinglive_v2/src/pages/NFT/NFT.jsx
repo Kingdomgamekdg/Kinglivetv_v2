@@ -704,7 +704,7 @@ export default function NFT() {
                       <span>
                         {' '}
                         {'Created : ' +
-                          new Date(top9List[ActiveTop9]?.asset?.time * 1000).toDateString()}{' '}
+                          new Date(top9List[ActiveTop9]?.asset?.time).toDateString()}{' '}
                       </span>
                     </div>
 
