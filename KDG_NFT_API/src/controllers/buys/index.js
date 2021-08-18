@@ -61,7 +61,7 @@ module.exports = class {
       conditions.from = userId
 
       if (!conditions.status) {
-        conditions.status = 0,
+        conditions.status = 0
       }
 
       const data = await ListingAssetsService.getListingAsset({ ids }, limit)
