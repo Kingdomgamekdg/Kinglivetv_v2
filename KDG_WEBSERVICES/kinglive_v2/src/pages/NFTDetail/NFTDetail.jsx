@@ -4,7 +4,8 @@ import { useSelector } from 'react-redux'
 import { useHistory } from "react-router-dom";
 import 'swiper/swiper.scss';
 import "swiper/components/navigation/navigation.min.css"
-import SwiperCore, {Navigation , Lazy} from 'swiper/core';
+import SwiperCore, {Navigation , Lazy , EffectFlip} from 'swiper/core';
+import "swiper/components/effect-flip/effect-flip.min.css"
 import arrowLeft from '../../assets/images/nft-market/arrow-left.png'
 import imgSlide from '../../assets/images/nft-market/img-slide.png'
 import zoom from '../../assets/images/nft-market/zoom.png'
@@ -32,7 +33,7 @@ const NFTDetail = () => {
     const address = useMemo(() => userRedux?.address, [userRedux])
     const isOwner = useMemo(() => userRedux?.address === marketList[currentIndex]?.owner?.address, [userRedux,marketList,currentIndex])
     const isApproval = useMemo( async () => {
-        if (window?.web3?.eth) {
+        if (window?.web3?.eth && userRedux?.address) {
             const allowance = await new window.web3.eth.Contract(ABIERC20, addressERC20).methods
               .allowance(userRedux?.address, addressMarket)
               .call()
@@ -40,7 +41,7 @@ const NFTDetail = () => {
               if (new Decimal(allowance).gt(new Decimal(marketList[currentIndex].price).mul(marketList[currentIndex]?.quantity))) {
                 return true
               } else {
-                   return false
+                return false
               }
             }
           }
@@ -49,6 +50,7 @@ const NFTDetail = () => {
     const [amountBuy, setAmountBuy] = useState(0)
     const [price, setPrice] = useState(0)    
     const { Decimal } = require('decimal.js')
+    
     const total = useMemo(() => {
         if(marketList[currentIndex]?.type==1 && amountBuy && marketList[currentIndex]?.price) {
           return new Decimal(amountBuy).mul(marketList[currentIndex]?.price).div(new Decimal(10).pow(18)).toNumber()
@@ -74,9 +76,9 @@ const NFTDetail = () => {
           } catch (error) {}
     }
 
-    SwiperCore.use([Navigation , Lazy]);
+    SwiperCore.use([Navigation , Lazy , EffectFlip]);
 
-    const ContentSwiper = (marketList) => {
+    const ContentSwiper = () => {
         const list=[];
         marketList.map((listingAsset,index)=>{
             const key=`swiper-slide${index}`
@@ -94,15 +96,20 @@ const NFTDetail = () => {
     const SwiperComponent = () =>{
         const swiper = (
             <Swiper 
-                loop={true}
                 lazy={true}
-                navigation={true}
-                spaceBetween={0}
+                effect={'flip'}
+                loop={true}
+                mousewheel
+                grabCursor={true}
+                centeredSlides
+                navigation
+                spaceBetween={70}
                 slidesPerView={1}
                 initialSlide={currentIndex}
-                onSlideChange={(swiper) => {setCurrentIndex(swiper.realIndex)}}
+                // onSlideChange={() => console.log('slide change')}
+                onSlideChangeTransitionEnd={(swiper) => {setCurrentIndex(swiper.realIndex)}}
                 onSwiper={()=>{}}
-            >{ContentSwiper(marketList)}
+            >{ContentSwiper()}
             </Swiper>
         )
         return swiper;
@@ -534,7 +541,7 @@ const NFTDetail = () => {
                                     Size: <span className="color-fff"> 366x435px </span>
                                 </p> */}
                                 <p className="desc">
-                                    Created: <span className="color-fff"> {new Date(marketList[currentIndex]?.asset?.time*1000).toDateString()}</span>
+                                    Created: <span className="color-fff"> {new Date(marketList[currentIndex]?.asset?.time).toDateString()}</span>
                                 </p>
                                 <p className="desc mar-t-10">
                                     Description: 
