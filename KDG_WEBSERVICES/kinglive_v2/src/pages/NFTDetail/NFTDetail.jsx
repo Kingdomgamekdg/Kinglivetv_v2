@@ -33,7 +33,7 @@ const NFTDetail = () => {
     const address = useMemo(() => userRedux?.address, [userRedux])
     const isOwner = useMemo(() => userRedux?.address === marketList[currentIndex]?.owner?.address, [userRedux,marketList,currentIndex])
     const isApproval = useMemo( async () => {
-        if (window?.web3?.eth) {
+        if (window?.web3?.eth && userRedux?.address) {
             const allowance = await new window.web3.eth.Contract(ABIERC20, addressERC20).methods
               .allowance(userRedux?.address, addressMarket)
               .call()
@@ -41,7 +41,7 @@ const NFTDetail = () => {
               if (new Decimal(allowance).gt(new Decimal(marketList[currentIndex].price).mul(marketList[currentIndex]?.quantity))) {
                 return true
               } else {
-                   return false
+                return false
               }
             }
           }
@@ -78,7 +78,7 @@ const NFTDetail = () => {
 
     SwiperCore.use([Navigation , Lazy , EffectFlip]);
 
-    const ContentSwiper = (marketList) => {
+    const ContentSwiper = () => {
         const list=[];
         marketList.map((listingAsset,index)=>{
             const key=`swiper-slide${index}`
@@ -97,7 +97,7 @@ const NFTDetail = () => {
         const swiper = (
             <Swiper 
                 lazy={true}
-                // effect={'flip'}
+                effect={'flip'}
                 loop={true}
                 mousewheel
                 grabCursor={true}
@@ -106,10 +106,10 @@ const NFTDetail = () => {
                 spaceBetween={70}
                 slidesPerView={1}
                 initialSlide={currentIndex}
-                onSlideChange={() => console.log('slide change')}
-                // onSlideChange={(swiper) => {setCurrentIndex(swiper.realIndex)}}
+                // onSlideChange={() => console.log('slide change')}
+                onSlideChangeTransitionEnd={(swiper) => {setCurrentIndex(swiper.realIndex)}}
                 onSwiper={()=>{}}
-            >{ContentSwiper(marketList)}
+            >{ContentSwiper()}
             </Swiper>
         )
         return swiper;
@@ -541,7 +541,7 @@ const NFTDetail = () => {
                                     Size: <span className="color-fff"> 366x435px </span>
                                 </p> */}
                                 <p className="desc">
-                                    Created: <span className="color-fff"> {new Date(marketList[currentIndex]?.asset?.time*1000).toDateString()}</span>
+                                    Created: <span className="color-fff"> {new Date(marketList[currentIndex]?.asset?.time).toDateString()}</span>
                                 </p>
                                 <p className="desc mar-t-10">
                                     Description: 
@@ -652,7 +652,7 @@ const NFTDetail = () => {
                                 return (
                                     <tr>
                                     <td >
-                                        {bid.from?.kyc?.last_name?bid.from?.kyc?.last_name + ' '+bid.from?.kyc?.first_name :'0x.....'+ bid.from?.address?.substring(bid.from?.address?.length - 8,bid.from?.address?.length)}
+                                        {bid.from?.kyc?.last_name?bid.from?.kyc?.last_name + ' '+bid.from?.kyc?.first_name : bid.from?.address?.substring(bid.from?.address?.length - 8,bid.from?.address?.length)}
                                     </td>
                                     <td>
                                     {bid.quantity}

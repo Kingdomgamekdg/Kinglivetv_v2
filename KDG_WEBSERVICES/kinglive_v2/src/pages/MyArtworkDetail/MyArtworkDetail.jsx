@@ -65,7 +65,7 @@ const MyArtworkDetail = () => {
 
     SwiperCore.use([Navigation , Lazy]);
 
-    const ContentSwiper = (userAssetList) => {
+    const ContentSwiper = () => {
         const list=[];
         userAssetList.map((userAsset,index)=>{
             const key=`swiper-slide${index}`
@@ -84,15 +84,20 @@ const MyArtworkDetail = () => {
     const SwiperComponent = () =>{
         const swiper = (
             <Swiper 
-                loop={true}
                 lazy={true}
-                navigation={true}
-                spaceBetween={0}
+                effect={'flip'}
+                loop={true}
+                mousewheel
+                grabCursor={true}
+                centeredSlides
+                navigation
+                spaceBetween={70}
                 slidesPerView={1}
                 initialSlide={currentIndex}
-                onSlideChange={(swiper) => {setCurrentIndex(swiper.realIndex)}}
+                // onSlideChange={() => console.log('slide change')}
+                onSlideChangeTransitionEnd={(swiper) => {setCurrentIndex(swiper.realIndex)}}
                 onSwiper={()=>{}}
-            >{ContentSwiper(userAssetList)}
+            >{ContentSwiper()}
             </Swiper>
         )
         return swiper;
@@ -373,7 +378,7 @@ const MyArtworkDetail = () => {
                                     Size: <span className="color-fff"> 366x435px </span>
                                 </p> */}
                                 <p className="desc">
-                                    Created: <span className="color-fff"> {new Date(userAssetList[currentIndex]?.asset?.time*1000).toDateString()}</span>
+                                    Created: <span className="color-fff"> {new Date(userAssetList[currentIndex]?.asset?.time).toDateString()}</span>
                                 </p>
                                 <p className="desc mar-t-10">
                                     Description: 
