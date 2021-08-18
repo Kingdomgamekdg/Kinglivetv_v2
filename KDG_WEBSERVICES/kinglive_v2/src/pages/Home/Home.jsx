@@ -12,6 +12,7 @@ import coverDefault from '../../assets/svg/coverDefault.jpg'
 import avatarDefault from '../../assets/svg/avatarDefault.svg'
 import { STORAGE_DOMAIN } from '../../constant'
 import convertDateAgo from '../../helpers/convertDateAgo'
+import { useMemo } from 'react'
 
 
 
@@ -28,8 +29,14 @@ export default function Home() {
 
   
   const [ActiveSlide, setActiveSlide] = useState(0)
-  const [ActiveLive, setActiveLive] = useState(0)
+  const [Dashboard, setDashboard] = useState({})
   
+  useMemo(() => {
+    callAPI.get('/dashboad')
+    .then(res => {
+      console.log(res);
+    })
+  },[])
   
   const timeout = useRef(null)
   useEffect(() => {
@@ -48,19 +55,6 @@ export default function Home() {
       clearTimeout(timeout.current)
     }
     setActiveSlide(index)
-  }, [])
-
-  const handlePlusSlideLive = useCallback(() => {
-    setActiveLive((_active) => {
-      if (_active === live.length - 1) return 0
-      return _active + 1
-    })
-  }, [])
-  const handleMinusSlideLive = useCallback(() => {
-    setActiveLive((_active) => {
-      if (_active === 0) return live.length - 1
-      return _active - 1
-    })
   }, [])
 
  
