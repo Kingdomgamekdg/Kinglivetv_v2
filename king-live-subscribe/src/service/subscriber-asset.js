@@ -41,7 +41,12 @@ class SubcripberAsset {
             console.log("data.payload", data)
             const payload = JSON.parse(data.payload);
             console.log("payload",payload);
-            await axios.get('update_dashboard');
+            try 
+            {
+                await axios.get('update_dashboard');
+            }catch(ex){
+                
+            }
             const metadata  = await AssetMetaData.findOne({uri:payload.uri});
             if (data.channel === 'new_asset') {
                 let user = await Users.findOne({address : { 
