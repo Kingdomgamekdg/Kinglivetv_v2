@@ -14,6 +14,7 @@ module.exports = class {
       if (!conditions.status) {
         conditions.status = 1
       }
+      
 
       const totalVolume = await BuysService.getTotalAssetVolume(conditions)
 
@@ -60,8 +61,11 @@ module.exports = class {
       conditions.from = userId
 
       if (!conditions.status) {
-        conditions.status = 0
+        conditions.status = 0,
       }
+
+      const data = await ListingAssetsService.getListingAsset({ ids }, limit)
+
 
       const orders = await BuysService.find(conditions)
         .populate({
