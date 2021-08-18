@@ -10,7 +10,7 @@ const BuysSchema = new Schema({
     quantity: { type: Number },
     payment_amount: { type: Number }, // in token payment
     payment_token: { type: String },
-    time: { type: Number },
+    time: { type: Date },
     status: { type: Number }// 1 done
 })
 
