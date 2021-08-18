@@ -267,7 +267,7 @@ export default function MyArtwork() {
                           fill='#6A6A6D'
                         />
                       </svg>
-                      <span>{new Date(al.asset?.time * 1000).toDateString()}</span>
+                      <span>{new Date(al.asset?.time).toDateString()}</span>
                     </div>
                   </div>
 

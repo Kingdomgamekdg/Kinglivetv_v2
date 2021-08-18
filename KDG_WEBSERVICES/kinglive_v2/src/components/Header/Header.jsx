@@ -5,6 +5,7 @@ import { useHistory } from 'react-router-dom'
 import Web3 from 'web3'
 import kdg from '../../assets/images/header/kdg.png'
 import logo from '../../assets/images/header/logo.svg'
+import logoSVG from '../../assets/svg/logo.svg'
 import metamask from '../../assets/images/header/metamask.png'
 import trust from '../../assets/images/header/trust.png'
 import '../../assets/scss/header.scss'
@@ -16,8 +17,9 @@ import { ABIKL1155, addressKL1155 } from '../../contracts/KL1155'
 import { ABIMarket, addressMarket } from '../../contracts/Market'
 import shortAddress from '../../helpers/shortAddress'
 import storage from '../../helpers/storage'
-import { actChangeAddress, asyncChangeUser } from '../../store/actions'
+import { actChangeAddress, asyncChangeUser, asyncGetNoti } from '../../store/actions'
 import { EXPLORER_URL } from '../../constant'
+import convertDateAgo from '../../helpers/convertDateAgo'
 
 export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false }) {
   const userRedux = useSelector((state) => state.user)
@@ -30,6 +32,8 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
     [userRedux]
   )
 
+  const unread = useSelector(state => state.unread_noti)
+  const noties = useSelector(state => state.noties)
   const dispatch = useDispatch()
   const history = useHistory()
   const currentAddress = useSelector((state) => state.address)
@@ -158,6 +162,12 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
     storage.clearRefresh()
   }
 
+  const handleOpenNoti = useCallback(() => {
+    console.log(123);
+    setIsOpenNoti(!IsOpenNoti)
+    dispatch(asyncGetNoti())
+  },[IsOpenNoti])
+
   return (
     <>
       {isWrongNetwork && (
@@ -169,6 +179,7 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
           </div>
         </div>
       )}
+
       {insMetaMask && (
         <div className='popupX'>
           <div className='containerX'>
@@ -249,9 +260,11 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
             <span></span>
             <span></span>
           </div>
-          <a href='/' className='logo'>
-            <img src={logo} alt='' />
-          </a>
+
+          <div className='logo' onClick={() => history.push('/')}>
+            <img src={logoSVG} alt='' />
+          </div>
+
           <div className='search-box'>
             <svg
               width='17'
@@ -280,8 +293,8 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
           </div>
         </div>
         <div className='right'>
-          <div onClick={() => setIsOpenNoti(!IsOpenNoti)} className='noti'>
-            <span>2</span>
+          <div onClick={handleOpenNoti} className='noti'>
+            <span>{unread}</span>
             <svg
               width='18'
               height='21'
@@ -300,15 +313,34 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
             </svg>
             <div className={`dropdown ${IsOpenNoti ? 'show' : ''}`}>
               <p>Notification</p>
-              <div className='item'>
+              {noties?.map( o => <div 
+              className='item'>
                 <span className='avatar'>
-                  <img src={logo} alt='' />
+                  <img src={o.data.avatar ? o.data.avatar : logo} alt='' />
                 </span>
                 <div className='content'>
-                  <p>Bố mày đang stream nè</p>
-                  <p>1s trước</p>
+                  {
+                    o.type === 101 ? 
+                    <p>{o.data.name} is follow you</p>
+                    :
+                    o.type === 102 ?
+                    <p>{o.data.name} is comment on your video</p>
+                    : 
+                    o.type === 103 ? 
+                    <p>Your video {o.data.video_name} upload success</p>
+                    : 
+                    o.type === 104 ? 
+                    <p>{o.data.name} upload new video {o.data.video_name}</p>
+                    : 
+                    o.type === 105 ? 
+                    <p>{o.data.name} is streaming</p>
+                    : null
+
+                  }
+                  <p>{convertDateAgo(o.last_update)}</p>
                 </div>
-              </div>
+              </div>)}
+              
             </div>
           </div>
           <div onClick={() => setIsOpenLive(!IsOpenLive)} className='live'>

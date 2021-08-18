@@ -3,71 +3,59 @@
 const { isValidObjectId } = require('mongoose')
 const UserAssetsService = require('../../services/user-asset')
 const UsersService = require('../../services/user')
+const ObjectId = require('mongoose').Types.ObjectId; 
 
 const { query } = require('express')
 
-// const sortObjectArray = ({
-//   arr,
-//   field,
-//   order = 'desc'
-// }) => {
-//   arr.sort(function (a, b) {
-//     const fieldA = typeof a[field] === 'string' ? a[field].toLowerCase() : a[field]
-//     const fieldB = typeof b[field] === 'string' ? b[field].toLowerCase() : b[field]
-//
-//     let result
-//     if (order === 'desc') {
-//       result = fieldA > fieldB ? 1 : -1
-//     } else {
-//       result = fieldA < fieldB ? 1 : -1
-//     }
-//     return result
-//   })
-//   return arr
-// }
+const sortObjectArray = ({ arr, field, order = 'desc' }) => {
+  arr.sort(function(a, b) {
+     const fieldA = typeof a[field] === 'string' ? a[field].toLowerCase() : a[field]
+     const fieldB = typeof b[field] === 'string' ? b[field].toLowerCase() : b[field]
+
+     let result
+     if (order === 'desc') {
+        result = fieldA > fieldB ? 1 : -1
+     } else {
+        result = fieldA < fieldB ? 1 : -1
+     }
+     return result
+  })
+  return arr
+}
+
 
 module.exports = class {
   /**
    * Uploads metadata and file, image to IPFS
    */
   static async getUserAsset (_req, _res) {
+    const params = _req.query
     const { _id } = _req
-    console.log('_id', _id)
+
+    const limit = params.limit ? parseInt(params.limit) : 10
     const user = await UsersService.findById(_id)
 
     if (!Object.keys(user).length) {
-      return _res.send({
-        status: 1,
-        data: []
-      })
+      return _res.send({ status: 1, data: [] })
     }
-    const queries = _req.query
-
-    const { ...conditions } = queries
-
-    const {
-      limit
-    } = _req.paging
-    console.log('limit', limit)
-    const ids = conditions.ids ? conditions.ids.split(',') : []
+    const ids = params.ids ? params.ids.split(',') : []
 
     const match = {}
 
-    let status = 0
-    if (conditions.status) {
-      status = parseInt(conditions.status)
+    const status = params.status ? parseInt(params.status) : ''
+    if (status) {
       match.status = status
     }
 
-    if (conditions.mimetype) {
-      const mimetype = conditions.mimetype.split(',').map(i => i.trim())
+    if (params.mimetype) {
+      const mimetype = params.mimetype.split(',').map(i => i.trim())
       match['metadata.mimetype'] = {
         $in: mimetype
       }
     }
 
-    if (conditions.prev && isValidObjectId(conditions.prev)) {
-      query._id = { $lt: conditions.prev }
+    if (params.prev && isValidObjectId(params.prev)) {
+      query._id = { $lt: params.prev }
     }
 
     const filter = {
@@ -80,16 +68,9 @@ module.exports = class {
       delete filter.user
     }
 
-    const data = await UserAssetsService.getUserAssets({
-      filter,
-      match,
-      limit
-    })
-
-    return _res.status(200).json({
-      status: 1,
-      data
-    })
+    const data = await UserAssetsService.getUserAssets({ filter, match, limit })
+  
+    return _res.status(200).json({ status: 1, data })
   }
 
   /**
@@ -108,47 +89,39 @@ module.exports = class {
    * Saves asset metadata into database
    */
 
-  static async getUserAssetByIds (_req, _res) {
+   static async getUserAssetByIds (_req, _res) {
     const params = _req.query
     const { _id } = _req
     const match = {}
     const user = await UsersService.findById(_id)
 
     if (!Object.keys(user).length) {
-      return _res.send({
-        status: 1,
-        data: []
-      })
+      return _res.send({ status: 1, data: [] })
     }
     const ids = params.ids ? params.ids.split(',') : []
 
     const filter = {
-      _id: { $in: ids }
+      _id: { $in: ids },
     }
     // let order = ids.map(id =>{
     //   return new ObjectId(id);
     // })
-    const data = await UserAssetsService.getUserAssets({
-      filter,
-      match
-    })
-    const order = {}
+    const data = await UserAssetsService.getUserAssets({ filter, match })
+    let order = {};
 
-    ids.forEach(function (a, i) { order[a] = i })
-    console.log('order', order)
-    console.log('data.length', data.length)
+    ids.forEach(function (a, i) { order[a] = i; });
+    console.log("order",order);
+    console.log("data.length",data.length);
 
     data.sort(function (a, b) {
-      console.log('order[a._id]', order[a._id])
-      console.log('order[b._id]', order[b._id])
+        console.log("order[a._id]",order[a._id])
+        console.log("order[b._id]",order[b._id])
 
-      return order[a._id.toString()] - order[b._id.toString()]
-    })
+        return order[a._id.toString()] - order[b._id.toString()];
+    });
     // console.log("data",data);
 
-    return _res.status(200).json({
-      status: 1,
-      data
-    })
+    return _res.status(200).json({ status: 1, data })
   }
+
 }

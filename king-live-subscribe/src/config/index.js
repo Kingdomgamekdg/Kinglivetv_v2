@@ -23,6 +23,7 @@ const envs = [
     'MARKET_CONTRACT',
     '1155_CONTRACT',
     'ADDRESS_0',
+    'NOITY_URL'
 ];
 
 // Checks enviroment variables to ensure that all of them are declared

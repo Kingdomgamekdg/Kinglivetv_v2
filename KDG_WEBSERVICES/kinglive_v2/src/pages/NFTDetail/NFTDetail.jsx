@@ -13,13 +13,12 @@ import '../../assets/scss/my-artwork-detail.scss'
 import address from '../../assets/images/nft-market/Vector.png'
 import callAPI from '../../axios'
 import { ABIKL1155, addressKL1155 } from '../../contracts/KL1155'
-import { paymentList } from '../../contracts/ERC20'
 import { ABIMarket, addressMarket } from '../../contracts/Market'
 import avatar from '../../assets/images/nft-market/avatar.png'
 import noData from '../../assets/images/nft-market/no-data.png'
 import avatarDefault from '../../assets/svg/avatarDefault.svg'
 import { STORAGE_DOMAIN } from '../../constant'
-
+import { ABIERC20, addressERC20, paymentList } from '../../contracts/ERC20'
 
 const NFTDetail = () => {
     const userRedux = useSelector((state) => state.user)
@@ -30,13 +29,26 @@ const NFTDetail = () => {
     const [marketList, setMarketList] = useState([])
     const [currentIndex, setCurrentIndex] = useState(Number(index))
     const [isOpenBuy, setIsOpenBuy] = useState(false)
-    const [isApprovedForAll, setIsApprovedForAll] = useState(false)
     const isReviewer = useMemo(() => userRedux?.isReviewer, [userRedux])
     const address = useMemo(() => userRedux?.address, [userRedux])
     const isOwner = useMemo(() => userRedux?.address === marketList[currentIndex]?.owner?.address, [userRedux,marketList,currentIndex])
+    const isApproval = useMemo( async () => {
+        if (window?.web3?.eth) {
+            const allowance = await new window.web3.eth.Contract(ABIERC20, addressERC20).methods
+              .allowance(userRedux?.address, addressMarket)
+              .call()
+            if (allowance && marketList[currentIndex]?.price) {
+              if (new Decimal(allowance).gt(new Decimal(marketList[currentIndex].price).mul(marketList[currentIndex]?.quantity))) {
+                return true
+              } else {
+                   return false
+              }
+            }
+          }
+    }, [userRedux,marketList,currentIndex])
+   
     const [amountBuy, setAmountBuy] = useState(0)
     const [price, setPrice] = useState(0)    
-    const [isApproval, setIsApproval] = useState(false)
     const { Decimal } = require('decimal.js')
     
     const total = useMemo(() => {
@@ -63,20 +75,6 @@ const NFTDetail = () => {
             setMarketList(res?.data?res.data:[])
           } catch (error) {}
     }
-
-
-    useEffect(() => {
-        ;(async () => {
-          if (window.web3 && window.web3.eth && window.contractKL1155 && address) {
-            window.contractKL1155.methods
-            .isApprovedForAll(address, addressMarket)
-            .call()
-            .then((approved) => {
-              setIsApprovedForAll(approved)
-            })
-          }
-        })()
-      }, [address])
 
     SwiperCore.use([Navigation , Lazy , EffectFlip]);
 
@@ -399,12 +397,12 @@ const NFTDetail = () => {
                                 Delisting
                             </button>
                             )}
-                            {!isOwner && marketList[currentIndex]?.type == 1 && isApprovedForAll && (
+                            {!isOwner && marketList[currentIndex]?.type == 1 && isApproval && (
                             <button type='submit' className='buttonX'>
                                 Buy
                             </button>
                             )}
-                            {!isOwner && marketList[currentIndex]?.type == 2 && isApprovedForAll && (
+                            {!isOwner && marketList[currentIndex]?.type == 2 && isApproval && (
                             <button type='submit' className='buttonX'>
                                 Bid orders
                             </button>
@@ -551,13 +549,7 @@ const NFTDetail = () => {
                                     {marketList[currentIndex]?.asset?.metadata?.description}
                                     </span>
                                     <span className="color-fff d-block mar-t-10"> 
-                                        NFT coins: BSCS
-                                    </span>
-                                    <span className="color-fff d-block mar-t-10"> 
                                         Channel: KingLive
-                                    </span>
-                                    <span className="color-blue d-block mar-t-10"> 
-                                        #characters #weapon #pat
                                     </span>
                                 </p>
                             </div>
@@ -590,14 +582,14 @@ const NFTDetail = () => {
                                 </div>
                             </div>
                         </div>
-                        {isOwner && isApprovedForAll && marketList[currentIndex]?.asset?.status === 1 && (
+                        {isOwner && isApproval && marketList[currentIndex]?.asset?.status === 1 && (
                             <div className="artist-content-button">
                             <button type="button" className="btn-sell" onClick={()=> handleDelist()}>
                                 Delist
                             </button>
                         </div>
                         )} 
-                        {!isOwner && isApprovedForAll &&  marketList[currentIndex]?.type == 1 &&(
+                        {!isOwner && isApproval &&  marketList[currentIndex]?.type == 1 &&(
                             <div className="artist-content-button">
                             <button type="button" className="btn-sell" onClick={()=> {
                                   setIsOpenBuy(true)
@@ -608,7 +600,7 @@ const NFTDetail = () => {
                         </div>
                         )} 
 
-                        {!isOwner && isApprovedForAll &&  marketList[currentIndex]?.type == 2 &&(
+                        {!isOwner && isApproval &&  marketList[currentIndex]?.type == 2 &&(
                             <div className="artist-content-button">
                             <button type="button" className="btn-sell" onClick={()=> {
                                 setIsOpenBuy(true)
@@ -620,7 +612,7 @@ const NFTDetail = () => {
                         </div>
                         )} 
 
-                        {!isApprovedForAll && (
+                        {!isApproval && (
                             <div className="artist-content-button">
                             <button type="button" className="btn-sell" onClick={()=> handleApproval()}>
                                 Approval
@@ -737,7 +729,7 @@ const NFTDetail = () => {
                                                 {buy.from?.kyc?.last_name?buy.from?.kyc?.last_name + ' '+buy.from?.kyc?.first_name : '0x.....' + buy.from?.address?.substring(buy.from?.address?.length - 8,buy.from?.address?.length)}
                                                 </span>
                                                 <span className="info-date">
-                                                    {new Date(buy?.time*1000).toDateString}
+                                                    {new Date(buy?.time).toDateString}
                                                 </span>
                                             </div>
                                         </div>

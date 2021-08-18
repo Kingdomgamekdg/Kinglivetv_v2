@@ -8,7 +8,7 @@ const AssetSchema = new Schema({
     editions : {type : Number},
     total_editions : {type : Number},
     status : {type : Number}, // 0 : pending , 1 : reviewd , 3 : reject
-    time: {type : Number},
+    time: {type : Date , default : Date.now},
 })
 
 module.exports = model('assets', AssetSchema)
