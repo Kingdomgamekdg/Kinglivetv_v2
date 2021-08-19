@@ -229,7 +229,6 @@ class SubcripberAsset {
                     type : 7, //1:create, 2:mint ,3 :transfer, 4 : list, 5: bid, 6: buy, 7 accept Bid, 
                     data: {from: new ObjectId(fromUser?._id), listing:new ObjectId(currentList?._id), quantity: bidOrder.quantity, payment_token: bidOrder.payment_token,payment_amount:bidOrder.payment_amount },
                     asset :  ObjectId(currentList?.asset),
-                    time : Date.now(),
                     transaction: payload.transaction,
                 });
               
