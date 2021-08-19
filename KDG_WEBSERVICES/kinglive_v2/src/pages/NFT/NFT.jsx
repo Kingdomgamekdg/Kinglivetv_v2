@@ -756,7 +756,7 @@ export default function NFT() {
                     <img src={o.user?.kyc?.avatar?.path ? `${STORAGE_DOMAIN}${o.user?.kyc?.avatar?.path}` : avatarDefault}/>
                     </span>
                     <span className='info'>
-                      <span className='name'>{o.user?.kyc?.last_name?o.user?.kyc?.last_name + ' ' +o.user?.kyc?.first_name:''}</span>
+                      <span className='name'>{o.user?.kyc?.last_name?o.user?.kyc?.last_name + ' ' +o.user?.kyc?.first_name:'0x....'+o.user?.address.substring(o.user?.address.length-8,o.user?.address.length)}</span>
                       <span className='quatity'>{o.quantity} Artworks</span>
                     </span>
                   </div>
