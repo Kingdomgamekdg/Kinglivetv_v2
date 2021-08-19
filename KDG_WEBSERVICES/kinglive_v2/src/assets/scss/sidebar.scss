@@ -1,9 +1,11 @@
+
+
 aside {
     background-color: #1E1F24;
     position: fixed;
     width: 76px ;
     transition: .3s ;
-
+    
     
 
     .bottom_box {
@@ -287,6 +289,7 @@ aside {
         }
     }
     &.large {
+        overflow: scroll;
         width: 240px;
         .bottom_box {
 
@@ -320,4 +323,8 @@ aside {
             }
         }
     }
+}
+$breakpoint-tablet: 429px;
+@media (min-width: $breakpoint-tablet) {
+  
 }

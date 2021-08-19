@@ -678,7 +678,7 @@
 	.footer ._left_content ul {display:block;margin:0 auto;max-width:265px;}
 	/* ----FOOTER:right content ----*/
 	.footer ._right_content {width:100%;float:right;min-height:30px;padding-top:41px;}
-	.footer ._right_content ul li {font-size:16px;}
+	.footer ._right_content ul li {font-size:16px;height:4em;}
 	.footer ._right_content a {float:left;font-size:12px;text-align:left;min-width:0;box-sizing:border-box;}
 	.footer ._right_content a:hover, .footer ._right_content a:active {color:#FAC800;}
 	

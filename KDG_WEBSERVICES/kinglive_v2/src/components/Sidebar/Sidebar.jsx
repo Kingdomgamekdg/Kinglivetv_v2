@@ -58,12 +58,6 @@ const page = [
     active: swapactive,
   },
   {
-    route: '/tutorial',
-    name: 'Tutorial',
-    icon: book,
-    active: bookactive,
-  },
-  {
     route: '/more',
     name: 'More',
     icon: more,
