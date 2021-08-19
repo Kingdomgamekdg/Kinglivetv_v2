@@ -73,6 +73,8 @@
     margin-top: 40px;
     flex-wrap: wrap;
     row-gap: 20px;
+    position: relative;
+    padding-top: 40px;
 
     &-item {
       width: 33.33333%;
@@ -132,4 +134,181 @@
       }
     }
   }
+
+  .filterBlock {
+    width: 100%;
+    position: absolute;
+    top: 0;
+    right: 0;
+    > span {
+      float: right;
+      line-height: 41px;
+      margin-right: 10px;
+    }
+
+
+
+    .select { 
+      position: relative;
+      overflow: hidden;
+      display: block;
+      width: 123px;
+      height: 100%;
+      border-radius: 5px;
+      font-size: 16px;
+      line-height: 31px;
+      float: right;
+      margin: 0 10px;
+      box-sizing: border-box;
+      
+      
+      .icon {
+        width: 16px;
+        height: 16px;
+        background:url(../images/nft-market/arrow_hover.png) center center no-repeat;
+
+        &.icon-arrow-up {
+          -moz-transform: rotate(180deg);
+          -webkit-transform: rotate(180deg);
+          -o-transform: rotate(180deg);
+          -ms-transform: rotate(180deg);
+          transform: rotate(180deg);
+        }
+      }
+     
+      >i.toggle {
+          position: absolute;
+          z-index: 4;
+          right: 1em;
+          top: 0.8em;
+          color: #ccc
+      }
+      .title,
+      .placeholder {
+          position: relative;
+          display: block;
+          width: 100%;
+          height: 100%;
+          padding: 5px 10px;
+          
+          
+          cursor: pointer;
+      }
+      .placeholder {
+        border-top: 1px solid #F52871;
+        border: 1px solid #F52871;
+        border-radius: 5px;
+      }
+
+      .title {
+        background: #353849;
+      }
+      &>input {
+          position: absolute;
+          right: 0px;
+          top: 0px;
+          z-index: 1;
+          width: 100%;
+          height: 100%;
+          display: block;
+          opacity: 0;
+          cursor: pointer;
+          &:checked {
+              ~i.toggle.icon-arrow-down {
+                  display: none;
+              }
+              ~i.toggle.icon-arrow-up {
+                  display: block;
+              }
+              div.options label.option .title {
+                  display: none!important;
+              }
+          }
+          &:not(:checked) {
+              z-index: 4;
+              ~label.option {
+                  >span.title {
+                      display: none;
+                  }
+              }
+              ~i.toggle.icon-arrow-up {
+                  display: none;
+              }
+              ~i.toggle.icon-arrow-down {
+                  display: block;
+              }
+          }
+          &:disabled {
+              cursor: no-drop;
+          }
+      }
+      &>span.placeholder {
+          position: relative;
+          z-index: 0;
+          display: inline-block;
+          width: 100%;
+          color: #999;
+          
+      }
+
+      label.option {
+          display: block;
+          overflow: hidden;
+          z-index: 1;
+          width: 100%;
+          transition: all 1s ease-out;
+
+          &:first-of-type {
+            span.title {
+              margin-top: 5px;
+            }
+          }
+          
+          span.title {
+              position: relative;
+              z-index: 2;
+              transition:  .3s ease-out;
+              i.icon {
+                  padding-right: 8px;
+                  
+                  
+              }
+              &:hover {
+                  color: #fff;
+                  background: #F52871;
+                  box-shadow: inset 0px 1px 0px rgba(0, 0, 0, .1);
+              }
+          }
+          input {
+              display: none;
+              &:checked~span.title {
+                  position: absolute;
+                  display: block;
+                  z-index: 3;
+                  top: 0px;
+                  background:#16171b;
+                  border-top: 0px;
+                  border: 1px solid #F52871;
+                  border-radius: 5px;
+                  box-shadow: none;
+                  color: inherit;
+                  width: 100%;
+              }
+              &:disabled {
+                  &~span.title {
+                      background: #f9f9f9!important;
+                      color: #aaa;
+                      &:hover {
+                          color: #aaa;
+                          background: none;
+                          cursor: no-drop;
+                      }
+                  }
+              }
+          }
+      }
+  }
+
+  }
+
 }

@@ -322,9 +322,21 @@ aside {
                 display: block;
             }
         }
+
+        .bottom_box{
+            position:static;
+        }
     }
 }
-$breakpoint-tablet: 429px;
-@media (min-width: $breakpoint-tablet) {
-  
+$breakpoint-tablet: 480px;
+
+@media screen and (max-height: $breakpoint-tablet) {
+    .bottom_box {
+        display: none !important;
+    }
+    .large{
+        .bottom_box {
+            display: flex !important;
+        }
+    }
 }
