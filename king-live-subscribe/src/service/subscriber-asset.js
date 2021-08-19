@@ -210,8 +210,9 @@ class SubcripberAsset {
                 await currentList.save();
             } else if (data.channel === 'new_accept_bid'){
                 const bidOrder = await Buys.findOne({ contract:payload.contract, id:Number(payload.bid_order_id)});
-                const currentList = await ListingAssets.findOne({_id:ObjectId(bidOrder.list_id) }).populate('assets').populate('bid-orders');
-
+                const currentList = await ListingAssets.findOne({_id:ObjectId(bidOrder.list_id) });
+                const fromUser = await Users.findById(currentList.owner);
+                const toUser = await Users.findById(bidOrder.from);
                 console.log("bidOrder",bidOrder);
                 console.log("currentList",currentList);
 
@@ -222,12 +223,12 @@ class SubcripberAsset {
                 
                 await Activities.create({
                     collection_id : currentList.collection_id,
-                    contract : payload.contract,
+                    contract : currentList.contract,
                     from_user : new ObjectId(fromUser?._id),
                     to_user  :  new ObjectId(toUser?._id),
                     type : 7, //1:create, 2:mint ,3 :transfer, 4 : list, 5: bid, 6: buy, 7 accept Bid, 
                     data: {from: new ObjectId(fromUser?._id), listing:new ObjectId(currentList?._id), quantity: bidOrder.quantity, payment_token: bidOrder.payment_token,payment_amount:bidOrder.payment_amount },
-                    asset :  ObjectId(currentList?.asset?._id),
+                    asset :  ObjectId(currentList?.asset),
                     time : new Date(new Number(payload.time)*1000),
                     transaction: payload.transaction,
                 });
