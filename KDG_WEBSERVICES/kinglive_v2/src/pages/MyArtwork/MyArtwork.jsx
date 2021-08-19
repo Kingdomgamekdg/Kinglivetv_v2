@@ -40,19 +40,40 @@ export default function MyArtwork() {
 
   const getAssets = useCallback(
     async (status) => {
-      var ids = AssetList.map((o) => o._id)
+      if(status !==3)
+      {
+        var ids = AssetList.map((o) => o._id)
+        const res = await callAPI.get(
+          `/user-asset?limit=20&${ids.length ? `ids=${ids}` : ''}&status=${status}`,
+          true) 
+        if (res?.data?.length === 0) {
+          isLoadMore.current = false
+          setAssetList([...AssetList])
+          return
+        }
+        setAssetList([...AssetList, ...(res?.data ? res.data : [])])
+      } else {
+        var ids = AssetList.map((o) => o._id)
+        const res = await callAPI.get(
+          `/buys/bidding?limit=20&${ids.length ? `ids=${ids}` : ''}`,
+          true) 
+        if (res?.data?.length === 0) {
+          isLoadMore.current = false
+          setAssetList([...AssetList])
+          return
+        } else {
+          const bidings = res?.data.map(bid =>{
+            return {
+              user :bid.from,
+              asset: bid.asset,
+              listId: bid.list_id?._id
+            }
+          })
+          setAssetList([...AssetList, ...bidings])
+        }
 
-      const res = await callAPI.get(
-        `/user-asset?limit=20&${ids.length ? `ids=${ids}` : ''}&status=${status}`,
-        true) 
-      
-      if (res?.data?.length === 0) {
-        isLoadMore.current = false
-        setAssetList([...AssetList])
-        return
       }
-
-      setAssetList([...AssetList, ...(res?.data ? res.data : [])])
+      
     },
     [AssetList]
   )
@@ -104,8 +125,13 @@ export default function MyArtwork() {
   
 
   const handleShowDetail = async (index) => {
-    var ids = AssetList.map((o) => o?._id)
-    history.push(`/my-artwork-detail?ids=${ids}&index=${index}`)
+    if(status === 3 ){
+      var ids = AssetList.map((o) => o?.listId)
+      history.push(`/nft-detail?ids=${ids}&index=${index}`)
+    } else {
+      var ids = AssetList.map((o) => o?._id)
+      history.push(`/my-artwork-detail?ids=${ids}&index=${index}`)
+    }
   }
 
   
@@ -267,7 +293,7 @@ export default function MyArtwork() {
                           fill='#6A6A6D'
                         />
                       </svg>
-                      <span>{new Date(al.asset?.time * 1000).toDateString()}</span>
+                      <span>{new Date(al.asset?.time).toDateString()}</span>
                     </div>
                   </div>
 

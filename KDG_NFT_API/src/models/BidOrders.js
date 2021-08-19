@@ -10,7 +10,7 @@ const BidOrdersSchema = new Schema({
     payment_price: { type: Number }, // in token payment
     payment_token: { type: String },
     expiration: { type: Number },
-    time: { type: Number },
+    time: { type: Date },
     status: { type: Number }// 1 order, 2 accept, 3 cancel
 })
 

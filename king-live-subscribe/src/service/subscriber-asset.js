@@ -4,6 +4,7 @@
 const util = require('util');
 const request = require('request');
 const config = require('./../config');
+const axios = require('./axios');
 
 const database = require('./../lib/database');
 const ObjectId = require('mongoose').Types.ObjectId; 
@@ -31,6 +32,7 @@ class SubcripberAsset {
 
    
     async start () {
+
         console.log('Started metadata service');
 
         const db = database.getInstance();
@@ -39,7 +41,12 @@ class SubcripberAsset {
             console.log("data.payload", data)
             const payload = JSON.parse(data.payload);
             console.log("payload",payload);
-
+            try 
+            {
+                await axios.get('update_dashboard');
+            }catch(ex){
+                
+            }
             const metadata  = await AssetMetaData.findOne({uri:payload.uri});
             if (data.channel === 'new_asset') {
                 let user = await Users.findOne({address : { 
@@ -61,7 +68,7 @@ class SubcripberAsset {
                     editions : payload.editions,
                     total_editions : payload.total_editions,
                     status:status,
-                    time : payload.time,
+                    time : new Date(new Number(payload.time)*1000),
                 });
                 await UserAsset.updateOne({asset: new ObjectId(asset?._id) ,user: new ObjectId(user?._id)}, {asset: asset?._id , user: user?._id, amount : new Number(payload.editions)},{upsert : true,new : true});
             } else if (data.channel === 'new_review') {
@@ -104,7 +111,7 @@ class SubcripberAsset {
                         type : 3, //1:create, 2:mint ,3 :donate, 4 : list, 5: bid, 6: buy, 7 accept Bid, 
                         data: {from: payload.from, to : payload.to , amount :payload.amount },
                         asset: new ObjectId(asset?._id),
-                        time : payload.time,
+                        time : new Date(new Number(payload.time)*1000),
                         transaction: payload.transaction,
                     });
                 }
@@ -124,7 +131,7 @@ class SubcripberAsset {
                     type :payload.mask,// 1: SALE, 2: ACTIONS
                     price: payload.price,// in token payment
                     payment_token:payload.payment_token,
-                    time:payload.time,
+                    time:new Date(new Number(payload.time)*1000),
                     expiration: payload.expiration,
                     transaction:payload.transaction,
                 });
@@ -134,9 +141,9 @@ class SubcripberAsset {
                     contract : payload.contract,
                     from_user : new ObjectId(owner?._id),
                     type : 4, //1:create, 2:mint ,3 :transfer, 4 : list, 5: bid, 6: buy, 7 accept Bid, 
-                    data: {quantity: payload.quantity, type :payload.mask,owner: owner , price: payload.price,payment_token:payload.payment_token},
+                    data: {quantity: payload.quantity, type :payload.mask,owner: owner?.address , price: payload.price,payment_token:payload.payment_token},
                     asset: new ObjectId(asset?._id),
-                    time : payload.time,
+                    time : new Date(new Number(payload.time)*1000),
                     transaction: payload.transaction,
                 });
             } else if (data.channel === 'new_buy'){
@@ -148,19 +155,21 @@ class SubcripberAsset {
                 if(!toUser){
                     toUser = await Users.create( { address: payload.to } );
                 }
-                const currentList = await ListingAssets.findOne({contract:payload.contract,id:payload.list_id }).populate('assets').populate('bid-orders');
+                const currentList = await ListingAssets.findOne({contract:payload.contract,id:payload.list_id }).populate('assets').populate('buys');
                 console.log("currentList",currentList);
                 const buy = await Buys.create({
                     contract: payload.contract,
                     list_id : ObjectId(currentList?._id),
                     from: ObjectId(fromUser?._id) ,
                     to: ObjectId(toUser?._id),
+                    type: 1,
                     asset :  ObjectId(currentList?.asset?._id),
                     quantity: payload.quantity,
+                    payment_amount: new Number(currentList.price),// in token payment
                     payment_amount: new Number(payload.payment_amount),// in token payment
                     payment_token: payload.payment_token,
-                    time: payload.time,
-                    status: 1,//1 order, 2 accept, 3 cancel
+                    time: new Date(new Number(payload.time)*1000),
+                    status: 1,//0 order, 1 accept, 2 cancel
                 });
                 currentList.buys.push(buy);
                 currentList.quantity=new Number(currentList.quantity) - new Number(payload.quantity);
@@ -171,28 +180,30 @@ class SubcripberAsset {
                     from_user : new ObjectId(fromUser?._id),
                     to_user  :  new ObjectId(toUser?._id),
                     type : 6, //1:create, 2:mint ,3 :transfer, 4 : list, 5: bid, 6: buy, 7 accept Bid, 
-                    data: {from: fromUser, listing:currentList, quantity: payload.quantity, payment_token: payload.payment_token,payment_amount:payload.payment_amount },
+                    data: {from: new ObjectId(fromUser?._id), listing:new ObjectId(currentList?._id), quantity: payload.quantity, payment_price:currentList.price, payment_token: payload.payment_token,payment_amount:payload.payment_amount },
                     asset :  ObjectId(currentList?.asset?._id),
-                    time : payload.time,
+                    time : new Date(new Number(payload.time)*1000),
                     transaction: payload.transaction,
                 });
             } 
             else if (data.channel === 'new_bid'){
                 const from = await Users.findOne({address : payload.from});
-                const to = await Users.findOne({address : payload.to});
                 const currentList = await ListingAssets.findOne({contract:payload.contract,id:payload.list_id }).populate('assets').populate('bid-orders');
-                console.log("currentList",currentList);
-                const bidOrder = await BidOrders.create({
+                const payment_amount =  new Decimal(payload.quantity).mul(payload.bid_price).toNumber()
+                const bidOrder = await Buys.create({
                     contract: payload.contract,
                     list_id : ObjectId(currentList?._id),
                     id : payload.bid_order_id,
+                    type: 2,
                     from: ObjectId(from?.id) ,
+                    to: ObjectId(currentList.owner),
                     asset :  ObjectId(currentList?.asset?._id),
                     quantity: payload.quantity,
                     payment_price: new Number(payload.bid_price),// in token payment
                     payment_token: payload.bid_token,
+                    payment_amount:payment_amount,
                     expiration: payload.expiration,
-                    time: payload.time,
+                    time: new Date(new Number(payload.time)*1000),
                     status: 0,//0 order, 1 accept, 2 cancel
                 });
                 currentList.bid_orders.push(bidOrder);
@@ -210,13 +221,24 @@ class SubcripberAsset {
                     currentList.quantity=new Number(currentList.quantity) - new Number(bidOrder.quantity);
                     await currentList.save();
                 }
+                await Activities.create({
+                    collection_id : currentList.collection_id,
+                    contract : payload.contract,
+                    from_user : new ObjectId(fromUser?._id),
+                    to_user  :  new ObjectId(toUser?._id),
+                    type : 7, //1:create, 2:mint ,3 :transfer, 4 : list, 5: bid, 6: buy, 7 accept Bid, 
+                    data: {from: new ObjectId(fromUser?._id), listing:new ObjectId(currentList?._id), quantity: bidOrder.quantity, payment_token: bidOrder.payment_token,payment_amount:bidOrder.payment_amount },
+                    asset :  ObjectId(currentList?.asset?._id),
+                    time : new Date(new Number(payload.time)*1000),
+                    transaction: payload.transaction,
+                });
               
             } else if (data.channel === 'new_cancel_bid'){
-                const bidOrder = await BidOrders.findOne({ contract:payload.contract,id: Number(payload.bid_order_id)});
+                const bidOrder = await Buys.findOne({ contract:payload.contract,id: Number(payload.bid_order_id)});
                 bidOrder.status=2;
                 await bidOrder.save();
             } else if (data.channel === 'new_update_bid'){
-                const bidOrder = await BidOrders.findOne({ contract:payload.contract,id: payload.bid_order_id});
+                const bidOrder = await Buys.findOne({ contract:payload.contract,id: payload.bid_order_id});
                 bidOrder.contract=  payload.contract,
                 bidOrder.list_id = ObjectId(currentList?._id),
                 bidOrder.from =  ObjectId(from?.id) ,
@@ -225,7 +247,7 @@ class SubcripberAsset {
                 bidOrder.payment_price =  new Number(payload.bid_price),// in token payment
                 bidOrder.payment_toke =  payload.bid_token,
                 bidOrder.expiration =  payload.expiration,
-                bidOrder.time =  payload.time,
+                bidOrder.time =  new Date(new Number(payload.time)*1000);
                 bidOrder.status =   1,//1 order, 2 accept, 3 cancel
                 await bidOrder.save();
             } else if (data.channel === 'new_cancel_list'){

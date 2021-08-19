@@ -10,10 +10,10 @@ const ListingAssetSchema = new Schema({
     type: { type: Number }, // 1: SALE, 2: ACTIONS
     price: { type: Number }, // in token payment
     payment_token: { type: String },
-    time: { type: Number },
+    time: { type: Date },
     expiration: { type: Number },
     transaction: { type: String },
-    bid_orders: [{ type: Types.ObjectId, ref: 'bid-orders' }],
+    bid_orders: [{ type: Types.ObjectId, ref: 'buys' }],
     buys: [{ type: Types.ObjectId, ref: 'buys' }]
 
 })

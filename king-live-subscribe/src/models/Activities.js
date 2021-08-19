@@ -9,7 +9,7 @@ const ActivitiesSchema = new Schema({
     type : {type : Number}, //1:create, 2:mint ,3 :transfer, 4 : list, 5: bid, 6: buy, 7 accept Bid, 
     data: {type : JSON},
     asset: {type : Types.ObjectId , ref : 'assets'},
-    time : {type : Date},
+    time : {type : Date , default : Date.now},
     transaction:{type : String},
 })
 
