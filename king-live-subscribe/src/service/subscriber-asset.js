@@ -111,7 +111,7 @@ class SubcripberAsset {
                         type : 3, //1:create, 2:mint ,3 :donate, 4 : list, 5: bid, 6: buy, 7 accept Bid, 
                         data: {from: payload.from, to : payload.to , amount :payload.amount },
                         asset: new ObjectId(asset?._id),
-                        time : new Date(new Number(payload.time)*1000).toISOString(),
+                        time :  Date.now(),
                         transaction: payload.transaction,
                     });
                 }
@@ -229,7 +229,7 @@ class SubcripberAsset {
                     type : 7, //1:create, 2:mint ,3 :transfer, 4 : list, 5: bid, 6: buy, 7 accept Bid, 
                     data: {from: new ObjectId(fromUser?._id), listing:new ObjectId(currentList?._id), quantity: bidOrder.quantity, payment_token: bidOrder.payment_token,payment_amount:bidOrder.payment_amount },
                     asset :  ObjectId(currentList?.asset),
-                    time : Date.now().toISOString(),
+                    time : Date.now(),
                     transaction: payload.transaction,
                 });
               
