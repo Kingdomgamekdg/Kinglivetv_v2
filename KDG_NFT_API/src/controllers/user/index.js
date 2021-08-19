@@ -3,7 +3,7 @@
 const jwt = require('../../libs/jwt')
 const UsersService = require('../../services/user')
 const response = require('../../libs/http-response')
-const { IsEmpty } = require('../../utils/common-util')
+
 module.exports = class {
   /**
    * Uploads metadata and file, image to IPFS
