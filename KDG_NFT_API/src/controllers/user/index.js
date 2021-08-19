@@ -3,7 +3,7 @@
 const jwt = require('../../libs/jwt')
 const UsersService = require('../../services/user')
 const response = require('../../libs/http-response')
-
+const { IsEmpty } = require('../../utils/common-util')
 module.exports = class {
   /**
    * Uploads metadata and file, image to IPFS
@@ -60,6 +60,22 @@ module.exports = class {
 
       _res.status(200).json({
         total: totalUsers || 0
+      })
+    } catch (e) {
+      _res.status(400).send(e.message)
+    }
+  }
+
+  static async getPersonalInfo (_req, _res) {
+    try {
+      const {
+        _id
+      } = _req
+
+      const data = await UsersService.getPersonality({ userId: _id })
+
+      _res.status(200).json({
+        data
       })
     } catch (e) {
       _res.status(400).send(e.message)

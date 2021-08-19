@@ -5,7 +5,7 @@ const StreamsService = require('../../services/stream')
 module.exports = class {
   static async getTotalStreamTime (_req, _res) {
     try {
-      const streams = await StreamsService.calculateStreamTime()
+      const streams = await StreamsService.calculateStreamTime({})
 
       _res.status(200).json({
         total: streams?.length ? streams[0].total : 0
