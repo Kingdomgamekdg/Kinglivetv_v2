@@ -106,7 +106,8 @@ body{font-family:'Poppins';font-weight:normal;font-size:1em;}
 ._dot_desc {display:block;position:absolute;}
 ._dot_desc h3 {font-family:'Poppins';color:#FAC800;font-size:40px;font-weight:normal;}
 ._dot_desc h3 em {vertical-align:super;font-size:60%;font-style:normal;line-height:78px;}
-._dot_desc p {font-family:'Poppins';color:#C4C4C4;font-size:18px;font-weight:normal;}
+._dot_desc p {font-family:'Poppins';color:#C4C4C4;font-size:18px;font-weight:normal;display:flex;flex-wrap:no-wrap;line-height:1.67em;}
+._dot_desc p img {margin:0 0.5em 0 0;display:block;width:1.67em;height:1.67em;}
 .slider .pos1_desc,.slider .pos2_desc,.slider .pos3_desc {top:744px;}
 .slider .pos2_desc {left:337px;}
 .slider .pos3_desc {left:639px;}
