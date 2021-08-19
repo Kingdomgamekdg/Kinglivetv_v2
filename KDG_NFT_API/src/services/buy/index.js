@@ -40,7 +40,7 @@ class BuysService extends BaseService {
       { $unwind: { path: '$user', preserveNullAndEmptyArrays: true } },
       {
         $sort: {
-          quantity: -1
+          [type]: -1
         }
       },
       {
