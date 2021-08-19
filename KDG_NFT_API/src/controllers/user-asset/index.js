@@ -134,12 +134,8 @@ module.exports = class {
     const order = {}
 
     ids.forEach(function (a, i) { order[a] = i })
-    console.log('order', order)
-    console.log('data.length', data.length)
 
     data.sort(function (a, b) {
-      console.log('order[a._id]', order[a._id])
-      console.log('order[b._id]', order[b._id])
 
       return order[a._id.toString()] - order[b._id.toString()]
     })
