@@ -209,18 +209,17 @@ class SubcripberAsset {
                 currentList.bid_orders.push(bidOrder);
                 await currentList.save();
             } else if (data.channel === 'new_accept_bid'){
-                const bidOrder = await BidOrders.findOne({ contract:payload.contract, id:Number(payload.bid_order_id)});
+                const bidOrder = await Buys.findOne({ contract:payload.contract, id:Number(payload.bid_order_id)});
                 const currentList = await ListingAssets.findOne({_id:ObjectId(bidOrder.list_id) }).populate('assets').populate('bid-orders');
 
                 console.log("bidOrder",bidOrder);
                 console.log("currentList",currentList);
 
-                if(payload.is_accept=='true'){
-                    bidOrder.status = 1;
-                    await bidOrder.save();
-                    currentList.quantity=new Number(currentList.quantity) - new Number(bidOrder.quantity);
-                    await currentList.save();
-                }
+                bidOrder.status = 1;
+                await bidOrder.save();
+                currentList.quantity=new Number(currentList.quantity) - new Number(bidOrder.quantity);
+                await currentList.save();
+                
                 await Activities.create({
                     collection_id : currentList.collection_id,
                     contract : payload.contract,
