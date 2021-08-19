@@ -111,7 +111,7 @@ class SubcripberAsset {
                         type : 3, //1:create, 2:mint ,3 :donate, 4 : list, 5: bid, 6: buy, 7 accept Bid, 
                         data: {from: payload.from, to : payload.to , amount :payload.amount },
                         asset: new ObjectId(asset?._id),
-                        time : new Date(new Number(payload.time)*1000),
+                        time : new Date(new Number(payload.time)*1000).toISOString(),
                         transaction: payload.transaction,
                     });
                 }
@@ -131,7 +131,7 @@ class SubcripberAsset {
                     type :payload.mask,// 1: SALE, 2: ACTIONS
                     price: payload.price,// in token payment
                     payment_token:payload.payment_token,
-                    time:new Date(new Number(payload.time)*1000),
+                    time:new Date(new Number(payload.time)*1000).toISOString(),
                     expiration: payload.expiration,
                     transaction:payload.transaction,
                 });
@@ -143,7 +143,7 @@ class SubcripberAsset {
                     type : 4, //1:create, 2:mint ,3 :transfer, 4 : list, 5: bid, 6: buy, 7 accept Bid, 
                     data: {quantity: payload.quantity, type :payload.mask,owner: owner?.address , price: payload.price,payment_token:payload.payment_token},
                     asset: new ObjectId(asset?._id),
-                    time : new Date(new Number(payload.time)*1000),
+                    time : new Date(new Number(payload.time)*1000).toISOString(),
                     transaction: payload.transaction,
                 });
             } else if (data.channel === 'new_buy'){
@@ -168,7 +168,7 @@ class SubcripberAsset {
                     payment_amount: new Number(currentList.price),// in token payment
                     payment_amount: new Number(payload.payment_amount),// in token payment
                     payment_token: payload.payment_token,
-                    time: new Date(new Number(payload.time)*1000),
+                    time: new Date(new Number(payload.time)*1000).toISOString(),
                     status: 1,//0 order, 1 accept, 2 cancel
                 });
                 currentList.buys.push(buy);
@@ -182,7 +182,7 @@ class SubcripberAsset {
                     type : 6, //1:create, 2:mint ,3 :transfer, 4 : list, 5: bid, 6: buy, 7 accept Bid, 
                     data: {from: new ObjectId(fromUser?._id), listing:new ObjectId(currentList?._id), quantity: payload.quantity, payment_price:currentList.price, payment_token: payload.payment_token,payment_amount:payload.payment_amount },
                     asset :  ObjectId(currentList?.asset?._id),
-                    time : new Date(new Number(payload.time)*1000),
+                    time : new Date(new Number(payload.time)*1000).toISOString(),
                     transaction: payload.transaction,
                 });
             } 
@@ -203,7 +203,7 @@ class SubcripberAsset {
                     payment_token: payload.bid_token,
                     payment_amount:payment_amount,
                     expiration: payload.expiration,
-                    time: new Date(new Number(payload.time)*1000),
+                    time: new Date(new Number(payload.time)*1000).toISOString(),
                     status: 0,//0 order, 1 accept, 2 cancel
                 });
                 currentList.bid_orders.push(bidOrder);
@@ -229,6 +229,7 @@ class SubcripberAsset {
                     type : 7, //1:create, 2:mint ,3 :transfer, 4 : list, 5: bid, 6: buy, 7 accept Bid, 
                     data: {from: new ObjectId(fromUser?._id), listing:new ObjectId(currentList?._id), quantity: bidOrder.quantity, payment_token: bidOrder.payment_token,payment_amount:bidOrder.payment_amount },
                     asset :  ObjectId(currentList?.asset),
+                    time : Date.now().toISOString(),
                     transaction: payload.transaction,
                 });
               
@@ -246,7 +247,7 @@ class SubcripberAsset {
                 bidOrder.payment_price =  new Number(payload.bid_price),// in token payment
                 bidOrder.payment_toke =  payload.bid_token,
                 bidOrder.expiration =  payload.expiration,
-                bidOrder.time =  new Date(new Number(payload.time)*1000);
+                bidOrder.time =  new Date(new Number(payload.time)*1000).toISOString();
                 bidOrder.status =   1,//1 order, 2 accept, 3 cancel
                 await bidOrder.save();
             } else if (data.channel === 'new_cancel_list'){
