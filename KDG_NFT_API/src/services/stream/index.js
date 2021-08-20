@@ -1,17 +1,23 @@
 'use strict'
 const BaseService = require('../../cores/base-service')
 const Model = require('../../models/Stream')
+const ObjectId = require('mongoose').Types.ObjectId
 
 class StreamsService extends BaseService {
-  async calculateStreamTime () {
+  async calculateStreamTime ({ userId }) {
+    const match = {
+      status: 2,
+      end_date: {
+        $exists: true
+      }
+    }
+    if (userId) {
+      match.user = ObjectId(userId)
+    }
+
     return this.aggregate([
       {
-        $match: {
-          status: 2,
-          end_date: {
-            $exists: true
-          }
-        }
+        $match: match
       },
       {
         $project: {

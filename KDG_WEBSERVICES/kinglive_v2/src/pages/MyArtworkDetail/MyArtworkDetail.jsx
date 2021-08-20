@@ -55,14 +55,14 @@ const MyArtworkDetail = () => {
     useEffect(() => {
         ;(async () => {
           if (!account) return
-            contractKL1155.methods
-            .isApprovedForAll(account, addressMarket)
+            contractKL1155?.isApprovedForAll(account, addressMarket)
             .then((approved) => {
+              console.log("approved",approved)
               setIsApprovedForAll(approved)
             })
           
         })()
-    })
+    },[address,account,contractKL1155])
 
 
 
@@ -118,8 +118,7 @@ const MyArtworkDetail = () => {
         const price = new Decimal(e.target._price.value)
           .mul(new Decimal(10).pow(paymentToken.decimal))
           .toHex()
-            await contractMarket.methods
-            .list(
+            await contractMarket.list(
               e.target._contract.value,
               e.target._id.value,
               new Decimal(e.target._quantity.value).toHex(),
@@ -132,10 +131,11 @@ const MyArtworkDetail = () => {
       }
 
       const handleApprove = async () => {
+        console.log("account",account);
+        console.log("contractKL1155",contractKL1155);
+
         if(!account) return
-          const approved = await contractKL1155.methods
-            .setApprovalForAll(addressMarket, true)
-            .send({ from: window.ethereum.selectedAddress })
+          const approved = await contractKL1155?.setApprovalForAll(addressMarket, true)
           if (approved) {
             setIsApprovedForAll(true)
           }
@@ -145,8 +145,7 @@ const MyArtworkDetail = () => {
     
       const handleAccept = async () => {
         if (!account) return
-        const result = await contractKL1155.methods
-          .reviewAsset(userAssetList[currentIndex].asset.id, true)
+        const result = await contractKL1155.reviewAsset(userAssetList[currentIndex].asset.id, true)
         if (result) {
             let newList=[...userAssetList]
             let item = {...newList[currentIndex]};
@@ -159,8 +158,7 @@ const MyArtworkDetail = () => {
 
       const handleReject = async () => {
         if (!account) return
-          const result = await contractKL1155.methods
-            .reviewAsset(userAssetList[currentIndex].asset.id, false)
+          const result = await contractKL1155.reviewAsset(userAssetList[currentIndex].asset.id, false)
           if (result) {
             let newList=[...userAssetList]
             let item = {...newList[currentIndex]};
@@ -428,7 +426,7 @@ const MyArtworkDetail = () => {
                         {isOwner && !isApprovedForAll && userAssetList[currentIndex]?.asset?.status === 1 && (
                             <div className="artist-content-button">
                                 <button type="button" className="btn-sell" onClick={() => handleApprove()}>
-                                    Approval for sell
+                                    Approval
                                 </button>
                             </div>
                         )}

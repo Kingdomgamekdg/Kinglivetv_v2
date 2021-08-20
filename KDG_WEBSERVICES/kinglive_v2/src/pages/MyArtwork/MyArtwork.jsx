@@ -26,6 +26,7 @@ export default function MyArtwork() {
     () => `${userData?.kyc?.first_name} ${userData?.kyc?.last_name}`,
     [userData]
   )
+  const address = useMemo(() => userRedux?.address, [userRedux])
 
   const handleChangeStatus = async (status) => {
     setStatus(status)
@@ -114,7 +115,7 @@ export default function MyArtwork() {
         setAssetList(res?.data ? res.data : [])
       })
     })()
-  }, [status])
+  }, [status,address])
 
 
   
