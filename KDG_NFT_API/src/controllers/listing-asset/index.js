@@ -19,6 +19,7 @@ module.exports = class {
           data: []
         })
       }
+      const { ...conditions } = queries
       const ids = conditions.ids ? conditions.ids.split(',') : []
 
 
