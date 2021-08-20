@@ -49,8 +49,8 @@ a {text-decoration:none;}
 .home_navigator li:nth-child(2) a:before {background-position:calc(-1*25px) 0;}
 .home_navigator li:nth-child(3) a:before {background-position:calc(-1*2*25px) 0;}
 .home_navigator li:nth-child(4) a:before {background-position:calc(-1*3*25px) 0;}
-.home_navigator li span {background:url(../images/home/arrow_btn.png) center center no-repeat;width:25px;height:25px;display:block;margin: 0 0 0 15px;float:left;}
-.home_navigator li:hover span {-webkit-animation: shake-horizontal 0.8s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;animation: shake-horizontal 0.8s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;}
+.home_navigator li .shake {background:url(../images/home/arrow_btn.png) center center no-repeat;width:25px;height:25px;display:block;margin: 0 0 0 15px;float:left;}
+.home_navigator li:hover .shake {-webkit-animation: shake-horizontal 0.8s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;animation: shake-horizontal 0.8s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;}
 div.split:nth-child(2n) {margin-right:0;}
 
 /* images*/
