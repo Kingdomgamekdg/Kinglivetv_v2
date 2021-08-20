@@ -178,7 +178,7 @@ export default function NFT() {
        
         const allowance = await contractERC20.allowance(account, addressMarket)
         if (allowance && item) {
-          if (new Decimal(allowance).gt(new Decimal(item.price).mul(item?.quantity))) {
+          if (new Decimal(allowance.toString()).gt(new Decimal(item.price).mul(item?.quantity))) {
             setIsApproval(true)
           }
         } 

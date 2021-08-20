@@ -38,7 +38,7 @@ const NFTDetail = () => {
         if(!account && !contractERC20) return
         const allowance = await contractERC20?.allowance(account, addressMarket)
         if (allowance && marketList[currentIndex]?.price) {
-            if (new Decimal(allowance).gt(new Decimal(marketList[currentIndex].price).mul(marketList[currentIndex]?.quantity))) {
+            if (new Decimal(allowance.toString()).gt(new Decimal(marketList[currentIndex].price).mul(marketList[currentIndex]?.quantity))) {
             return true
             } else {
             return false

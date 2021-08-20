@@ -32,7 +32,7 @@ export default function MintNFT() {
     async function getAllowance() {
       if(!account) return
         const allowance = await contractERC20?.allowance(account, addressKL1155)
-        if (Number(allowance) >= 20000000000000000000) {
+        if (Number(allowance.toString()) >= 20000000000000000000) {
           setIsApproval(true)
         }
     }
