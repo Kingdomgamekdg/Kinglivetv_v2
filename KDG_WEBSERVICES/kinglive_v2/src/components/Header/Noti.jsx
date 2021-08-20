@@ -15,7 +15,7 @@ export default function Noti() {
         dispatch(asyncGetNoti())
         await callAPI.post('/readed')
         dispatch(actChangeUnreadNoti(0))
-    }, [IsOpenNoti])
+    }, [IsOpenNoti,dispatch])
     return (
         <>
             <div onClick={handleOpenNoti} className='noti'>

@@ -8,8 +8,6 @@ import market from '../../assets/images/sidebar/market.svg'
 import marketactive from '../../assets/images/sidebar/marketactive.svg'
 import swap from '../../assets/images/sidebar/swap.svg'
 import swapactive from '../../assets/images/sidebar/swapactive.svg'
-import book from '../../assets/images/sidebar/book.svg'
-import bookactive from '../../assets/images/sidebar/bookactive.svg'
 import more from '../../assets/images/sidebar/more.svg'
 import moreactive from '../../assets/images/sidebar/moreactive.svg'
 import { useHistory, useLocation } from 'react-router'
@@ -119,8 +117,6 @@ export default function Sidebar({ IsOpenSidebar }) {
             <img src={location.pathname === o.route ? o.active : o.icon} alt='' />
             <span>{o.name}</span>
             {/*---------btn:arrow onclick show/hide child_box---------*/}
-            {o.child ? <a href="#" className='_transit arrow'></a> 
-            : null}{/*-----e:arrow------ */}  
             {o.child && (              
               
               <div className='child'>
@@ -151,12 +147,6 @@ export default function Sidebar({ IsOpenSidebar }) {
           </div>
 
           <div>
-            <a href="#" class="_transit link medium"></a>
-            <a href="#" class="_transit link telegram"></a>
-            <a href="#" class="_transit link twitter"></a>
-          </div>
-
-          <div>
             <form>
               <label class="switch" id="display_mode">
                 <input type="checkbox" 
@@ -165,11 +155,6 @@ export default function Sidebar({ IsOpenSidebar }) {
                 <span class="slider round"></span>
               </label>{/*---e:display_mode---*/}      
             </form>
-          </div>
-
-          <div>
-            <a href="#" class="_transit global"></a>
-            <a href="#" class="_transit en "></a>
           </div>
 
         </div>{/*-----e:bottom_box------ */}  

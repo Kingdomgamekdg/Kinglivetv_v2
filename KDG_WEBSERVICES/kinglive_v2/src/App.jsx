@@ -83,7 +83,7 @@ function App() {
         </div>
       );
     })
-  } , [])
+  } , [dispatch, handleClickNoti ,handleType])
 
   return (
     <>

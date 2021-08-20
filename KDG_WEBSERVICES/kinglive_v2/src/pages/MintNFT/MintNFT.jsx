@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 
 import '../../assets/scss/mint-nft.scss'
 import checkSVG from '../../assets/svg/check.svg'
@@ -8,7 +7,6 @@ import errorSVG from '../../assets/svg/error.svg'
 import uploadSVG from '../../assets/svg/upload.svg'
 import callAPI from '../../axios'
 import { ABIKL1155, addressKL1155 } from '../../contracts/KL1155'
-import { ABIERC20, addressERC20 } from '../../contracts/ERC20'
 
 export default function MintNFT() {
   const inputVideoRef = useRef()
@@ -19,7 +17,6 @@ export default function MintNFT() {
 
   const [isApproval, setIsApproval] = useState(false)
   const [file, setFile] = useState([])
-  const [image, setImage] = useState({})
   const [percent, setPercent] = useState(0)
   const [isUploading, setIsUploading] = useState(false)
   const [uploadSuccess, setUploadSuccess] = useState(false)
@@ -38,7 +35,7 @@ export default function MintNFT() {
       }
     }
     getAllowance()
-  }, [window?.ethereum?.selectedAddress])
+  }, [])
 
   const handlePreviewVideo = async (e) => {
     const files = e.target.files || []
@@ -92,7 +89,6 @@ export default function MintNFT() {
     setIsUploading(true)
 
     const data = new FormData()
-    data.append('image', image)
     data.append('file', file)
     data.append('name', e.target.name.value)
     data.append('numEditions', e.target.numEditions.value)

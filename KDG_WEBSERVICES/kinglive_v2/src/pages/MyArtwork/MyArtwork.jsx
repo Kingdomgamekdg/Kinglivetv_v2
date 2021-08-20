@@ -4,9 +4,6 @@ import { useHistory } from "react-router-dom";
 import '../../assets/scss/my-artwork.scss'
 import callAPI from '../../axios'
 import { STORAGE_DOMAIN } from '../../constant'
-import { ABIKL1155, addressKL1155 } from '../../contracts/KL1155'
-import { paymentList } from '../../contracts/ERC20'
-import { ABIMarket, addressMarket } from '../../contracts/Market'
 import convertPositionIMG from '../../helpers/convertPositionIMG'
 
 export default function MyArtwork() {
@@ -18,7 +15,6 @@ export default function MyArtwork() {
 
   const isLoadMore = useRef(true)
   const isLoadingAPI = useRef(false)
-  const [isLoading, setIsLoading] = useState(false)
 
   const [userData, setUserData] = useState({})
   const avatar = useMemo(() => userData?.kyc?.avatar?.path, [userData])
@@ -36,16 +32,13 @@ export default function MyArtwork() {
     await getAssets(status)
   }
 
-  
-
   const getAssets = useCallback(
     async (status) => {
-      if(status !==3)
-      {
-        var ids = AssetList.map((o) => o._id)
+      if (status !== 3) {
+        const ids = AssetList.map((o) => o._id)
         const res = await callAPI.get(
           `/user-asset?limit=20&${ids.length ? `ids=${ids}` : ''}&status=${status}`,
-          true) 
+          true)
         if (res?.data?.length === 0) {
           isLoadMore.current = false
           setAssetList([...AssetList])
@@ -53,18 +46,18 @@ export default function MyArtwork() {
         }
         setAssetList([...AssetList, ...(res?.data ? res.data : [])])
       } else {
-        var ids = AssetList.map((o) => o._id)
+        const ids = AssetList.map((o) => o._id)
         const res = await callAPI.get(
           `/buys/bidding?limit=20&${ids.length ? `ids=${ids}` : ''}`,
-          true) 
+          true)
         if (res?.data?.length === 0) {
           isLoadMore.current = false
           setAssetList([...AssetList])
           return
         } else {
-          const bidings = res?.data.map(bid =>{
+          const bidings = res?.data.map(bid => {
             return {
-              user :bid.from,
+              user: bid.from,
               asset: bid.asset,
               listId: bid.list_id?._id
             }
@@ -73,12 +66,10 @@ export default function MyArtwork() {
         }
 
       }
-      
+
     },
     [AssetList]
   )
-
-  
 
   useEffect(() => {
     const handleLoad = async () => {
@@ -89,9 +80,7 @@ export default function MyArtwork() {
 
       if (isEnd && isLoadMore.current && !isLoadingAPI.current) {
         isLoadingAPI.current = true
-        setIsLoading(true)
         await getAssets(status)
-        setIsLoading(false)
         isLoadingAPI.current = false
       }
     }
@@ -104,17 +93,17 @@ export default function MyArtwork() {
   }, [getAssets, status])
 
   useEffect(() => {
-    ;(async () => {
+    ; (async () => {
       try {
         const res = await callAPI.get(`/user?uid=${userRedux?._id}`)
-        console.log("res",res);
+        console.log("res", res);
         setUserData(res.data)
-      } catch (error) {}
+      } catch (error) { }
     })()
   }, [userRedux])
 
   useEffect(() => {
-    ;(async () => {
+    ; (async () => {
       callAPI.get(`/user-asset?limit=20&status=${status}`, true).then((res) => {
         setAssetList(res?.data ? res.data : [])
       })
@@ -122,56 +111,56 @@ export default function MyArtwork() {
   }, [status])
 
 
-  
+
 
   const handleShowDetail = async (index) => {
-    if(status === 3 ){
-      var ids = AssetList.map((o) => o?.listId)
+    if (status === 3) {
+      const ids = AssetList.map((o) => o?.listId)
       history.push(`/nft-detail?ids=${ids}&index=${index}`)
     } else {
-      var ids = AssetList.map((o) => o?._id)
+      const ids = AssetList.map((o) => o?._id)
       history.push(`/my-artwork-detail?ids=${ids}&index=${index}`)
     }
   }
 
-  
+
 
   const handleMouseOverNFT = useCallback((e) => {
     let target = e.target
     while (true) {
       const targetClassList = Array.from(target.classList)
-      if(targetClassList.includes('myartwork__list-item')) {
+      if (targetClassList.includes('myartwork__list-item')) {
         break
       }
       target = target.parentElement
     }
     target.classList.add('active-video')
     const video = target.querySelector('video')
-    if(video) {
-      var isPlaying = video.currentTime > 0 && !video.paused && !video.ended 
-      && video.readyState > video.HAVE_CURRENT_DATA;
-      if(!isPlaying){
+    if (video) {
+      var isPlaying = video.currentTime > 0 && !video.paused && !video.ended
+        && video.readyState > video.HAVE_CURRENT_DATA;
+      if (!isPlaying) {
         video.play()
       }
     }
-  },[])
+  }, [])
 
   const handleMouseOutNFT = useCallback((e) => {
     let target = e.target
     while (true) {
       const targetClassList = Array.from(target.classList)
-      if(targetClassList.includes('myartwork__list-item')) {
+      if (targetClassList.includes('myartwork__list-item')) {
         break
       }
       target = target.parentElement
     }
     target.classList.remove('active-video')
     const video = target.querySelector('video')
-    if(video) {
+    if (video) {
       video.pause()
-      video.currentTime=0
-  }
-  })
+      video.currentTime = 0
+    }
+  }, [])
 
   return (
     <>
@@ -247,26 +236,26 @@ export default function MyArtwork() {
 
           {AssetList?.length > 0 && (
             <div className='myartwork__list'>
-              {AssetList.map((al,index) => (
-                <div 
-                onMouseOver={handleMouseOverNFT}
-                onMouseOut={handleMouseOutNFT}
-                key={'artwork' + al._id} className='myartwork__list-item'>
+              {AssetList.map((al, index) => (
+                <div
+                  onMouseOver={handleMouseOverNFT}
+                  onMouseOut={handleMouseOutNFT}
+                  key={'artwork' + al._id} className='myartwork__list-item'>
                   <div className='artwork' onClick={() => handleShowDetail(index)}>
-                      {al.asset?.metadata?.mimetype.startsWith('image') && (
-                         <div className='img'>
-                            <img key={'image' + al._id} src={al.asset?.metadata?.image} alt='' />
-                         </div>
+                    {al.asset?.metadata?.mimetype.startsWith('image') && (
+                      <div className='img'>
+                        <img key={'image' + al._id} src={al.asset?.metadata?.image} alt='' />
+                      </div>
 
-                      )}
-                      {al.asset?.metadata?.mimetype.startsWith('video/mp4') && (
-                        <>
-                          <div className='video'>
-                            <img key={'image' + al._id} src={al.asset?.metadata?.image} alt='' />
-                            <video muted autoPlay key={'video' + al._id} src={al.asset?.metadata?.animation_url} alt='' />
-                         </div>
-                        </>
-                        )}
+                    )}
+                    {al.asset?.metadata?.mimetype.startsWith('video/mp4') && (
+                      <>
+                        <div className='video'>
+                          <img key={'image' + al._id} src={al.asset?.metadata?.image} alt='' />
+                          <video muted autoPlay key={'video' + al._id} src={al.asset?.metadata?.animation_url} alt='' />
+                        </div>
+                      </>
+                    )}
                     <div key={'type' + al._id} className='type'>
                       {al.asset?.metadata?.mimetype}
                     </div>

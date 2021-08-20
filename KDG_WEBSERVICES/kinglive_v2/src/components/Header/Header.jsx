@@ -1,7 +1,6 @@
 import { useCallback } from 'react'
-import { useEffect, useState, useMemo } from 'react'
+import { useEffect, useState } from 'react'
 import { useDispatch, useSelector } from 'react-redux'
-import { useHistory } from 'react-router-dom'
 import Web3 from 'web3'
 import metamask from '../../assets/images/header/metamask.png'
 import trust from '../../assets/images/header/trust.png'
@@ -14,7 +13,7 @@ import { ABIKL1155, addressKL1155 } from '../../contracts/KL1155'
 import { ABIMarket, addressMarket } from '../../contracts/Market'
 import shortAddress from '../../helpers/shortAddress'
 import storage from '../../helpers/storage'
-import { actChangeAddress, actChangeUnreadNoti, actChangeUser, asyncChangeUser, asyncGetNoti } from '../../store/actions'
+import { actChangeAddress, asyncChangeUser } from '../../store/actions'
 import Profile from './Profile'
 import Noti from './Noti'
 import LeftHeader from './LeftHeader'
@@ -69,11 +68,6 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
     if (!window.ethereum.isMetaMask) return
 
     window.web3 = new Web3(window.ethereum)
-    // if (window.ethereum.networkVersion && window.ethereum.networkVersion !== 97) {
-    //   setIsWrongNetwork(true)
-    // } else {
-    //   setIsWrongNetwork(false)
-    // }
     window.contractKL1155 = new window.web3.eth.Contract(ABIKL1155, addressKL1155)
     window.contractMarket = new window.web3.eth.Contract(ABIMarket, addressMarket)
     window.contractERC20 = new window.web3.eth.Contract(ABIERC20, addressERC20)

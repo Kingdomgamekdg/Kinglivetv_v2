@@ -23,7 +23,6 @@ export default function Live() {
   const history = useHistory()
 
   const [ActiveSlide, setActiveSlide] = useState(0)
-  const [ActiveLive, setActiveLive] = useState(0)
   const [ActiveTab, setActiveTab] = useState(0)
   const timeout = useRef(null)
   useEffect(() => {
@@ -41,19 +40,6 @@ export default function Live() {
       clearTimeout(timeout.current)
     }
     setActiveSlide(index)
-  }, [])
-
-  const handlePlusSlideLive = useCallback(() => {
-    setActiveLive((_active) => {
-      if (_active === live.length - 1) return 0
-      return _active + 1
-    })
-  }, [])
-  const handleMinusSlideLive = useCallback(() => {
-    setActiveLive((_active) => {
-      if (_active === 0) return live.length - 1
-      return _active - 1
-    })
   }, [])
 
   const [streamList, setStreamList] = useState([])
