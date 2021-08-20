@@ -31,26 +31,13 @@ export default function MyArtwork() {
   const handleChangeStatus = async (status) => {
     setStatus(status)
     AssetList.length = 0
-    await getAssets(status)
   }
 
-  
 
   const getAssets = useCallback(
     async (status) => {
-      if(status !==3)
+      if(status === 3 )
       {
-        const ids = AssetList.map((o) => o._id)
-        const res = await callAPI.get(
-          `/user-asset?limit=20&${ids.length ? `ids=${ids}` : ''}&status=${status}`,
-          true) 
-        if (res?.data?.length === 0) {
-          isLoadMore.current = false
-          setAssetList([...AssetList])
-          return
-        }
-        setAssetList([...AssetList, ...(res?.data ? res.data : [])])
-      } else {
         const ids = AssetList.map((o) => o._id)
         const res = await callAPI.get(
           `/buys/bidding?limit=20&${ids.length ? `ids=${ids}` : ''}`,
@@ -62,14 +49,48 @@ export default function MyArtwork() {
         } else {
           const bidings = res?.data.map(bid =>{
             return {
+              _id: bid._id,
               user :bid.from,
               asset: bid.asset,
-              listId: bid.list_id?._id
+              listId: bid.list_id?._id,
+              amount:bid.quantity
             }
           })
           setAssetList([...AssetList, ...bidings])
         }
-
+      } else if(status === 4)
+      {
+        const ids = AssetList.map((o) => o._id)
+        const res = await callAPI.get(
+          `/listing-assets?limit=20&${ids.length ? `ids=${ids}` : ''}`,
+          true) 
+        if (res?.data?.length === 0) {
+          isLoadMore.current = false
+          setAssetList([...AssetList])
+          return
+        } else {
+          const listing = res?.data.map(list =>{
+            return {
+              _id: list._id,
+              user :list.owner,
+              asset: list.asset,
+              listId: list._id,
+              amout:list.quantity
+            }
+          })
+          setAssetList([...AssetList, ...listing])
+        }
+      } else {
+        const ids = AssetList.map((o) => o._id)
+        const res = await callAPI.get(
+          `/user-asset?limit=20&${ids.length ? `ids=${ids}` : ''}&status=${status}`,
+          true) 
+        if (res?.data?.length === 0) {
+          isLoadMore.current = false
+          setAssetList([...AssetList])
+          return
+        }
+        setAssetList([...AssetList, ...(res?.data ? res.data : [])])
       }
       
     },
@@ -103,7 +124,6 @@ export default function MyArtwork() {
     ;(async () => {
       try {
         const res = await callAPI.get(`/user?uid=${userRedux?._id}`)
-        console.log("res",res);
         setUserData(res.data)
       } catch (error) {}
     })()
@@ -111,9 +131,7 @@ export default function MyArtwork() {
 
   useEffect(() => {
     ;(async () => {
-      callAPI.get(`/user-asset?limit=20&status=${status}`, true).then((res) => {
-        setAssetList(res?.data ? res.data : [])
-      })
+       await getAssets(status)
     })()
   }, [status,address])
 
@@ -121,7 +139,7 @@ export default function MyArtwork() {
   
 
   const handleShowDetail = async (index) => {
-    if(status === 3 ){
+    if(status === 3 || status === 4 ){
       const ids = AssetList.map((o) => o?.listId)
       history.push(`/nft-detail?ids=${ids}&index=${index}`)
     } else {
@@ -238,6 +256,12 @@ export default function MyArtwork() {
               onClick={() => handleChangeStatus(3)}
             >
               Bidding <span>Bidding</span>{' '}
+            </div>
+            <div
+              className={`myartwork__tab ${status === 4 ? 'active' : ''}`}
+              onClick={() => handleChangeStatus(4)}
+            >
+              On Sale <span>On Sale</span>{' '}
             </div>
           </div>
 
