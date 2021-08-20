@@ -4,8 +4,6 @@ import { useHistory } from "react-router-dom";
 import '../../assets/scss/my-artwork.scss'
 import callAPI from '../../axios'
 import { STORAGE_DOMAIN } from '../../constant'
-import { useWeb3React } from '@web3-react/core'
-import { useContractKL1155, useContractERC20 , useContractMarket} from '../../components/ConnectWalletButton/contract'
 
 import convertPositionIMG from '../../helpers/convertPositionIMG'
 

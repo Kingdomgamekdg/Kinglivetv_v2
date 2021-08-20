@@ -4,7 +4,7 @@ import reducers from './reducers'
 
 const store = createStore(reducers, applyMiddleware(thunk))
 store.subscribe(() => {
-  console.log({ store: store.getState() })
+  // console.log({ store: store.getState() })
 })
 
 export default store

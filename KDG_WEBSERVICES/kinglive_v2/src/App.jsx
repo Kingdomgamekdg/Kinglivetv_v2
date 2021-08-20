@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react'
+import { useCallback, useEffect, useState } from 'react'
 import { Route, Switch } from 'react-router'
+import 'react-toastify/dist/ReactToastify.css';
 import './assets/scss/profile.scss'
 import './assets/scss/styles.scss'
+import { toast, ToastContainer } from 'react-toastify';
 import Header from './components/Header'
 import Sidebar from './components/Sidebar'
 import Home from './pages/Home'
@@ -20,9 +22,12 @@ import WatchLive from './pages/WatchLive'
 import WatchVideo from './pages/WatchVideo'
 import { useMemo } from 'react'
 import { useDispatch } from 'react-redux'
-import { asyncGetNoti } from './store/actions'
+import { actChangeUnreadNoti, asyncGetNoti } from './store/actions'
+import socket from './socket'
+import { useHistory } from 'react-router-dom';
 
 function App() {
+  const history = useHistory
   const dispatch = useDispatch()
   const [IsOpenSidebar, setIsOpenSidebar] = useState(false)
 
@@ -36,10 +41,53 @@ function App() {
 
   useMemo(() => {
     dispatch(asyncGetNoti())
+  },[dispatch])
+
+  const handleClickNoti = useCallback(
+    ({ type, data }) => {
+      if (type === 101) history.push(`/profile?uid=${data.user}`);
+      if (type === 102 || type === 103 || type === 104) history.push(`/watch?v=${data.video}`);
+      if (type === 105) history.push(`/live?s=${data.video}`);
+    },
+    [history]
+  );
+
+  const handleType = useCallback((noti) => {
+    console.log(noti);
+    return noti.type === 101 ? 
+      <p>{noti.data.name} is follow you</p>
+      :
+      noti.type === 102 ?
+      <p>{noti.data.name} is comment on your video</p>
+      : 
+      noti.type === 103 ? 
+      <p>Your video {noti.data.video_name} upload success</p>
+      : 
+      noti.type === 104 ? 
+      <p>{noti.data.name} upload new video {noti.data.video_name}</p>
+      : 
+      noti.type === 105 ? 
+      <p>{noti.data.name} is streaming</p>
+      : null
+
+    
   },[])
+
+  useEffect(() => {
+    socket.on('noti' , ({data , unread}) => {
+      console.log(data);
+      dispatch(actChangeUnreadNoti(unread))
+      toast(
+        <div onClick={() => handleClickNoti(data)}>
+          {handleType(data)}
+        </div>
+      );
+    })
+  } , [dispatch, handleClickNoti ,handleType])
 
   return (
     <>
+      <ToastContainer />
       <Header IsOpenSidebar={IsOpenSidebar} toggleSidebar={() => setIsOpenSidebar((x) => !x)} />
       <Sidebar IsOpenSidebar={IsOpenSidebar} />
 
