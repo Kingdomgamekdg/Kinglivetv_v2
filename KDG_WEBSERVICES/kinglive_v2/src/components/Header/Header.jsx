@@ -20,6 +20,9 @@ import storage from '../../helpers/storage'
 import { actChangeAddress, asyncChangeUser, asyncGetNoti } from '../../store/actions'
 import { EXPLORER_URL } from '../../constant'
 import convertDateAgo from '../../helpers/convertDateAgo'
+import UnlockButton from '../../components/ConnectWalletButton'
+import { useWeb3React } from '@web3-react/core'
+import { useContractKL1155, useContractERC20 } from '../../components/ConnectWalletButton/contract'
 
 export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false }) {
   const userRedux = useSelector((state) => state.user)
@@ -35,15 +38,18 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
   const unread = useSelector(state => state.unread_noti)
   const noties = useSelector(state => state.noties)
   const dispatch = useDispatch()
+  // Hooks em viết sẵn lấy contracts ra xài thui nè
+  const { account } = useWeb3React()
+  const contractKL1155 = useContractKL1155()
+  const contractERC20 = useContractERC20()
+  // Hooks em viết sẵn lấy contracts ra xài thui nè
+
   const history = useHistory()
-  const currentAddress = useSelector((state) => state.address)
 
   const [IsOpenNoti, setIsOpenNoti] = useState(false)
   const [IsOpenLive, setIsOpenLive] = useState(false)
   const [IsOpenProfile, setIsOpenProfile] = useState(false)
   const [IsOpenConnect, setIsOpenConnect] = useState(false)
-  const [insMetaMask, setInsMetaMask] = useState(false)
-  const [isWrongNetwork, setIsWrongNetwork] = useState(false)
   const [balance, setBalance] = useState(0)
 
   const createUser = useCallback(async () => {
@@ -79,88 +85,23 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
     }
   }, [createUser, dispatch])
 
-  const setupMetaMask = useCallback(async () => {
-    const { Decimal } = require('decimal.js')
-    if (!window.ethereum) return
-    if (!window.ethereum.isMetaMask) return
-
-    window.web3 = new Web3(window.ethereum)
-    // if (window.ethereum.networkVersion && window.ethereum.networkVersion !== 97) {
-    //   setIsWrongNetwork(true)
-    // } else {
-    //   setIsWrongNetwork(false)
-    // }
-    window.contractKL1155 = new window.web3.eth.Contract(ABIKL1155, addressKL1155)
-    window.contractMarket = new window.web3.eth.Contract(ABIMarket, addressMarket)
-    window.contractERC20 = new window.web3.eth.Contract(ABIERC20, addressERC20)
-    if (window.ethereum.selectedAddress && window.contractERC20) {
-      const balance = await window.contractERC20.methods
-        .balanceOf(window.ethereum.selectedAddress)
-        .call()
-      const grossBalance = new Decimal(balance).div(new Decimal(10).pow(18))
-      setBalance(grossBalance.toNumber())
-    }
-    const accounts = await window.ethereum.request({ method: 'eth_requestAccounts' })
-    dispatch(actChangeAddress(accounts[0]))
-  }, [dispatch])
 
   // accountsChanged
+
   useEffect(() => {
+    if (!account) return
+
     const { Decimal } = require('decimal.js')
-    if (!window.ethereum) return
-    if (!window.ethereum.isMetaMask) return
-
-    window.ethereum.on('accountsChanged', async function (accounts) {
-      dispatch(actChangeAddress(accounts[0]))
-      await loginUser()
-      if (window.ethereum && window.contractERC20) {
-        const balance = await window.contractERC20.methods.balanceOf(accounts[0]).call()
-        const grossBalance = new Decimal(balance).div(new Decimal(10).pow(18))
+    // chỗ này thay cho .call() nè
+    // Ở dưới có 1 chỗ thay cho .send({ from: address })
+    contractERC20
+      .balanceOf(account)
+      .then((balance) => {
+        const grossBalance = new Decimal(balance._hex).div(new Decimal(10).pow(18))
         setBalance(grossBalance.toNumber())
-      }
-      if (accounts[0]) return
-      storage.clearToken()
-      storage.clearRefresh()
-    })
-
-    window.ethereum.on('networkChanged', async function (networkId) {
-      console.log('networkId ', networkId)
-      if (networkId === 97) {
-        setIsWrongNetwork(false)
-      } else {
-        setIsWrongNetwork(true)
-      }
-    })
-  }, [dispatch, loginUser])
-
-  useEffect(() => {
-    async function xxx() {
-      if (window.ethereum && window.ethereum.isMetaMask) {
-        await setupMetaMask()
-        await loginUser()
-      }
-    }
-    xxx()
-  }, [setupMetaMask, loginUser])
-
-  const connectMetaMask = useCallback(async () => {
-    setIsOpenConnect(false)
-
-    if (window.ethereum && window.ethereum.isMetaMask) {
-      await setupMetaMask()
-      await loginUser()
-      return
-    }
-
-    setInsMetaMask(true)
-  }, [setupMetaMask, loginUser])
-
-  const handleLogout = async () => {
-    dispatch(actChangeAddress(null))
-    window.web3 = null
-    storage.clearToken()
-    storage.clearRefresh()
-  }
+      })
+      .catch((error) => console.log(error))
+  }, [account])
 
   const handleOpenNoti = useCallback(() => {
     console.log(123);
@@ -170,45 +111,8 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
 
   return (
     <>
-      {isWrongNetwork && (
-        <div className='popupX'>
-          <div className='containerX'>
-            <div className='titleX'>
-              Please use Binance Smart Chain Testnet (97) to start app<applet></applet>!
-            </div>
-          </div>
-        </div>
-      )}
 
-      {insMetaMask && (
-        <div className='popupX'>
-          <div className='containerX'>
-            <img className='closeX' src={closeSVG} alt='' onClick={() => setInsMetaMask(false)} />
-            <div className='titleX'>You haven't installed MetaMask yet!</div>
-            <div className='descriptionX'>
-              <img src={errorSVG} alt='' />
-              <span>Do you want to install MetaMask?</span>
-            </div>
-            <div style={{ display: 'flex', justifyContent: 'center' }}>
-              <div
-                className='buttonX mr-20'
-                onClick={() => {
-                  window.open(
-                    'https://chrome.google.com/webstore/detail/metamask/nkbihfbeogaeaoehlefnkodbefgpgknn',
-                    '_blank'
-                  )
-                  setInsMetaMask(false)
-                }}
-              >
-                Yes
-              </div>
-              <div className='buttonX buttonX--cancel' onClick={() => setInsMetaMask(false)}>
-                No
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
+
 
       <div className={`connect-wallet ${IsOpenConnect ? 'show' : ''}`}>
         <div onClick={() => setIsOpenConnect(false)} className='mask'></div>
@@ -216,7 +120,7 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
           <p>
             Connect to a wallet <span onClick={() => setIsOpenConnect(false)}></span>
           </p>
-          <div className='item' onClick={connectMetaMask}>
+          <div className='item'>
             <span>Metamask</span>
             <div className='icon'>
               <img src={metamask} alt='' />
@@ -423,17 +327,40 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
               </div>
             </div>
           </div>
-          <div
-            onClick={() => setIsOpenConnect(true)}
-            className={`connect ${currentAddress ? 'disabled' : ''}`}
-          >
-            {currentAddress ? shortAddress(currentAddress) : 'Connect'}
-          </div>
+
+          <UnlockButton />
+
+          {/* chỗ này thay cho thay cho .send({ from: address }) */}
+          {/* {account && (
+            <div
+              className='buttonX'
+              onClick={() => {
+                contractKL1155
+                  .create(
+                    100,
+                    100,
+                    2500,
+                    'Qmc13XyTfdvGjkpJcfm5JC6ds4dDH3mLV6RsDTrUomoFkS',
+                    '0x00',
+                    { gasLimit: 1000000 }
+                  )
+                  .then((res) => {
+                    console.log(res)
+                  })
+              }}
+            >
+              Call mẫu 1 phát cho dui nè
+            </div>
+          )} */}
+          {/* chỗ này thay cho thay cho .send({ from: address }) */}
+
           <div onClick={() => setIsOpenProfile(!IsOpenProfile)} className='profile'>
             <span className='avatar'>
               <img src={logo} alt='' />
             </span>
+
             <span className='name'>{userName}</span>
+
             <svg
               width='10'
               height='6'
@@ -446,6 +373,7 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
                 fill='#C4C4C4'
               />
             </svg>
+
             <div className={`dropdown ${IsOpenProfile ? 'show' : ''}`}>
               <div className='top'>
                 <div className='avatar-name'>
@@ -528,7 +456,7 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
               </div>
 
               <div className='bot'>
-                <div className='item' onClick={() => handleLogout()}>
+                <div className='item'>
                   <svg
                     width='15'
                     height='15'

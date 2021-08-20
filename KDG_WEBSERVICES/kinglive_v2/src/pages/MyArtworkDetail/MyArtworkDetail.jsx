@@ -11,10 +11,11 @@ import zoom from '../../assets/images/nft-market/zoom.png'
 import '../../assets/scss/my-artwork-detail.scss'
 import address from '../../assets/images/nft-market/Vector.png'
 import callAPI from '../../axios'
-import { ABIKL1155, addressKL1155 } from '../../contracts/KL1155'
 import { paymentList } from '../../contracts/ERC20'
-import { ABIMarket, addressMarket } from '../../contracts/Market'
-const { Decimal } = require('decimal.js')
+import { useWeb3React } from '@web3-react/core'
+import { useContractKL1155, useContractERC20 , useContractMarket} from '../../components/ConnectWalletButton/contract'
+import {addressMarket} from './../../contracts/Market'
+
 
 const MyArtworkDetail = () => {
     const userRedux = useSelector((state) => state.user)
@@ -27,10 +28,15 @@ const MyArtworkDetail = () => {
     const [isOpenSell, setIsOpenSell] = useState(false)
     const [isApprovedForAll, setIsApprovedForAll] = useState(false)
     const isReviewer = useMemo(() => userRedux?.isReviewer, [userRedux])
-    const address = useMemo(() => userRedux?.address, [userRedux])
+    const address = useMemo(() => userRedux?.address, [userRedux])  // Hooks em viết sẵn lấy contracts ra xài thui nè
+    const { account } = useWeb3React()
+    const contractMarket = useContractMarket()
+    const contractKL1155 = useContractKL1155()
     const isOwner = useMemo(() => userRedux?.address==userAssetList[currentIndex]?.user?.address, [userAssetList,currentIndex])
     const [priceSell, setPriceSell] = useState(0)
     const [quantitySell, setQuantitySell] = useState(0)
+    const { Decimal } = require('decimal.js')
+
     const totalPayment = useMemo(() => {
         return new Decimal(priceSell).mul(quantitySell).toNumber()
     }, [priceSell,quantitySell])
@@ -49,14 +55,13 @@ const MyArtworkDetail = () => {
 
     useEffect(() => {
         ;(async () => {
-          if (window.web3 && window.web3.eth && window.contractKL1155 && address) {
-            window.contractKL1155.methods
-            .isApprovedForAll(window.ethereum.selectedAddress, addressMarket)
-            .call()
+          if (!account) return
+            contractKL1155.methods
+            .isApprovedForAll(account, addressMarket)
             .then((approved) => {
               setIsApprovedForAll(approved)
             })
-          }
+          
         })()
       }, [address])
 
@@ -103,26 +108,15 @@ const MyArtworkDetail = () => {
         return swiper;
     }
 
-
-    const handleApprove = async () => {
-        if (window.web3.eth) {
-          const approved = await new window.web3.eth.Contract(ABIKL1155, addressKL1155).methods
-            .setApprovalForAll(addressMarket, true)
-            .send({ from: window.ethereum.selectedAddress })
-          if (approved) {
-            setIsApprovedForAll(true)
-          }
-        }
-      }
-      const handleSell = async (e) => {
+    const handleSell = async (e) => {
         e.preventDefault()
+        if(!account) return
         const { Decimal } = require('decimal.js')
         const paymentToken = paymentList[e.target._paymentToken.value]
         const price = new Decimal(e.target._price.value)
           .mul(new Decimal(10).pow(paymentToken.decimal))
           .toHex()
-          if(window.web3 && window.contractMarket){
-            await window.contractMarket.methods
+            await contractMarket.methods
             .list(
               e.target._contract.value,
               e.target._id.value,
@@ -132,21 +126,25 @@ const MyArtworkDetail = () => {
               paymentToken.address,
               100000000
             )
-            .send({ from: window.ethereum.selectedAddress })
             history.push('/my-artwork')
+      }
+
+      const handleApprove = async () => {
+        if(!account) return
+          const approved = await contractKL1155.methods
+            .setApprovalForAll(addressMarket, true)
+            .send({ from: window.ethereum.selectedAddress })
+          if (approved) {
+            setIsApprovedForAll(true)
           }
       }
-    
-      // const handleSellButton = async (item) => {
-      //   setIsOpenSell(true)
-      //   setSellingItem(item)
-      // }
+
+
     
       const handleAccept = async () => {
-        if(window.web3 && window.contractKL1155){
-          const result = await window.contractKL1155.methods
+        if (!account) return
+        const result = await contractKL1155.methods
           .reviewAsset(userAssetList[currentIndex].asset.id, true)
-          .send({ from: window.ethereum.selectedAddress })
         if (result) {
             let newList=[...userAssetList]
             let item = {...newList[currentIndex]};
@@ -154,15 +152,13 @@ const MyArtworkDetail = () => {
             newList[currentIndex]=item
             setUserAssetList(newList)
         }
-        }
       }
 
 
       const handleReject = async () => {
-        if(window.web3 && window.contractKL1155){
-          const result = await window.contractKL1155.Contract(ABIKL1155, addressKL1155).methods
+        if (!account) return
+          const result = await contractKL1155.methods
             .reviewAsset(userAssetList[currentIndex].asset.id, false)
-            .send({ from: window.ethereum.selectedAddress })
           if (result) {
             let newList=[...userAssetList]
             let item = {...newList[currentIndex]};
@@ -170,7 +166,6 @@ const MyArtworkDetail = () => {
             newList[currentIndex]=item
             setUserAssetList(newList)
           }
-        }
       }
 
       const handleChangeAmount = (event) => {
