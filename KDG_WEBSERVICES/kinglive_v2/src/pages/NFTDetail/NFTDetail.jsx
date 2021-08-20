@@ -136,7 +136,8 @@ const NFTDetail = () => {
           contractMarket.bid(listId, amount, paymentToken, netPaymentPrice, 100000000)
             .then((result) => {
                 if (result) {
-
+                    reloadList()
+                    setIsOpenBuy(false)
                 }
             })
         }
@@ -146,7 +147,7 @@ const NFTDetail = () => {
           contractERC20.approve(addressMarket, '0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff')
           .then((result) => {
             if (result) {
-             
+                
             }
           })
       }
