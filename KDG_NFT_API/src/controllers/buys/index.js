@@ -57,6 +57,12 @@ module.exports = class {
 
       const { ...conditions } = queries
 
+      const ids = conditions.ids ? conditions.ids.split(',') : []
+
+      conditions.ids = {
+        $ne: ids
+      }
+
       conditions.from = userId
 
       if (!conditions.status) {
