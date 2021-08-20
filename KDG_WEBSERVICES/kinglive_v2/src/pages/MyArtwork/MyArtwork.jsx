@@ -16,7 +16,6 @@ export default function MyArtwork() {
 
   const isLoadMore = useRef(true)
   const isLoadingAPI = useRef(false)
-  const [isLoading, setIsLoading] = useState(false)
 
   const [userData, setUserData] = useState({})
   const avatar = useMemo(() => userData?.kyc?.avatar?.path, [userData])
@@ -40,7 +39,7 @@ export default function MyArtwork() {
     async (status) => {
       if(status !==3)
       {
-        var ids = AssetList.map((o) => o._id)
+        const ids = AssetList.map((o) => o._id)
         const res = await callAPI.get(
           `/user-asset?limit=20&${ids.length ? `ids=${ids}` : ''}&status=${status}`,
           true) 
@@ -51,7 +50,7 @@ export default function MyArtwork() {
         }
         setAssetList([...AssetList, ...(res?.data ? res.data : [])])
       } else {
-        var ids = AssetList.map((o) => o._id)
+        const ids = AssetList.map((o) => o._id)
         const res = await callAPI.get(
           `/buys/bidding?limit=20&${ids.length ? `ids=${ids}` : ''}`,
           true) 
@@ -87,9 +86,7 @@ export default function MyArtwork() {
 
       if (isEnd && isLoadMore.current && !isLoadingAPI.current) {
         isLoadingAPI.current = true
-        setIsLoading(true)
         await getAssets(status)
-        setIsLoading(false)
         isLoadingAPI.current = false
       }
     }
@@ -124,10 +121,10 @@ export default function MyArtwork() {
 
   const handleShowDetail = async (index) => {
     if(status === 3 ){
-      var ids = AssetList.map((o) => o?.listId)
+      const ids = AssetList.map((o) => o?.listId)
       history.push(`/nft-detail?ids=${ids}&index=${index}`)
     } else {
-      var ids = AssetList.map((o) => o?._id)
+      const ids = AssetList.map((o) => o?._id)
       history.push(`/my-artwork-detail?ids=${ids}&index=${index}`)
     }
   }
@@ -169,7 +166,7 @@ export default function MyArtwork() {
       video.pause()
       video.currentTime=0
   }
-  })
+  },[])
 
   return (
     <>

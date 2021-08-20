@@ -79,17 +79,16 @@ class MiniRpcProvider implements AsyncSendable {
       return
     }
 
-    let json
-    try {
-      json = await response.json()
-    } catch (error) {
-      batch.forEach(({ reject }) => reject(new Error('Failed to parse JSON response')))
-      return
-    }
-    const byKey = batch.reduce<{ [id: number]: BatchItem }>((memo, current) => {
-      memo[current.request.id] = current
-      return memo
-    }, {})
+    // try {
+    //   let json = await response.json()
+    // } catch (error) {
+    //   batch.forEach(({ reject }) => reject(new Error('Failed to parse JSON response')))
+    //   return
+    // }
+    // const byKey = batch.reduce<{ [id: number]: BatchItem }>((memo, current) => {
+    //   memo[current.request.id] = current
+    //   return memo
+    // }, {})
     // eslint-disable-next-line no-restricted-syntax
     // for (const result of json) {
     //   const {

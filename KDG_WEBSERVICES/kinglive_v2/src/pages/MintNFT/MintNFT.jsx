@@ -7,7 +7,7 @@ import errorSVG from '../../assets/svg/error.svg'
 import uploadSVG from '../../assets/svg/upload.svg'
 import callAPI from '../../axios'
 import {  addressKL1155 } from '../../contracts/KL1155'
-import { useContractKL1155, useContractERC20 , useContractMarket} from '../../components/ConnectWalletButton/contract'
+import { useContractKL1155, useContractERC20 } from '../../components/ConnectWalletButton/contract'
 import { useWeb3React } from '@web3-react/core'
 
 
@@ -38,7 +38,7 @@ export default function MintNFT() {
         }
     }
     getAllowance()
-  }, [])
+  }, )
 
   const handlePreviewVideo = async (e) => {
     const files = e.target.files || []

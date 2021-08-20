@@ -11,10 +11,9 @@ import '../../assets/scss/my-artwork-detail.scss'
 import callAPI from '../../axios'
 import { paymentList } from '../../contracts/ERC20'
 import { useWeb3React } from '@web3-react/core'
-import { useContractKL1155, useContractERC20 , useContractMarket} from '../../components/ConnectWalletButton/contract'
+import { useContractKL1155 , useContractMarket} from '../../components/ConnectWalletButton/contract'
 import {addressMarket} from './../../contracts/Market'
-
-import { addressMarket } from '../../contracts/Market'
+import { Decimal } from 'decimal.js'
 
 
 const MyArtworkDetail = () => {
@@ -33,10 +32,9 @@ const MyArtworkDetail = () => {
     const { account } = useWeb3React()
     const contractMarket = useContractMarket()
     const contractKL1155 = useContractKL1155()
-    const isOwner = useMemo(() => userRedux?.address==userAssetList[currentIndex]?.user?.address, [userAssetList,currentIndex])
+    const isOwner = useMemo(() => userRedux?.address===userAssetList[currentIndex]?.user?.address, [userRedux?.address,userAssetList,currentIndex])
     const [priceSell, setPriceSell] = useState(0)
     const [quantitySell, setQuantitySell] = useState(0)
-    const { Decimal } = require('decimal.js')
 
     const totalPayment = useMemo(() => {
         return new Decimal(priceSell).mul(quantitySell).toNumber()
@@ -64,7 +62,7 @@ const MyArtworkDetail = () => {
             })
           
         })()
-    }, [address])
+    })
 
 
 
@@ -111,16 +109,6 @@ const MyArtworkDetail = () => {
 
 
 
-    const handleApprove = async () => {
-        if (window.web3.eth) {
-            const approved = await new window.web3.eth.Contract(ABIKL1155, addressKL1155).methods
-                .setApprovalForAll(addressMarket, true)
-                .send({ from: window.ethereum.selectedAddress })
-            if (approved) {
-                setIsApprovedForAll(true)
-            }
-        }
-    }
 
     const handleSell = async (e) => {
         e.preventDefault()

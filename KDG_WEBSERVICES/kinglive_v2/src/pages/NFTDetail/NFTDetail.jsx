@@ -45,7 +45,7 @@ const NFTDetail = () => {
             return false
             }
         }
-    }, [userRedux,marketList,currentIndex])
+    }, [marketList,currentIndex,account,contractERC20.methods])
    
 
     const [amountBuy, setAmountBuy] = useState(0)
@@ -124,7 +124,7 @@ const NFTDetail = () => {
         const token = paymentList[e.target._paymentToken.value]
         const paymentToken = token.address
         const netTotalPayment = new Decimal(total).mul(new Decimal(10).pow(token.decimal)).toHex()
-        if (type == 1) {
+        if (type ===1) {
           contractMarket.methods
             .buy(listId, amount, paymentToken, netTotalPayment)
             .then((result) => {

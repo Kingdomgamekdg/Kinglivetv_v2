@@ -4,9 +4,9 @@ import banner from '../../assets/images/nft-market/banner.jpg'
 import '../../assets/scss/nft-market.scss'
 import '../../assets/scss/styles.scss'
 import callAPI from '../../axios'
-import { ABIERC20, addressERC20, paymentList } from '../../contracts/ERC20'
+import { paymentList } from '../../contracts/ERC20'
 import { useWeb3React } from '@web3-react/core'
-import { useContractKL1155, useContractERC20 , useContractMarket} from '../../components/ConnectWalletButton/contract'
+import { useContractERC20 , useContractMarket} from '../../components/ConnectWalletButton/contract'
 import { addressMarket } from '../../contracts/Market'
 import avatarDefault from '../../assets/svg/avatarDefault.svg'
 import { STORAGE_DOMAIN } from '../../constant'
@@ -31,7 +31,6 @@ export default function NFT() {
   const isLoadingAPI = useRef(false)
   const [isOpenBuy, setIsOpenBuy] = useState(false)
   const { account } = useWeb3React()
-  const contractKL1155 = useContractKL1155()
   const contractERC20 = useContractERC20()
   const contractMarket = useContractMarket()
 
@@ -118,7 +117,7 @@ export default function NFT() {
     const token = paymentList[e.target._paymentToken.value]
     const paymentToken = token.address
     const netTotalPayment = new Decimal(total).mul(new Decimal(10).pow(token.decimal)).toHex()
-    if (type == 1) {
+    if (type === 1) {
       contractMarket.methods
 
         .buy(listId, amount, paymentToken, netTotalPayment)
@@ -191,8 +190,7 @@ export default function NFT() {
       } else {
         setIsOwner(false)
       }
-    },
-    []
+    },[account,contractERC20.methods]
   )
   const handleChangeAmount = (event) => {
     let { value, min, max } = event.target;

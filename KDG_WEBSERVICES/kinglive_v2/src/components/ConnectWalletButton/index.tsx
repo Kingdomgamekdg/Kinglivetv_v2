@@ -73,7 +73,7 @@ const UnlockButton: React.FC<ButtonProps> = (props) => {
     }
 
     loginUser()
-  }, [account])
+  }, [account,dispatch])
 
   const handleLogin = (connectorId: ConnectorId) => {
     if (connectorId === 'walletconnect') {

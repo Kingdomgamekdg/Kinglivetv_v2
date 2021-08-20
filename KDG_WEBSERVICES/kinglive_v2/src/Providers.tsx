@@ -5,7 +5,6 @@ import { ModalProvider } from '@kinglive/uikit'
 import { NetworkContextName } from './constants'
 import store from "./store";
 import getLibrary from './utils/getLibrary'
-import { ThemeContextProvider } from './ThemeContext'
 
 const Web3ProviderNetwork = createWeb3ReactRoot(NetworkContextName)
 
