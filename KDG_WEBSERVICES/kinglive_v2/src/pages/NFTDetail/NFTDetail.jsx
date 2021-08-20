@@ -10,22 +10,14 @@ import arrowLeft from '../../assets/images/nft-market/arrow-left.png'
 import zoom from '../../assets/images/nft-market/zoom.png'
 import '../../assets/scss/my-artwork-detail.scss'
 import callAPI from '../../axios'
-<<<<<<< HEAD
 import { useWeb3React } from '@web3-react/core'
-import { useContractKL1155, useContractERC20 , useContractMarket} from '../../components/ConnectWalletButton/contract'
-import avatar from '../../assets/images/nft-market/avatar.png'
-=======
+import {  useContractERC20 , useContractMarket} from '../../components/ConnectWalletButton/contract'
 import { addressMarket } from '../../contracts/Market'
->>>>>>> origin/main
 import noData from '../../assets/images/nft-market/no-data.png'
 import avatarDefault from '../../assets/svg/avatarDefault.svg'
 import { STORAGE_DOMAIN } from '../../constant'
-import { ABIERC20, addressERC20, paymentList } from '../../contracts/ERC20'
-<<<<<<< HEAD
-import {  addressMarket } from '../../contracts/Market'
-=======
-import {Decimal} from 'decimal.js'
->>>>>>> origin/main
+import {  paymentList } from '../../contracts/ERC20'
+import {Decimal} from 'decimal.js'  
 
 const NFTDetail = () => {
     const userRedux = useSelector((state) => state.user)
@@ -39,6 +31,7 @@ const NFTDetail = () => {
     const { account } = useWeb3React()
     const contractERC20 = useContractERC20()
     const contractMarket = useContractMarket()
+
     const address = useMemo(() => userRedux?.address, [userRedux])
     const isOwner = useMemo(() => userRedux?.address === marketList[currentIndex]?.owner?.address, [userRedux,marketList,currentIndex])
     const isApproval = useMemo( async () => {
