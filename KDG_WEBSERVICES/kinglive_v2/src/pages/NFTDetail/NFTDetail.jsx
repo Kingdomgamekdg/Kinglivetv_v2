@@ -10,12 +10,14 @@ import arrowLeft from '../../assets/images/nft-market/arrow-left.png'
 import zoom from '../../assets/images/nft-market/zoom.png'
 import '../../assets/scss/my-artwork-detail.scss'
 import callAPI from '../../axios'
+import { useWeb3React } from '@web3-react/core'
+import {  useContractERC20 , useContractMarket} from '../../components/ConnectWalletButton/contract'
 import { addressMarket } from '../../contracts/Market'
 import noData from '../../assets/images/nft-market/no-data.png'
 import avatarDefault from '../../assets/svg/avatarDefault.svg'
 import { STORAGE_DOMAIN } from '../../constant'
-import { ABIERC20, addressERC20, paymentList } from '../../contracts/ERC20'
-import {Decimal} from 'decimal.js'
+import {  paymentList } from '../../contracts/ERC20'
+import {Decimal} from 'decimal.js'  
 
 const NFTDetail = () => {
     const userRedux = useSelector((state) => state.user)
@@ -26,22 +28,25 @@ const NFTDetail = () => {
     const [marketList, setMarketList] = useState([])
     const [currentIndex, setCurrentIndex] = useState(Number(index))
     const [isOpenBuy, setIsOpenBuy] = useState(false)
+    const { account } = useWeb3React()
+    const contractERC20 = useContractERC20()
+    const contractMarket = useContractMarket()
+
     const address = useMemo(() => userRedux?.address, [userRedux])
-    const isOwner = useMemo(() => userRedux?.address === marketList[currentIndex]?.owner?.address, [userRedux, marketList, currentIndex])
-    const isApproval = useMemo(async () => {
-        if (window?.web3?.eth && userRedux?.address) {
-            const allowance = await new window.web3.eth.Contract(ABIERC20, addressERC20).methods
-                .allowance(userRedux?.address, addressMarket)
-                .call()
-            if (allowance && marketList[currentIndex]?.price) {
-                if (new Decimal(allowance).gt(new Decimal(marketList[currentIndex].price).mul(marketList[currentIndex]?.quantity))) {
-                    return true
-                } else {
-                    return false
-                }
+    const isOwner = useMemo(() => userRedux?.address === marketList[currentIndex]?.owner?.address, [userRedux,marketList,currentIndex])
+    const isApproval = useMemo( async () => {
+        if(!account) return
+        const allowance = await contractERC20.methods
+            .allowance(account, addressMarket)
+        if (allowance && marketList[currentIndex]?.price) {
+            if (new Decimal(allowance).gt(new Decimal(marketList[currentIndex].price).mul(marketList[currentIndex]?.quantity))) {
+            return true
+            } else {
+            return false
             }
         }
-    }, [userRedux, marketList, currentIndex])
+    }, [marketList,currentIndex,account,contractERC20.methods])
+   
 
     const [amountBuy, setAmountBuy] = useState(0)
     const [price, setPrice] = useState(0)
@@ -112,46 +117,47 @@ const NFTDetail = () => {
 
     const handleBuy = async (e) => {
         e.preventDefault()
+        if(!account) return
         const listId = e.target._listid.value
         const type = Number(e.target._type.value)
         const amount = new Decimal(e.target._amount.value).toHex()
         const token = paymentList[e.target._paymentToken.value]
         const paymentToken = token.address
         const netTotalPayment = new Decimal(total).mul(new Decimal(10).pow(token.decimal)).toHex()
-        if (type === 1) {
-            window.contractMarket.methods
-                .buy(listId, amount, paymentToken, netTotalPayment)
-                .send({ from: window.ethereum.selectedAddress })
-                .then((result) => {
-                    if (result) {
-                        reloadList()
-                        setIsOpenBuy(false)
-                    }
-                })
+        if (type ===1) {
+          contractMarket.methods
+            .buy(listId, amount, paymentToken, netTotalPayment)
+            .then((result) => {
+              if (result) {
+                reloadList()
+                setIsOpenBuy(false)
+              }
+            })
         } else {
-            const netPaymentPrice = new Decimal(price).mul(new Decimal(10).pow(token.decimal)).toHex()
-            window.contractMarket.methods
-                .bid(listId, amount, paymentToken, netPaymentPrice, 100000000)
-                .send({ from: window.ethereum.selectedAddress })
-                .then((result) => {
-                    if (result) {
-                        reloadList()
-                        setIsOpenBuy(false)
-                    }
-                })
-        }
-    }
+          const netPaymentPrice = new Decimal(price).mul(new Decimal(10).pow(token.decimal)).toHex()
+          contractMarket.methods
+            .bid(listId, amount, paymentToken, netPaymentPrice, 100000000)
 
-    const handleApproval = async () => {
-        window.contractERC20.methods
-            .approve(addressMarket, '0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff')
-            .send({ from: window.ethereum.selectedAddress })
             .then((result) => {
                 if (result) {
 
                 }
             })
-    }
+        }
+      }
+    
+      const handleApproval = async () => {
+          contractERC20.methods
+          .approve(addressMarket, '0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff')
+          .then((result) => {
+            if (result) {
+             
+            }
+          })
+      }
+
+    
+
 
     const handleChangeAmount = (event) => {
         let { value, min, max } = event.target;
@@ -166,28 +172,26 @@ const NFTDetail = () => {
     }
 
     const handleDelist = async () => {
-        window.contractMarket.methods
-            .cancelListed(marketList[currentIndex].id)
-            .send({ from: window.ethereum.selectedAddress })
-            .then((result) => {
-                reloadList()
-                setIsOpenBuy(false)
-            })
+        contractMarket.methods
+        .cancelListed(marketList[currentIndex].id)
+        .then((result) => {
+            reloadList()
+            setIsOpenBuy(false)
+        })
+
     }
 
     const handleAcceptBid = async (bidId) => {
-        window.contractMarket.methods
+        contractMarket.methods
             .acceptBid(bidId)
-            .send({ from: window.ethereum.selectedAddress })
-            .then((result) => {
+            .then((result) => { 
                 reloadList()
                 setIsOpenBuy(false)
             })
     }
     const handleCancelBid = async (bidId) => {
-        window.contractMarket.methods
+        contractMarket.methods
             .cancelBid(bidId)
-            .send({ from: window.ethereum.selectedAddress })
             .then((result) => {
                 reloadList()
                 setIsOpenBuy(false)

@@ -15,13 +15,13 @@ socket.on('connect', async () => {
   console.log("socket.on 'connect'")
 })
 
-socket.on('connect_error', r => {
+socket.on('connect_error', (r) => {
   console.log("socket.on 'connect_error'", r)
 })
 
-socket.on('disconnect', r => {
+socket.on('disconnect', (r) => {
   if (r === 'io server disconnect') {
-    console.log({ r })
+    // console.log({ r })
     setTimeout(async () => {
       await refreshToken()
       const token = await storage.getToken()

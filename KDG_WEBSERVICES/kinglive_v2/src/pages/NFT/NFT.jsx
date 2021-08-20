@@ -4,7 +4,9 @@ import banner from '../../assets/images/nft-market/banner.jpg'
 import '../../assets/scss/nft-market.scss'
 import '../../assets/scss/styles.scss'
 import callAPI from '../../axios'
-import { ABIERC20, addressERC20, paymentList } from '../../contracts/ERC20'
+import { paymentList } from '../../contracts/ERC20'
+import { useWeb3React } from '@web3-react/core'
+import { useContractERC20 , useContractMarket} from '../../components/ConnectWalletButton/contract'
 import { addressMarket } from '../../contracts/Market'
 import avatarDefault from '../../assets/svg/avatarDefault.svg'
 import { STORAGE_DOMAIN } from '../../constant'
@@ -28,6 +30,10 @@ export default function NFT() {
   const isLoadMore = useRef(true)
   const isLoadingAPI = useRef(false)
   const [isOpenBuy, setIsOpenBuy] = useState(false)
+  const { account } = useWeb3React()
+  const contractERC20 = useContractERC20()
+  const contractMarket = useContractMarket()
+
 
   const total = useMemo(() => {
     if (itemBuy?.type === 1 && amountBuy && itemBuy?.price) {
@@ -104,6 +110,7 @@ export default function NFT() {
 
   const handleBuy = async (e) => {
     e.preventDefault()
+    if(!account) return
     const listId = e.target._listid.value
     const type = Number(e.target._type.value)
     const amount = new Decimal(e.target._amount.value).toHex()
@@ -111,9 +118,9 @@ export default function NFT() {
     const paymentToken = token.address
     const netTotalPayment = new Decimal(total).mul(new Decimal(10).pow(token.decimal)).toHex()
     if (type === 1) {
-      window.contractMarket.methods
+      contractMarket.methods
+
         .buy(listId, amount, paymentToken, netTotalPayment)
-        .send({ from: window.ethereum.selectedAddress })
         .then((result) => {
           if (result) {
             top9List.length = 0
@@ -125,9 +132,8 @@ export default function NFT() {
         })
     } else {
       const netPaymentPrice = new Decimal(price).mul(new Decimal(10).pow(token.decimal)).toHex()
-      window.contractMarket.methods
+      contractMarket.methods
         .bid(listId, amount, paymentToken, netPaymentPrice, 100000000)
-        .send({ from: window.ethereum.selectedAddress })
         .then((result) => {
           if (result) {
             top9List.length = 0
@@ -141,9 +147,9 @@ export default function NFT() {
   }
 
   const handleApproval = async () => {
-    window.contractERC20.methods
+    if(!account) return 
+    contractERC20.methods
       .approve(addressMarket, '0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff')
-      .send({ from: window.ethereum.selectedAddress })
       .then((result) => {
         if (result) {
           top9List.length = 0
@@ -156,9 +162,9 @@ export default function NFT() {
   }
 
   const handleDelist = async (item) => {
-    window.contractMarket.methods
+    if(!account) return 
+    contractMarket.methods
       .cancelListed(item)
-      .send({ from: window.ethereum.selectedAddress })
       .then((result) => {
         top9List.length = 0
         PopulateList.length = 0
@@ -170,23 +176,21 @@ export default function NFT() {
 
   const checkApproval = useCallback(
     async (item) => {
-      if (window?.web3?.eth) {
-        const allowance = await new window.web3.eth.Contract(ABIERC20, addressERC20).methods
-          .allowance(window.ethereum.selectedAddress, addressMarket)
-          .call()
+      if (!account) return 
+       
+        const allowance = await contractERC20.methods
+          .allowance(account, addressMarket)
         if (allowance && item) {
           if (new Decimal(allowance).gt(new Decimal(item.price).mul(item?.quantity))) {
             setIsApproval(true)
           }
-        }
-      }
-      if (window.ethereum.selectedAddress === item?.owner?.address) {
+        } 
+      if (account === item?.owner?.address) {
         setIsOwner(true)
       } else {
         setIsOwner(false)
       }
-    },
-    []
+    },[account,contractERC20.methods]
   )
   const handleChangeAmount = (event) => {
     let { value, min, max } = event.target;
