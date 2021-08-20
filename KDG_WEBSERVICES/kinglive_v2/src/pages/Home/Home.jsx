@@ -118,7 +118,7 @@ export default function Home() {
             <span>Number of streamers<strong>{Dashboard.total_stream}</strong></span>
             <span>Number of videos<strong>{Dashboard.total_video}</strong></span>
             <span>Number of hours watched<strong>{Dashboard.watched_time}</strong></span>
-            <span>Number of views<strong>{Dashboard.total_view}</strong></span>
+            <span>Number of views<strong>{Dashboard.total_views}</strong></span>
             
           </div>{/* --- e:split -----------------------*/}
 

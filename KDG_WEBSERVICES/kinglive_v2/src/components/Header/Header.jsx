@@ -17,7 +17,7 @@ import { ABIKL1155, addressKL1155 } from '../../contracts/KL1155'
 import { ABIMarket, addressMarket } from '../../contracts/Market'
 import shortAddress from '../../helpers/shortAddress'
 import storage from '../../helpers/storage'
-import { actChangeAddress, asyncChangeUser, asyncGetNoti } from '../../store/actions'
+import { actChangeAddress, actChangeUnreadNoti, asyncChangeUser, asyncGetNoti } from '../../store/actions'
 import { EXPLORER_URL } from '../../constant'
 import convertDateAgo from '../../helpers/convertDateAgo'
 
@@ -162,10 +162,11 @@ export default function Header({ toggleSidebar = () => {}, IsOpenSidebar = false
     storage.clearRefresh()
   }
 
-  const handleOpenNoti = useCallback(() => {
-    console.log(123);
+  const handleOpenNoti = useCallback(async () => {
     setIsOpenNoti(!IsOpenNoti)
     dispatch(asyncGetNoti())
+    await callAPI.post('/readed')
+    dispatch(actChangeUnreadNoti(0))
   },[IsOpenNoti])
 
   return (
