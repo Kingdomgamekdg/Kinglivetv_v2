@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState, useMemo } from 'react'
 import { useHistory } from 'react-router-dom'
+import { useSelector } from 'react-redux'
 import banner from '../../assets/images/nft-market/banner.jpg'
 import '../../assets/scss/nft-market.scss'
 import '../../assets/scss/styles.scss'
@@ -12,6 +13,7 @@ import avatarDefault from '../../assets/svg/avatarDefault.svg'
 import { STORAGE_DOMAIN } from '../../constant'
 import {Decimal} from 'decimal.js'
 export default function NFT() {
+  const userRedux = useSelector((state) => state.user)
   const history = useHistory()
   const [PopulateList, setPopulateList] = useState([])
   const [top9List, setTop9List] = useState([])
@@ -33,6 +35,7 @@ export default function NFT() {
   const { account } = useWeb3React()
   const contractERC20 = useContractERC20()
   const contractMarket = useContractMarket()
+  const address = useMemo(() => userRedux?.address, [userRedux])
 
 
   const total = useMemo(() => {
@@ -105,7 +108,7 @@ export default function NFT() {
         setRevenue(res4.data)
       }
     })()
-  }, [])
+  }, [address])
 
 
   const handleBuy = async (e) => {
@@ -118,9 +121,7 @@ export default function NFT() {
     const paymentToken = token.address
     const netTotalPayment = new Decimal(total).mul(new Decimal(10).pow(token.decimal)).toHex()
     if (type === 1) {
-      contractMarket.methods
-
-        .buy(listId, amount, paymentToken, netTotalPayment)
+      contractMarket.buy(listId, amount, paymentToken, netTotalPayment)
         .then((result) => {
           if (result) {
             top9List.length = 0
@@ -132,8 +133,7 @@ export default function NFT() {
         })
     } else {
       const netPaymentPrice = new Decimal(price).mul(new Decimal(10).pow(token.decimal)).toHex()
-      contractMarket.methods
-        .bid(listId, amount, paymentToken, netPaymentPrice, 100000000)
+      contractMarket.bid(listId, amount, paymentToken, netPaymentPrice, 100000000)
         .then((result) => {
           if (result) {
             top9List.length = 0
@@ -148,8 +148,7 @@ export default function NFT() {
 
   const handleApproval = async () => {
     if(!account) return 
-    contractERC20.methods
-      .approve(addressMarket, '0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff')
+    contractERC20.approve(addressMarket, '0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff')
       .then((result) => {
         if (result) {
           top9List.length = 0
@@ -163,8 +162,7 @@ export default function NFT() {
 
   const handleDelist = async (item) => {
     if(!account) return 
-    contractMarket.methods
-      .cancelListed(item)
+    contractMarket.cancelListed(item)
       .then((result) => {
         top9List.length = 0
         PopulateList.length = 0
@@ -178,8 +176,7 @@ export default function NFT() {
     async (item) => {
       if (!account) return 
        
-        const allowance = await contractERC20.methods
-          .allowance(account, addressMarket)
+        const allowance = await contractERC20.allowance(account, addressMarket)
         if (allowance && item) {
           if (new Decimal(allowance).gt(new Decimal(item.price).mul(item?.quantity))) {
             setIsApproval(true)
@@ -190,7 +187,7 @@ export default function NFT() {
       } else {
         setIsOwner(false)
       }
-    },[account,contractERC20.methods]
+    },[account,contractERC20]
   )
   const handleChangeAmount = (event) => {
     let { value, min, max } = event.target;
