@@ -27,15 +27,11 @@
     "react-modal": "^3.14.3",
     "react-redux": "^7.2.4",
     "react-router-dom": "^5.2.0",
-<<<<<<< HEAD
     "react-scripts": "^4.0.3",
     "react-spring": "^9.2.4",
     "react-transition-group": "^4.4.2",
     "rebass": "^4.0.7",
-=======
-    "react-scripts": "4.0.3",
     "react-toastify": "^7.0.4",
->>>>>>> origin/main
     "redux": "^4.1.0",
     "redux-thunk": "^2.3.0",
     "sass": "1.32.12",
