@@ -19,12 +19,16 @@ module.exports = class {
           data: []
         })
       }
+      const ids = conditions.ids ? conditions.ids.split(',') : []
+
+
 
       const data = await ListingAssetService.find({
         owner: _id,
         quantity: {
           $gt: 0
-        }
+        },
+        _id: { $nin: ids}
       })
         .populate({
           path: 'asset'
