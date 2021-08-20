@@ -35,9 +35,8 @@ const NFTDetail = () => {
     const address = useMemo(() => userRedux?.address, [userRedux])
     const isOwner = useMemo(() => userRedux?.address === marketList[currentIndex]?.owner?.address, [userRedux,marketList,currentIndex])
     const isApproval = useMemo( async () => {
-        if(!account) return
-        const allowance = await contractERC20.methods
-            .allowance(account, addressMarket)
+        if(!account && !contractERC20) return
+        const allowance = await contractERC20?.allowance(account, addressMarket)
         if (allowance && marketList[currentIndex]?.price) {
             if (new Decimal(allowance).gt(new Decimal(marketList[currentIndex].price).mul(marketList[currentIndex]?.quantity))) {
             return true
@@ -45,7 +44,7 @@ const NFTDetail = () => {
             return false
             }
         }
-    }, [marketList,currentIndex,account,contractERC20.methods])
+    }, [marketList,currentIndex,account,contractERC20])
    
 
     const [amountBuy, setAmountBuy] = useState(0)
@@ -125,8 +124,7 @@ const NFTDetail = () => {
         const paymentToken = token.address
         const netTotalPayment = new Decimal(total).mul(new Decimal(10).pow(token.decimal)).toHex()
         if (type ===1) {
-          contractMarket.methods
-            .buy(listId, amount, paymentToken, netTotalPayment)
+          contractMarket.buy(listId, amount, paymentToken, netTotalPayment)
             .then((result) => {
               if (result) {
                 reloadList()
@@ -135,9 +133,7 @@ const NFTDetail = () => {
             })
         } else {
           const netPaymentPrice = new Decimal(price).mul(new Decimal(10).pow(token.decimal)).toHex()
-          contractMarket.methods
-            .bid(listId, amount, paymentToken, netPaymentPrice, 100000000)
-
+          contractMarket.bid(listId, amount, paymentToken, netPaymentPrice, 100000000)
             .then((result) => {
                 if (result) {
 
@@ -147,8 +143,7 @@ const NFTDetail = () => {
       }
     
       const handleApproval = async () => {
-          contractERC20.methods
-          .approve(addressMarket, '0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff')
+          contractERC20.approve(addressMarket, '0xfffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff')
           .then((result) => {
             if (result) {
              
@@ -172,8 +167,7 @@ const NFTDetail = () => {
     }
 
     const handleDelist = async () => {
-        contractMarket.methods
-        .cancelListed(marketList[currentIndex].id)
+        contractMarket.cancelListed(marketList[currentIndex].id)
         .then((result) => {
             reloadList()
             setIsOpenBuy(false)
@@ -182,16 +176,14 @@ const NFTDetail = () => {
     }
 
     const handleAcceptBid = async (bidId) => {
-        contractMarket.methods
-            .acceptBid(bidId)
+        contractMarket.acceptBid(bidId)
             .then((result) => { 
                 reloadList()
                 setIsOpenBuy(false)
             })
     }
     const handleCancelBid = async (bidId) => {
-        contractMarket.methods
-            .cancelBid(bidId)
+        contractMarket.cancelBid(bidId)
             .then((result) => {
                 reloadList()
                 setIsOpenBuy(false)

@@ -31,14 +31,13 @@ export default function MintNFT() {
   useEffect(() => {
     async function getAllowance() {
       if(!account) return
-        const allowance = await contractERC20.methods
-          .allowance(account, addressKL1155)
+        const allowance = await contractERC20?.allowance(account, addressKL1155)
         if (Number(allowance) >= 20000000000000000000) {
           setIsApproval(true)
         }
     }
     getAllowance()
-  }, )
+  },[account,contractERC20])
 
   const handlePreviewVideo = async (e) => {
     const files = e.target.files || []
@@ -66,8 +65,7 @@ export default function MintNFT() {
   const handleApproval = async () => {
     if(!account) setIsApproval(false)
 
-    const approval = await contractERC20.methods
-      .approve(addressKL1155, '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff')
+    const approval = await contractERC20.approve(addressKL1155, '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff')
       if (approval) {
         setIsApproval(true)
       }else {
@@ -113,8 +111,7 @@ export default function MintNFT() {
       if(!account) return
 
       if (res?.data?.hashes[0]) {
-        const transaction = await contractKL1155.methods
-          .create(
+        const transaction = await contractKL1155.create(
             e.target.numEditions.value,
             e.target.numEditions.value,
             2500,
