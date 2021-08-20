@@ -1,4 +1,4 @@
-@import './common.scss';
+@import "./common.scss";
 
 header {
   padding: 16px 23px;
@@ -28,7 +28,7 @@ header {
     cursor: pointer;
     position: relative;
     span {
-      content: '';
+      content: "";
       position: absolute;
       left: 0;
       background-color: #c4c4c4;
@@ -361,7 +361,7 @@ header {
         height: 22px;
         cursor: pointer;
         &::before {
-          content: '';
+          content: "";
           width: 31px;
           height: 1px;
           background-color: #fff;
@@ -370,7 +370,7 @@ header {
         }
 
         &::after {
-          content: '';
+          content: "";
           width: 31px;
           height: 1px;
           background-color: #fff;
@@ -420,4 +420,16 @@ header {
       cursor: pointer;
     }
   }
+}
+header .connect-custom {
+  border-radius: 50px !important;
+  height: 40px !important;
+  color: #fefefe;
+  padding: 7px 26px;
+  background: linear-gradient(312.24deg, #01c5ff 4.38%, #fe02f7 100%);
+  border-radius: 50px;
+  margin-right: 30px;
+  cursor: pointer;
+  font-weight: 500 !important;
+  box-shadow :none !important
 }
