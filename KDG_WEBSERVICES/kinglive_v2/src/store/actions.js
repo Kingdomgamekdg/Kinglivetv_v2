@@ -2,13 +2,16 @@ import callAPI from '../axios'
 import storage from '../helpers/storage'
 
 export const CHANGE_USER = 'CHANGE_USER'
+export function actChangeUser(user) {
+  return { type: CHANGE_USER, payload: user }
+}
 export function asyncChangeUser() {
   return async (dispatch) => {
     try {
       const res = await callAPI.get('/user')
 
       if (res.status === 1) {
-        dispatch({ type: CHANGE_USER, payload: res.data })
+        dispatch(actChangeUser(res.data))
         storage.setItem('user', res.data)
       }
 
