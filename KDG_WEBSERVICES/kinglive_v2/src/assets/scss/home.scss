@@ -1,5 +1,5 @@
 @import "./common.scss";
-@charset "utf-8";
+
 
 @-webkit-keyframes shake-horizontal {
 	0%,100% {
@@ -240,7 +240,7 @@ a {
 		width: 100%;
 		display: block;
 		margin-bottom: 25px;
-		a {
+		.options {
 			display: block;
 			font-size: 1.25em;
 			line-height: 25px;
@@ -260,38 +260,38 @@ a {
 			}
 		}
 		&:hover {
-			a {
+			.options {
 				&:before {
 					background: url(../images/home/home_ico_hover.png);
 				}
 			}
-			span {
+			shake {
 				-webkit-animation: shake-horizontal 0.8s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
 				animation: shake-horizontal 0.8s cubic-bezier(0.455, 0.030, 0.515, 0.955) both;
 			}
 		}
 		&:nth-child(2) {
-			a {
+			.options {
 				&:before {
 					background-position: calc(-1*25px) 0;
 				}
 			}
 		}
 		&:nth-child(3) {
-			a {
+			.options {
 				&:before {
 					background-position: calc(-1*2*25px) 0;
 				}
 			}
 		}
 		&:nth-child(4) {
-			a {
+			.options {
 				&:before {
 					background-position: calc(-1*3*25px) 0;
 				}
 			}
 		}
-		span {
+		.shake {
 			background: url(../images/home/arrow_btn.png) center center no-repeat;
 			width: 25px;
 			height: 25px;
@@ -306,9 +306,19 @@ div.split {
 		margin-right: 0;
 	}
 }
+
+@media screen and (max-width: 1200px) {
+    .bottom_line {
+		.container {
+            width: 100%;
+        }
+    }
+
+}
 @media screen and (max-width: 800px) {
     .split {
 		width: 100%;
+        margin: 45px 0 0 0;
 	}
 	.bottom_line {
 		.container {
@@ -336,6 +346,7 @@ div.split {
 @media screen and (max-width: 400px) {
 	.split {
 		width: 100%;
+        
 	}
 	.bottom_line {
 		.container {
