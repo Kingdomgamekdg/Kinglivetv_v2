@@ -60,7 +60,7 @@ class Image {
         _widths.forEach((width) => {
             if (_mimetype === 'image/gif') {
                 promises.push(
-                    new Promise((resolve, reject) => { gifResize({ width })(_image).then(data => { resolve(data) }) })
+                    new Promise((resolve, reject) => { gifResize({ width })(_image).then(data => { resolve(data) }).catch(ex =>console.log("Ex",ex)) })
                 )
             } else {
                 promises.push(
