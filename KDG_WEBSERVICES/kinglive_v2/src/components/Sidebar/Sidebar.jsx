@@ -54,6 +54,8 @@ const page = [
     name: 'Swap',
     icon: swap,
     active: swapactive,
+    isDirectLink : true,
+    url:"https://pancakeswap.finance/swap#/swap?outputCurrency=0x87a2d9a9a6b2d61b2a57798f1b4b2ddd19458fb6"
   },
   {
     route: '/more',
@@ -111,7 +113,15 @@ export default function Sidebar({ IsOpenSidebar }) {
         {page.map((o) => (
           <div
             key={o.route}
-            onClick={() => history.push(o.route)}
+            onClick={() => 
+            {
+              if(!o.isDirectLink)
+              {
+                history.push(o.route)
+              }else{
+                window.open(o.url,'_blank')
+              }
+            }}
             className={`item _transit ${location.pathname === o.route ? 'active' : ''}`}
           >
             <img src={location.pathname === o.route ? o.active : o.icon} alt='' />

@@ -1,4 +1,4 @@
-import '../../assets/css/home.css'
+import '../../assets/scss/home.scss'
 import banner01 from '../../assets/images/home/b01.jpg'
 import banner02 from '../../assets/images/home/b02.jpg'
 import banner03 from '../../assets/images/home/b03.jpg'
