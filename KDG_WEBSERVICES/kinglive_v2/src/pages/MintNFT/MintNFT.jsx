@@ -9,6 +9,7 @@ import callAPI from '../../axios'
 import {  addressKL1155 } from '../../contracts/KL1155'
 import { useContractKL1155, useContractERC20 } from '../../components/ConnectWalletButton/contract'
 import { useWeb3React } from '@web3-react/core'
+import {Decimal} from 'decimal.js'
 
 
 export default function MintNFT() {
@@ -32,7 +33,7 @@ export default function MintNFT() {
     async function getAllowance() {
       if(!account) return
         const allowance = await contractERC20?.allowance(account, addressKL1155)
-        if (Number(allowance.toString()) >= 20000000000000000000) {
+        if (new Decimal(allowance.toString()).gt(20000000000000000000)) {
           setIsApproval(true)
         }
     }

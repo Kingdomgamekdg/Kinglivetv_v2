@@ -2,7 +2,6 @@ import React, { useEffect, useState } from 'react'
 import { useWeb3React } from '@web3-react/core'
 import { Button, ButtonProps, ConnectorId, useWalletModal } from '@kinglive/uikit'
 import { injected, bsc, walletconnect } from '../../connectors'
-
 import closeSVG from '../../assets/svg/close.svg'
 import copy1SVG from '../../assets/svg/copy1.svg'
 import storage from 'helpers/storage'
@@ -73,7 +72,7 @@ const UnlockButton: React.FC<ButtonProps> = (props) => {
     }
 
     loginUser()
-  }, [account,dispatch])
+  }, [account, dispatch])
 
   const handleLogin = (connectorId: ConnectorId) => {
     if (connectorId === 'walletconnect') {
@@ -141,7 +140,7 @@ const UnlockButton: React.FC<ButtonProps> = (props) => {
                 }}
                 onClick={() =>
                   window.open(
-                    'https://bscscan.com/token/0x87A2d9a9A6b2D61B2a57798f1b4b2DDd19458Fb6',
+                    `https://bscscan.com/address/${account}`,
                     '_blank'
                   )
                 }

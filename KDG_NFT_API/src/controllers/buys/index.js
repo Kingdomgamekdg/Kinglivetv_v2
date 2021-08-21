@@ -59,8 +59,8 @@ module.exports = class {
 
       const ids = conditions.ids ? conditions.ids.split(',') : []
 
-      conditions.ids = {
-        $ne: ids
+      conditions._id = {
+        $nin: ids
       }
 
       conditions.from = userId

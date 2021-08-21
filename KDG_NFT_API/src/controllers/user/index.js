@@ -65,4 +65,20 @@ module.exports = class {
       _res.status(400).send(e.message)
     }
   }
+
+  static async getPersonalInfo (_req, _res) {
+    try {
+      const {
+        _id
+      } = _req
+
+      const data = await UsersService.getPersonality({ userId: _id })
+
+      _res.status(200).json({
+        data
+      })
+    } catch (e) {
+      _res.status(400).send(e.message)
+    }
+  }
 }
