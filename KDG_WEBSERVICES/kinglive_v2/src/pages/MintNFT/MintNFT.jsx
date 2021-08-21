@@ -1,5 +1,4 @@
 import { useEffect, useRef, useState } from 'react'
-import { useDispatch, useSelector } from 'react-redux'
 
 import '../../assets/scss/mint-nft.scss'
 import checkSVG from '../../assets/svg/check.svg'
@@ -7,8 +6,11 @@ import closeSVG from '../../assets/svg/close.svg'
 import errorSVG from '../../assets/svg/error.svg'
 import uploadSVG from '../../assets/svg/upload.svg'
 import callAPI from '../../axios'
-import { ABIKL1155, addressKL1155 } from '../../contracts/KL1155'
-import { ABIERC20, addressERC20 } from '../../contracts/ERC20'
+import {  addressKL1155 } from '../../contracts/KL1155'
+import { useContractKL1155, useContractERC20 } from '../../components/ConnectWalletButton/contract'
+import { useWeb3React } from '@web3-react/core'
+import {Decimal} from 'decimal.js'
+
 
 export default function MintNFT() {
   const inputVideoRef = useRef()
@@ -16,10 +18,11 @@ export default function MintNFT() {
   const imagePreviewRef = useRef()
   const titleRef = useRef()
   const descRef = useRef()
-
+  const { account } = useWeb3React()
+  const contractKL1155 = useContractKL1155()
+  const contractERC20 = useContractERC20()
   const [isApproval, setIsApproval] = useState(false)
   const [file, setFile] = useState([])
-  const [image, setImage] = useState({})
   const [percent, setPercent] = useState(0)
   const [isUploading, setIsUploading] = useState(false)
   const [uploadSuccess, setUploadSuccess] = useState(false)
@@ -28,17 +31,14 @@ export default function MintNFT() {
 
   useEffect(() => {
     async function getAllowance() {
-      if (window?.web3?.eth && window.contractERC20 && window?.ethereum?.selectedAddress) {
-        const allowance = await window.contractERC20.methods
-          .allowance(window.ethereum.selectedAddress, addressKL1155)
-          .call()
-        if (Number(allowance) >= 20000000000000000000) {
+      if(!account) return
+        const allowance = await contractERC20?.allowance(account, addressKL1155)
+        if (new Decimal(allowance.toString()).gt(20000000000000000000)) {
           setIsApproval(true)
         }
-      }
     }
     getAllowance()
-  }, [window?.ethereum?.selectedAddress])
+  },[account,contractERC20])
 
   const handlePreviewVideo = async (e) => {
     const files = e.target.files || []
@@ -64,18 +64,14 @@ export default function MintNFT() {
   }
 
   const handleApproval = async () => {
-    if(window.web3 && window.contractERC20){
-      const approval = await window.contractERC20.methods
-      .approve(addressKL1155, '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff')
-      .send({ from: window.ethereum.selectedAddress })
+    if(!account) setIsApproval(false)
+
+    const approval = await contractERC20.approve(addressKL1155, '0xffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff')
       if (approval) {
         setIsApproval(true)
       }else {
         setIsApproval(false)
       }
-    } else {
-      setIsApproval(false)
-    }
   }
 
   const handleClearInput = () => {
@@ -92,7 +88,6 @@ export default function MintNFT() {
     setIsUploading(true)
 
     const data = new FormData()
-    data.append('image', image)
     data.append('file', file)
     data.append('name', e.target.name.value)
     data.append('numEditions', e.target.numEditions.value)
@@ -114,18 +109,16 @@ export default function MintNFT() {
         },
       })
 
-      // console.log("res",res);
+      if(!account) return
 
       if (res?.data?.hashes[0]) {
-        const transaction = await new window.web3.eth.Contract(ABIKL1155, addressKL1155).methods
-          .create(
+        const transaction = await contractKL1155.create(
             e.target.numEditions.value,
             e.target.numEditions.value,
             2500,
             res?.data?.hashes[0],
             '0x00'
-          )
-          .send({ from: window.ethereum.selectedAddress })
+        )
         if (transaction) {
           // console.log('upload thanh cong')
           setUploadSuccess(true)
@@ -295,7 +288,7 @@ export default function MintNFT() {
             />
           </div>
 
-          <div className='upload__right'>
+          <div className='upload__right fbox_custom'>
             <div className='upload__label'>Name</div>
 
             <input
@@ -314,6 +307,15 @@ export default function MintNFT() {
               className='upload__textarea'
               placeholder='Enter description for video'
             ></textarea>
+
+            <input 
+              type="checkbox"
+              className="upload__checkbox"
+            />
+            <label>I declare that this is an original artwork.
+I understand that no plagiarism is allowed, and that the artwork can be removed anytime if detected.<br />
+            <span>*** Note: </span>Mint an NFT charges 5 KDG, please do not upload my sensitive content
+            </label>
           </div>
         </div>
 

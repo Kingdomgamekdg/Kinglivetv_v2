@@ -8,8 +8,6 @@ import market from '../../assets/images/sidebar/market.svg'
 import marketactive from '../../assets/images/sidebar/marketactive.svg'
 import swap from '../../assets/images/sidebar/swap.svg'
 import swapactive from '../../assets/images/sidebar/swapactive.svg'
-import book from '../../assets/images/sidebar/book.svg'
-import bookactive from '../../assets/images/sidebar/bookactive.svg'
 import more from '../../assets/images/sidebar/more.svg'
 import moreactive from '../../assets/images/sidebar/moreactive.svg'
 import { useHistory, useLocation } from 'react-router'
@@ -56,6 +54,8 @@ const page = [
     name: 'Swap',
     icon: swap,
     active: swapactive,
+    isDirectLink : true,
+    url:"https://pancakeswap.finance/swap#/swap?outputCurrency=0x87a2d9a9a6b2d61b2a57798f1b4b2ddd19458fb6"
   },
   {
     route: '/more',
@@ -66,14 +66,20 @@ const page = [
       {
         route: '/Audit',
         name: 'Audit',
+        isDirectLink : true,
+        url:"https://drive.google.com/file/d/1vuOCgZgXVZCwNtSOIGOeAMd-J2F_524r/view?usp=sharing"
       },
       {
         route: '/Docs',
         name: 'Docs',
+        isDirectLink : true,
+        url:"https://docs.kingdomgame.org/"
       },
       {
         route: '/Github',
         name: 'Github',
+        isDirectLink : true,
+        url:"https://github.com/Kingdomgamekdg"
       },
     ],
   },
@@ -113,14 +119,20 @@ export default function Sidebar({ IsOpenSidebar }) {
         {page.map((o) => (
           <div
             key={o.route}
-            onClick={() => history.push(o.route)}
+            onClick={() => 
+            {
+              if(!o.isDirectLink)
+              {
+                history.push(o.route)
+              }else{
+                window.open(o.url,'_blank')
+              }
+            }}
             className={`item _transit ${location.pathname === o.route ? 'active' : ''}`}
           >
             <img src={location.pathname === o.route ? o.active : o.icon} alt='' />
             <span>{o.name}</span>
             {/*---------btn:arrow onclick show/hide child_box---------*/}
-            {o.child ? <a href="#" className='_transit arrow'></a> 
-            : null}{/*-----e:arrow------ */}  
             {o.child && (              
               
               <div className='child'>
@@ -129,8 +141,14 @@ export default function Sidebar({ IsOpenSidebar }) {
                   <div
                     key={child.route}
                     onClick={(e) => {
-                      e.stopPropagation()
-                      history.push(child.route)
+                      if(!child.isDirectLink){
+                        e.stopPropagation()
+                        history.push(child.route)
+                      } else {
+                        e.stopPropagation()
+                        window.open(child.url,'_blank')
+                      }
+                   
                     }}
                     className='child-item _transit'
                   >
@@ -151,12 +169,6 @@ export default function Sidebar({ IsOpenSidebar }) {
           </div>
 
           <div>
-            <a href="#" class="_transit link medium"></a>
-            <a href="#" class="_transit link telegram"></a>
-            <a href="#" class="_transit link twitter"></a>
-          </div>
-
-          <div>
             <form>
               <label class="switch" id="display_mode">
                 <input type="checkbox" 
@@ -165,11 +177,6 @@ export default function Sidebar({ IsOpenSidebar }) {
                 <span class="slider round"></span>
               </label>{/*---e:display_mode---*/}      
             </form>
-          </div>
-
-          <div>
-            <a href="#" class="_transit global"></a>
-            <a href="#" class="_transit en "></a>
           </div>
 
         </div>{/*-----e:bottom_box------ */}  

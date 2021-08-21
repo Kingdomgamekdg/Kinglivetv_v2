@@ -7,10 +7,7 @@ import checkSVG from '../../assets/svg/check.svg'
 import closeSVG from '../../assets/svg/close.svg'
 import coverDefault from '../../assets/svg/coverDefault.jpg'
 import editSVG from '../../assets/svg/edit.svg'
-import edit2SVG from '../../assets/svg/edit2.svg'
 import trashSVG from '../../assets/svg/trash.svg'
-import pintopSVG from '../../assets/svg/pintop.svg'
-import statisticSVG from '../../assets/svg/statistic.svg'
 import emptyGift from '../../assets/svg/emptyGift.svg'
 import errorSVG from '../../assets/svg/error.svg'
 import kdgSVG from '../../assets/svg/kdg.svg'
@@ -194,15 +191,15 @@ export default function Profile() {
     }
   }
 
-  const handleSetIntroduce = async (videoId) => {
-    try {
-      const res = await callAPI.post('/set_introduce', { video: videoId })
-      console.log(res)
-      dispatch(asyncChangeUser())
-    } catch (error) {
-      console.log(error)
-    }
-  }
+  // const handleSetIntroduce = async (videoId) => {
+  //   try {
+  //     const res = await callAPI.post('/set_introduce', { video: videoId })
+  //     console.log(res)
+  //     dispatch(asyncChangeUser())
+  //   } catch (error) {
+  //     console.log(error)
+  //   }
+  // }
 
   const handleDeleteVideo = async (videoId) => {
     try {

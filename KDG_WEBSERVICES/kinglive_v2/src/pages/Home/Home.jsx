@@ -1,4 +1,4 @@
-import '../../assets/css/home.css'
+import '../../assets/scss/home.scss'
 import banner01 from '../../assets/images/home/b01.jpg'
 import banner02 from '../../assets/images/home/b02.jpg'
 import banner03 from '../../assets/images/home/b03.jpg'
@@ -7,11 +7,6 @@ import kingIMG from '../../assets/images/home/King.gif'
 
 import { useCallback, useEffect, useRef, useState } from 'react'
 import callAPI from '../../axios'
-import emptyGift from '../../assets/svg/emptyGift.svg'
-import coverDefault from '../../assets/svg/coverDefault.jpg'
-import avatarDefault from '../../assets/svg/avatarDefault.svg'
-import { STORAGE_DOMAIN } from '../../constant'
-import convertDateAgo from '../../helpers/convertDateAgo'
 import { useMemo } from 'react'
 import { useHistory } from 'react-router-dom'
 
@@ -94,14 +89,15 @@ export default function Home() {
         <div className='container home_container'>
           {/* ------------------------div: split -----------------------*/}
           <div className='split'>
-            <a href='#' className='kinglive_vector'></a >
+            <span className='kinglive_vector'></span >
             <h3>For passionate community of streamers, gamers, fans & developers</h3>
 
             <ul className="home_navigator">
-              <li><a href="#" onClick={()=>history.push('/setup')} className='_transit'>Livestreaming</a><span></span></li>
-              <li><a href="#" onClick={()=>history.push('/mint-nft')} className='_transit'>Mint NFT</a><span></span></li>
-              <li><a href="#" onClick={()=>history.push('/live')} className='_transit'>Donate</a><span></span></li>
-              <li><a href="#" onClick={()=>history.push('/nft-market')} className='_transit'>Buy/Sell/Auction NFT</a><span></span></li>
+
+              <li><span onClick={()=>history.push('/setup')} className='options _transit'>Livestreaming</span><span className="shake"></span></li>
+              <li><span onClick={()=>history.push('/mint-nft')} className='options _transit'>Mint NFT</span><span className="shake"></span></li>
+              <li><span onClick={()=>history.push('/live')} className='options _transit'>Donate</span><span className="shake"></span></li>
+              <li><span onClick={()=>history.push('/nft-market')} className='options _transit'>Buy/Sell/Auction NFT</span><span className="shake"></span></li>
             </ul>
           </div>{/* --- e:split -----------------------*/}
 
@@ -118,7 +114,7 @@ export default function Home() {
             <span>Number of streamers<strong>{Dashboard.total_stream}</strong></span>
             <span>Number of videos<strong>{Dashboard.total_video}</strong></span>
             <span>Number of hours watched<strong>{Dashboard.watched_time}</strong></span>
-            <span>Number of views<strong>{Dashboard.total_view}</strong></span>
+            <span>Number of views<strong>{Dashboard.total_views}</strong></span>
             
           </div>{/* --- e:split -----------------------*/}
 

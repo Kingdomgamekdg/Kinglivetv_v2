@@ -14,11 +14,14 @@ import { PLAY_STREAM, STORAGE_DOMAIN } from '../../constant'
 import convertDateAgo from '../../helpers/convertDateAgo'
 import socket from '../../socket'
 import emptyGift from '../../assets/svg/emptyGift.svg'
+import { useWeb3React } from '@web3-react/core'
+import {  useContractKL1155 } from '../../components/ConnectWalletButton/contract'
 
 export default function WatchLive() {
   const history = useHistory()
   const userRedux = useSelector((state) => state.user)
-
+  const { account } = useWeb3React()
+  const contractKL1155 = useContractKL1155()
   const chatListRef = useRef()
 
   const [streamData, setStreamData] = useState({})
@@ -169,9 +172,8 @@ export default function WatchLive() {
     const _data = 0x00
 
     try {
-      await window.contractKL1155.methods
-        .safeTransferFrom(_from, _to, _id, _amount, _data)
-        .send({ from: _from })
+      if(!account) return
+      await contractKL1155.safeTransferFrom(_from, _to, _id, _amount, _data)
 
       const res = await callAPI.get(`/user-asset?limit=20&status=1&`)
 

@@ -227,6 +227,7 @@ contract KingLive is Ownable, Pausable, ERC1155Hodler {
         bidOrder.bidToken = _bidToken;
         bidOrder.bidPrice = _bidPrice;
         bidOrder.quantity = _quantity;
+        bidOrder.itemId = _itemId;
         bidOrder.expired = block.timestamp.add(_expiration);
         bidOrder.status = 1;
 

@@ -4,9 +4,7 @@ import { useHistory } from "react-router-dom";
 import '../../assets/scss/my-artwork.scss'
 import callAPI from '../../axios'
 import { STORAGE_DOMAIN } from '../../constant'
-import { ABIKL1155, addressKL1155 } from '../../contracts/KL1155'
-import { paymentList } from '../../contracts/ERC20'
-import { ABIMarket, addressMarket } from '../../contracts/Market'
+
 import convertPositionIMG from '../../helpers/convertPositionIMG'
 
 export default function MyArtwork() {
@@ -15,10 +13,10 @@ export default function MyArtwork() {
   const [status, setStatus] = useState(1)
   const [previewIMG, setPreviewIMG] = useState('')
   const [AssetList, setAssetList] = useState([])
+  const [mimetype, setMimetype] = useState('')
 
   const isLoadMore = useRef(true)
   const isLoadingAPI = useRef(false)
-  const [isLoading, setIsLoading] = useState(false)
 
   const [userData, setUserData] = useState({})
   const avatar = useMemo(() => userData?.kyc?.avatar?.path, [userData])
@@ -29,33 +27,28 @@ export default function MyArtwork() {
     () => `${userData?.kyc?.first_name} ${userData?.kyc?.last_name}`,
     [userData]
   )
+  const address = useMemo(() => userRedux?.address, [userRedux])
 
   const handleChangeStatus = async (status) => {
     setStatus(status)
     AssetList.length = 0
-    await getAssets(status)
+    await getAssets(status,mimetype)
   }
 
-  
+  const handleChangeMimeType = async (mimetype) => {
+    setMimetype(mimetype)
+    AssetList.length = 0
+    await getAssets(status,mimetype)
+  }
+
 
   const getAssets = useCallback(
-    async (status) => {
-      if(status !==3)
+    async (status,mimetype) => {
+      if(status === 3 )
       {
-        var ids = AssetList.map((o) => o._id)
+        const ids = AssetList.map((o) => o._id)
         const res = await callAPI.get(
-          `/user-asset?limit=20&${ids.length ? `ids=${ids}` : ''}&status=${status}`,
-          true) 
-        if (res?.data?.length === 0) {
-          isLoadMore.current = false
-          setAssetList([...AssetList])
-          return
-        }
-        setAssetList([...AssetList, ...(res?.data ? res.data : [])])
-      } else {
-        var ids = AssetList.map((o) => o._id)
-        const res = await callAPI.get(
-          `/buys/bidding?limit=20&${ids.length ? `ids=${ids}` : ''}`,
+          `/buys/bidding?limit=20&${ids.length ? `ids=${ids}` : ''}&${mimetype.length ? `mimetype=${mimetype}` : ''}`,
           true) 
         if (res?.data?.length === 0) {
           isLoadMore.current = false
@@ -64,13 +57,48 @@ export default function MyArtwork() {
         } else {
           const bidings = res?.data.map(bid =>{
             return {
+              _id: bid._id,
               user :bid.from,
               asset: bid.asset,
-              listId: bid.list_id?._id
+              listId: bid.list_id?._id,
+              amount:bid.quantity
             }
           })
           setAssetList([...AssetList, ...bidings])
         }
+      } else if(status === 4)
+      {
+        const ids = AssetList.map((o) => o._id)
+        const res = await callAPI.get(
+          `/listing-assets?limit=20&${ids.length ? `ids=${ids}` : ''}&${mimetype.length ? `mimetype=${mimetype}` : ''}`,
+          true) 
+        if (res?.data?.length === 0) {
+          isLoadMore.current = false
+          setAssetList([...AssetList])
+          return
+        } else {
+          const listing = res?.data.map(list =>{
+            return {
+              _id: list._id,
+              user :list.owner,
+              asset: list.asset,
+              listId: list._id,
+              amout:list.quantity
+            }
+          })
+          setAssetList([...AssetList, ...listing])
+        }
+      } else {
+        const ids = AssetList.map((o) => o._id)
+        const res = await callAPI.get(
+          `/user-asset?limit=20&${ids.length ? `ids=${ids}` : ''}&status=${status}&${mimetype.length ? `mimetype=${mimetype}` : ''}`,
+          true) 
+        if (res?.data?.length === 0) {
+          isLoadMore.current = false
+          setAssetList([...AssetList])
+          return
+        }
+        setAssetList([...AssetList, ...(res?.data ? res.data : [])])
 
       }
       
@@ -89,9 +117,7 @@ export default function MyArtwork() {
 
       if (isEnd && isLoadMore.current && !isLoadingAPI.current) {
         isLoadingAPI.current = true
-        setIsLoading(true)
-        await getAssets(status)
-        setIsLoading(false)
+        await getAssets(status,mimetype)
         isLoadingAPI.current = false
       }
     }
@@ -101,13 +127,12 @@ export default function MyArtwork() {
     return () => {
       window.removeEventListener('scroll', handleLoad)
     }
-  }, [getAssets, status])
+  }, [getAssets,status,mimetype])
 
   useEffect(() => {
     ;(async () => {
       try {
         const res = await callAPI.get(`/user?uid=${userRedux?._id}`)
-        console.log("res",res);
         setUserData(res.data)
       } catch (error) {}
     })()
@@ -115,26 +140,31 @@ export default function MyArtwork() {
 
   useEffect(() => {
     ;(async () => {
-      callAPI.get(`/user-asset?limit=20&status=${status}`, true).then((res) => {
-        setAssetList(res?.data ? res.data : [])
-      })
+      try {
+        setStatus(1)
+        setMimetype('')
+        const res = await callAPI.get(
+          `/user-asset?limit=20&status=1`,
+          true) 
+        setAssetList(res.data)  
+      } catch (error) {}
     })()
-  }, [status])
+  }, [address])
+
 
 
   
 
   const handleShowDetail = async (index) => {
-    if(status === 3 ){
-      var ids = AssetList.map((o) => o?.listId)
+    if(status === 3 || status === 4 ){
+      const ids = AssetList.map((o) => o?.listId)
       history.push(`/nft-detail?ids=${ids}&index=${index}`)
     } else {
-      var ids = AssetList.map((o) => o?._id)
+      const ids = AssetList.map((o) => o?._id)
       history.push(`/my-artwork-detail?ids=${ids}&index=${index}`)
     }
   }
 
-  
 
   const handleMouseOverNFT = useCallback((e) => {
     let target = e.target
@@ -171,10 +201,12 @@ export default function MyArtwork() {
       video.pause()
       video.currentTime=0
   }
-  })
+  },[])
 
   return (
     <>
+
+              
       <div className='myartwork profile😢 container'>
         <div style={{ position: 'relative', marginBottom: 60 }}>
           {previewIMG && (
@@ -243,10 +275,47 @@ export default function MyArtwork() {
             >
               Bidding <span>Bidding</span>{' '}
             </div>
+            <div
+              className={`myartwork__tab ${status === 4 ? 'active' : ''}`}
+              onClick={() => handleChangeStatus(4)}
+            >
+              On Sale <span>On Sale</span>{' '}
+            </div>
           </div>
-
+          
+          <div className="myartwork__filterBlock">
+                
+                <div className="select">
+   
+                    <input type="radio" name="option" />
+                      <i className="toggle icon icon-arrow-down"></i>
+                      <i className="toggle icon icon-arrow-up"></i>
+                      <span className="placeholder">Option</span>
+                      <label className="option">
+                          <input type="radio" name="option" onClick={()=> handleChangeMimeType('')} />
+                          <span className="title ">All type</span>
+                      </label>
+                      <label className="option">
+                          <input type="radio" name="option" onClick={()=> handleChangeMimeType('gif')}/>
+                          <span className="title ">Gift</span>
+                      </label>
+                      <label className="option">
+                          <input type="radio" name="option" onClick={()=> handleChangeMimeType('video')} />
+                          <span className="title ">Video</span>
+                      </label>
+                      <label className="option">
+                          <input type="radio" name="option" onClick={()=> handleChangeMimeType('image')}/>
+                          <span className="title ">Image</span>
+                      </label>
+               
+                </div>
+   
+                <span>Short by</span>
+              </div>
+             
           {AssetList?.length > 0 && (
             <div className='myartwork__list'>
+                
               {AssetList.map((al,index) => (
                 <div 
                 onMouseOver={handleMouseOverNFT}
