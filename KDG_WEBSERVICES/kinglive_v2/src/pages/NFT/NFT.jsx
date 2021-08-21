@@ -182,7 +182,7 @@ export default function NFT() {
             setIsApproval(true)
           }
         } 
-      if (account === item?.owner?.address) {
+      if (account?.toLowerCase() === item?.owner?.address) {
         setIsOwner(true)
       } else {
         setIsOwner(false)
