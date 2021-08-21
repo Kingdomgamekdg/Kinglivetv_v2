@@ -11,52 +11,57 @@ const AssetMetadataService = require('../../services/asset-metadata')
 const HttpError = require('../../libs/http-error')
 
  async function _uploadFile (_file, _image) {
-  let name = _file.filename + path.extname(_file.originalname).toLowerCase()
+   try{
+      let name = _file.filename + path.extname(_file.originalname).toLowerCase()
 
-  const binary = fs.readFileSync(_file.path)
-
-  const data = []
-
-  data.push({
-    path: `/${name}`,
-    content: binary
-  })
-
-  let files = []
-
-  if (_file.mimetype.startsWith('image')) {
-    files = await imageConverter.resize(binary, [500, 100], _file.mimetype)
-  } else {
-    if (!_image) {
-      throw new HttpError(400, '"image" is required')
-    }
-
-    name = _image.filename + path.extname(_image.originalname).toLowerCase()
-
-    files.push(fs.readFileSync(_image.path))
-
-    files = files.concat(await imageConverter.resize(files[0], [500, 100], _image.mimetype))
-
-    fs.unlinkSync(_image.path)
-  }
-
-  files.forEach(binary => {
-    data.push({
-      path: `/${name}`,
-      content: binary
-    })
-  })
-
-  // Uploads files to IPFS
-  const hashes = await ipfs.addFiles(data, { wrapWithDirectory: true })
-
-  if (hashes == null) {
-    throw new HttpError(500)
-  }
-
-  fs.unlinkSync(_file.path)
-
-  return hashes
+      const binary = fs.readFileSync(_file.path)
+    
+      const data = []
+    
+      data.push({
+        path: `/${name}`,
+        content: binary
+      })
+    
+      let files = []
+    
+      if (_file.mimetype.startsWith('image')) {
+        files = await imageConverter.resize(binary, [500, 100], _file.mimetype)
+      } else {
+        if (!_image) {
+          throw new HttpError(400, '"image" is required')
+        }
+    
+        name = _image.filename + path.extname(_image.originalname).toLowerCase()
+    
+        files.push(fs.readFileSync(_image.path))
+    
+        files = files.concat(await imageConverter.resize(files[0], [500, 100], _image.mimetype))
+    
+        fs.unlinkSync(_image.path)
+      }
+    
+      files.forEach(binary => {
+        data.push({
+          path: `/${name}`,
+          content: binary
+        })
+      })
+    
+      // Uploads files to IPFS
+      const hashes = await ipfs.addFiles(data, { wrapWithDirectory: true })
+    
+      if (hashes == null) {
+        throw new HttpError(500)
+      }
+    
+      fs.unlinkSync(_file.path)
+    
+      return hashes
+   } catch(ex){
+     console.log("ex",ex)
+   }
+  
 }
 
 class Controller {
@@ -85,7 +90,6 @@ class Controller {
       let thumbnail
 
       if (file) {
-        console.log('this', this)
         const hashes = await _uploadFile(file, image)
         console.log('hashes', hashes)
         if (file.mimetype.startsWith('image')) {
