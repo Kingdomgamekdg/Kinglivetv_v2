@@ -66,14 +66,20 @@ const page = [
       {
         route: '/Audit',
         name: 'Audit',
+        isDirectLink : true,
+        url:"https://drive.google.com/file/d/1vuOCgZgXVZCwNtSOIGOeAMd-J2F_524r/view?usp=sharing"
       },
       {
         route: '/Docs',
         name: 'Docs',
+        isDirectLink : true,
+        url:"https://docs.kingdomgame.org/"
       },
       {
         route: '/Github',
         name: 'Github',
+        isDirectLink : true,
+        url:"https://github.com/Kingdomgamekdg"
       },
     ],
   },
@@ -135,8 +141,14 @@ export default function Sidebar({ IsOpenSidebar }) {
                   <div
                     key={child.route}
                     onClick={(e) => {
-                      e.stopPropagation()
-                      history.push(child.route)
+                      if(!child.isDirectLink){
+                        e.stopPropagation()
+                        history.push(child.route)
+                      } else {
+                        e.stopPropagation()
+                        window.open(child.url,'_blank')
+                      }
+                   
                     }}
                     className='child-item _transit'
                   >
