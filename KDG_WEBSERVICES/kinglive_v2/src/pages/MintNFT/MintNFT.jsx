@@ -314,7 +314,7 @@ export default function MintNFT() {
             />
             <label>I declare that this is an original artwork.
 I understand that no plagiarism is allowed, and that the artwork can be removed anytime if detected.<br />
-            <span>*** Note: </span>Mint an NFT charges 0.01BNB, please do not upload my sensitive content
+            <span>*** Note: </span>Mint an NFT charges 5 KDG, please do not upload my sensitive content
             </label>
           </div>
         </div>
