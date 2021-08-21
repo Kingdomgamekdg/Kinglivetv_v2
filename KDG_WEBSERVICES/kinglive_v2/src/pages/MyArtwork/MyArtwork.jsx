@@ -13,6 +13,7 @@ export default function MyArtwork() {
   const [status, setStatus] = useState(1)
   const [previewIMG, setPreviewIMG] = useState('')
   const [AssetList, setAssetList] = useState([])
+  const [mimetype, setMimetype] = useState('')
 
   const isLoadMore = useRef(true)
   const isLoadingAPI = useRef(false)
@@ -31,16 +32,23 @@ export default function MyArtwork() {
   const handleChangeStatus = async (status) => {
     setStatus(status)
     AssetList.length = 0
+    await getAssets()
   }
+
+  // const handleChangeMimeType = async (mimetype) => {
+  //   setMimetype(mimetype)
+  //   AssetList.length = 0
+  //   await getAssets()
+  // }
 
 
   const getAssets = useCallback(
-    async (status) => {
+    async () => {
       if(status === 3 )
       {
         const ids = AssetList.map((o) => o._id)
         const res = await callAPI.get(
-          `/buys/bidding?limit=20&${ids.length ? `ids=${ids}` : ''}`,
+          `/buys/bidding?limit=20&${ids.length ? `ids=${ids}` : ''}&${mimetype.length ? `mimetype=${mimetype}` : ''}`,
           true) 
         if (res?.data?.length === 0) {
           isLoadMore.current = false
@@ -62,7 +70,7 @@ export default function MyArtwork() {
       {
         const ids = AssetList.map((o) => o._id)
         const res = await callAPI.get(
-          `/listing-assets?limit=20&${ids.length ? `ids=${ids}` : ''}`,
+          `/listing-assets?limit=20&${ids.length ? `ids=${ids}` : ''}&${mimetype.length ? `mimetype=${mimetype}` : ''}`,
           true) 
         if (res?.data?.length === 0) {
           isLoadMore.current = false
@@ -83,7 +91,7 @@ export default function MyArtwork() {
       } else {
         const ids = AssetList.map((o) => o._id)
         const res = await callAPI.get(
-          `/user-asset?limit=20&${ids.length ? `ids=${ids}` : ''}&status=${status}`,
+          `/user-asset?limit=20&${ids.length ? `ids=${ids}` : ''}&status=${status}&${mimetype.length ? `mimetype=${mimetype}` : ''}`,
           true) 
         if (res?.data?.length === 0) {
           isLoadMore.current = false
@@ -91,10 +99,11 @@ export default function MyArtwork() {
           return
         }
         setAssetList([...AssetList, ...(res?.data ? res.data : [])])
+
       }
       
     },
-    [AssetList]
+    [AssetList,status,mimetype]
   )
 
   
@@ -108,7 +117,7 @@ export default function MyArtwork() {
 
       if (isEnd && isLoadMore.current && !isLoadingAPI.current) {
         isLoadingAPI.current = true
-        await getAssets(status)
+        await getAssets()
         isLoadingAPI.current = false
       }
     }
@@ -118,7 +127,7 @@ export default function MyArtwork() {
     return () => {
       window.removeEventListener('scroll', handleLoad)
     }
-  }, [getAssets, status])
+  }, [getAssets])
 
   useEffect(() => {
     ;(async () => {
@@ -131,9 +140,17 @@ export default function MyArtwork() {
 
   useEffect(() => {
     ;(async () => {
-       await getAssets(status)
+      try {
+        setStatus(1)
+        setMimetype('')
+        const res = await callAPI.get(
+          `/user-asset?limit=20&status=1`,
+          true) 
+        setAssetList(res.data)  
+      } catch (error) {}
     })()
-  }, [status,address])
+  }, [address])
+
 
 
   
@@ -148,7 +165,6 @@ export default function MyArtwork() {
     }
   }
 
-  
 
   const handleMouseOverNFT = useCallback((e) => {
     let target = e.target
@@ -189,6 +205,8 @@ export default function MyArtwork() {
 
   return (
     <>
+
+              
       <div className='myartwork profile😢 container'>
         <div style={{ position: 'relative', marginBottom: 60 }}>
           {previewIMG && (
@@ -264,9 +282,40 @@ export default function MyArtwork() {
               On Sale <span>On Sale</span>{' '}
             </div>
           </div>
-
+          
+          {/* <div className="myartwork__filterBlock">
+                
+                <div className="select">
+   
+                    <input type="radio" name="option" />
+                      <i className="toggle icon icon-arrow-down"></i>
+                      <i className="toggle icon icon-arrow-up"></i>
+                      <span className="placeholder">Option</span>
+                      <label className="option">
+                          <input type="radio" name="option" onClick={()=> handleChangeMimeType('')} />
+                          <span className="title ">All type</span>
+                      </label>
+                      <label className="option">
+                          <input type="radio" name="option" onClick={()=> handleChangeMimeType('gift')}/>
+                          <span className="title ">Gift</span>
+                      </label>
+                      <label className="option">
+                          <input type="radio" name="option" onClick={()=> handleChangeMimeType('video')} />
+                          <span className="title ">Video</span>
+                      </label>
+                      <label className="option">
+                          <input type="radio" name="option" onClick={()=> handleChangeMimeType('image')}/>
+                          <span className="title ">Image</span>
+                      </label>
+               
+                </div>
+   
+                <span>Short by</span>
+              </div> */}
+             
           {AssetList?.length > 0 && (
             <div className='myartwork__list'>
+                
               {AssetList.map((al,index) => (
                 <div 
                 onMouseOver={handleMouseOverNFT}

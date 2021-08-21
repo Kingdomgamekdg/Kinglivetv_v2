@@ -116,6 +116,8 @@ const NFTDetail = () => {
 
     const handleBuy = async (e) => {
         e.preventDefault()
+        console.log("aaaaa")
+     
         if(!account) return
         const listId = e.target._listid.value
         const type = Number(e.target._type.value)
@@ -123,6 +125,11 @@ const NFTDetail = () => {
         const token = paymentList[e.target._paymentToken.value]
         const paymentToken = token.address
         const netTotalPayment = new Decimal(total).mul(new Decimal(10).pow(token.decimal)).toHex()
+        console.log("netTotalPayment",netTotalPayment)
+        console.log("amount",amount)
+        console.log("paymentToken",paymentToken)
+        console.log("listId",listId)
+
         if (type ===1) {
           contractMarket.buy(listId, amount, paymentToken, netTotalPayment)
             .then((result) => {
@@ -622,7 +629,7 @@ const NFTDetail = () => {
                         </h2>
                         <div className="table-bidding">
                             <table>
-                                <tr className="tr">
+                                <thead className="tr">
                                     <th>
                                         From
                                     </th>
@@ -636,11 +643,11 @@ const NFTDetail = () => {
                                         Action
                                     </th>
 
-                                </tr>
+                                </thead>
                                 {marketList[currentIndex]?.bid_orders.map(bid => {
                                     if (bid.status !== 2)
                                         return (
-                                            <tr>
+                                            <tbody>
                                                 <td >
                                                     {bid.from?.kyc?.last_name ? bid.from?.kyc?.last_name + ' ' + bid.from?.kyc?.first_name : bid.from?.address?.substring(bid.from?.address?.length - 8, bid.from?.address?.length)}
                                                 </td>
@@ -665,12 +672,12 @@ const NFTDetail = () => {
                                                         <div>Canceled</div>
                                                     )}
                                                 </td>
-                                            </tr>
+                                            </tbody>
                                         )
                                     else return null
                                 })}
                                 {!marketList[currentIndex]?.bid_orders?.length && (
-                                    <tr>
+                                    <tbody>
                                         <td colSpan={4}>
                                             <div className="box-data">
                                                 <div className="non-data">
@@ -678,7 +685,7 @@ const NFTDetail = () => {
                                                 </div>
                                             </div>
                                         </td>
-                                    </tr>
+                                    </tbody>
                                 )}
                             </table>
                         </div>
@@ -693,7 +700,7 @@ const NFTDetail = () => {
                         </h2>
                         <div className="table-history">
                             <table>
-                                <tr className="tr-1">
+                                <thead className="tr-1">
                                     <th>
                                         From / To
                                     </th>
@@ -706,10 +713,10 @@ const NFTDetail = () => {
                                     <th>
                                         Action
                                     </th>
-                                </tr>
+                                </thead>
                                 {marketList[currentIndex]?.buys.map(buy => {
                                     return (
-                                        <tr>
+                                        <tbody>
                                             <td>
                                                 <div className="info-user">
                                                     <div className="avt">
@@ -733,11 +740,11 @@ const NFTDetail = () => {
                                             </td>
                                             <td>
                                             </td>
-                                        </tr>
+                                        </tbody>
                                     )
                                 })}
                                 {!marketList[currentIndex]?.buys?.length && (
-                                    <tr>
+                                    <tbody>
                                         <td colSpan={4}>
                                             <div className="box-data">
                                                 <div className="non-data">
@@ -745,7 +752,7 @@ const NFTDetail = () => {
                                                 </div>
                                             </div>
                                         </td>
-                                    </tr>
+                                    </tbody>
                                 )}
 
 
