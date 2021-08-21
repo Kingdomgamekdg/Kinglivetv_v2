@@ -32,18 +32,18 @@ export default function MyArtwork() {
   const handleChangeStatus = async (status) => {
     setStatus(status)
     AssetList.length = 0
-    await getAssets()
+    await getAssets(status,mimetype)
   }
 
-  // const handleChangeMimeType = async (mimetype) => {
-  //   setMimetype(mimetype)
-  //   AssetList.length = 0
-  //   await getAssets()
-  // }
+  const handleChangeMimeType = async (mimetype) => {
+    setMimetype(mimetype)
+    AssetList.length = 0
+    await getAssets(status,mimetype)
+  }
 
 
   const getAssets = useCallback(
-    async () => {
+    async (status,mimetype) => {
       if(status === 3 )
       {
         const ids = AssetList.map((o) => o._id)
@@ -103,7 +103,7 @@ export default function MyArtwork() {
       }
       
     },
-    [AssetList,status,mimetype]
+    [AssetList]
   )
 
   
@@ -117,7 +117,7 @@ export default function MyArtwork() {
 
       if (isEnd && isLoadMore.current && !isLoadingAPI.current) {
         isLoadingAPI.current = true
-        await getAssets()
+        await getAssets(status,mimetype)
         isLoadingAPI.current = false
       }
     }
@@ -127,7 +127,7 @@ export default function MyArtwork() {
     return () => {
       window.removeEventListener('scroll', handleLoad)
     }
-  }, [getAssets])
+  }, [getAssets,status,mimetype])
 
   useEffect(() => {
     ;(async () => {
@@ -283,7 +283,7 @@ export default function MyArtwork() {
             </div>
           </div>
           
-          {/* <div className="myartwork__filterBlock">
+          <div className="myartwork__filterBlock">
                 
                 <div className="select">
    
@@ -296,7 +296,7 @@ export default function MyArtwork() {
                           <span className="title ">All type</span>
                       </label>
                       <label className="option">
-                          <input type="radio" name="option" onClick={()=> handleChangeMimeType('gift')}/>
+                          <input type="radio" name="option" onClick={()=> handleChangeMimeType('gif')}/>
                           <span className="title ">Gift</span>
                       </label>
                       <label className="option">
@@ -311,7 +311,7 @@ export default function MyArtwork() {
                 </div>
    
                 <span>Short by</span>
-              </div> */}
+              </div>
              
           {AssetList?.length > 0 && (
             <div className='myartwork__list'>
