@@ -98,10 +98,10 @@ export default function Home() {
             <h3>For passionate community of streamers, gamers, fans & developers</h3>
 
             <ul className="home_navigator">
-              <li><a href="#" className='_transit'>Livestreaming</a><span></span></li>
-              <li><a href="#" className='_transit'>Mint NFT</a><span></span></li>
-              <li><a href="#" className='_transit'>Donate</a><span></span></li>
-              <li><a href="#" className='_transit'>Buy/Sell/Auction NFT</a><span></span></li>
+              <li><span onClick={()=>history.push('/setup')} className='options _transit'>Livestreaming</span><span className="shake"></span></li>
+              <li><span onClick={()=>history.push('/mint-nft')} className='options _transit'>Mint NFT</span><span className="shake"></span></li>
+              <li><span onClick={()=>history.push('/live')} className='options _transit'>Donate</span><span className="shake"></span></li>
+              <li><span onClick={()=>history.push('/nft-market')} className='options _transit'>Buy/Sell/Auction NFT</span><span className="shake"></span></li>
             </ul>
           </div>{/* --- e:split -----------------------*/}
 
