@@ -59,9 +59,9 @@ module.exports = class {
     }
 
     if (conditions.mimetype) {
-      const mimetype = conditions.mimetype.split(',').map(i => i.trim())
+      const mimetype = conditions.mimetype;
       match['metadata.mimetype'] = {
-        $in: mimetype
+        $regex : mimetype
       }
     }
 
