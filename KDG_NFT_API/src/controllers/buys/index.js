@@ -50,7 +50,10 @@ module.exports = class {
       const user = await UserService.findById(userId, '_id')
 
       if (IsEmpty(user)) {
-        _res.status(200).json({ status: 1, data: [] })
+        _res.status(200).json({
+          status: 1,
+          data: []
+        })
       }
 
       const queries = _req.query
@@ -69,6 +72,14 @@ module.exports = class {
         conditions.status = 0
       }
 
+      const match = {}
+      if (conditions.mimetype) {
+        match['metadata.mimetype'] = {
+          $regex: conditions.mimetype.toLowerCase()
+        }
+        delete conditions.mimetype
+      }
+
       const orders = await BuysService.find(conditions)
         .populate({
           path: 'from',
@@ -80,10 +91,12 @@ module.exports = class {
           path: 'list_id'
         })
         .populate({
-          path: 'asset'
+          path: 'asset',
+          match
         })
+
       _res.status(200).json({
-        data: orders
+        data: orders.filter(i => i.asset)
       })
     } catch (e) {
       _res.status(400).json(e.message)
