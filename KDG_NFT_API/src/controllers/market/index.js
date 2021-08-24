@@ -16,11 +16,11 @@ module.exports = class {
       limit
     } = _req.paging
 
-    const user = await UsersService.findById(_id)
+    // const user = await UsersService.findById(_id)
 
-    if (IsEmpty(user)) {
-      _res.status(200).json({ status: 1, data: [] })
-    }
+    // if (IsEmpty(user)) {
+    //   _res.status(200).json({ status: 1, data: [] })
+    // }
 
     if (!conditions.quantity) {
       conditions.quantity = { $gt: 0 }
@@ -33,11 +33,11 @@ module.exports = class {
   static async getTopPopulateAssets (_req, _res) {
     const { _id } = _req
 
-    const user = await UsersService.findById(_id)
+    // const user = await UsersService.findById(_id)
 
-    if (IsEmpty(user)) {
-      _res.status(200).json({ status: 1, data: [] })
-    }
+    // if (IsEmpty(user)) {
+    //   _res.status(200).json({ status: 1, data: [] })
+    // }
 
     const queries = _req.query
 
@@ -61,11 +61,11 @@ module.exports = class {
 
     const { ...conditions } = queries
 
-    const user = await UsersService.findById(_id)
+    // const user = await UsersService.findById(_id)
 
-    if (IsEmpty(user)) {
-      _res.status(200).json({ status: 1, data: [] })
-    }
+    // if (IsEmpty(user)) {
+    //   _res.status(200).json({ status: 1, data: [] })
+    // }
 
     const ids = conditions.ids ? conditions.ids.split(',') : []
 
