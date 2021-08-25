@@ -14,7 +14,8 @@ const storage = multer.diskStorage(
     }
 )
 
-module.exports = multer({ storage: storage }).fields([
+
+module.exports = multer({ storage: storage ,limits: { fileSize: 31457280 }}, ).fields([
     { name: 'image', maxCount: 1 },
     { name: 'file', maxCount: 1 }
 ])
