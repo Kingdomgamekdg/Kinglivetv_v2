@@ -75,9 +75,9 @@ module.exports = class {
       amount: { $gt: 0 }
     }
 
-    if (status === 0 && user?.isReviewer) {
-      delete filter.user
-    }
+    // if (status === 0 && user?.isReviewer) {
+    //   delete filter.user
+    // }
 
     const data = await UserAssetsService.getUserAssets({
       filter,
