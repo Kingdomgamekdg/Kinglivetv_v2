@@ -107,6 +107,7 @@ type UpdateItemListLogs @entity {
 
 type CancelListedLogs @entity {
     id: ID!                         # id
+    contract : String 
     listId : BigInt                       # id
     status : Int                    # 3 canceled
     transaction: String             # Transaction hash

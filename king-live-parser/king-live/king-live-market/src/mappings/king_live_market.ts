@@ -1,7 +1,7 @@
 /* eslint-disable prefer-const */
 import { log, BigInt } from "@graphprotocol/graph-ts";
 
-import { List, Buy, Bid , UpdateBid, UpdateItem, AcceptBid } from '../../generated/KingLiveMarket/KingLiveMarket';
+import { List, Buy, Bid , UpdateBid, UpdateItem, AcceptBid, CancelListed, CancelBid } from '../../generated/KingLiveMarket/KingLiveMarket';
 import { AcceptBidLogs, BidLogs, BuyLogs, ListLogs , CancelListedLogs, CancelBidLogs} from '../../generated/schema';
 
 const GENESIS_ADDRESS = '0x0000000000000000000000000000000000000000';
@@ -244,7 +244,7 @@ function createCancelBid(contract: string, from: string, to: string,bidOrderId: 
 }
 
 
-export function handleCancelBid (event : AcceptBid): void {
+export function handleCancelBid (event : CancelBid): void {
     let contract = event.address.toHex();
     let from = event.params._from.toHex();
     let to = event.params._to.toHex();
@@ -262,3 +262,30 @@ export function handleCancelBid (event : AcceptBid): void {
     // }
 }
 
+
+function createCancelList(contract: string, item: BigInt ,transaction: string ,time: BigInt ,logIndex: BigInt): void {
+    let data = new CancelListedLogs(transaction + '_' + logIndex.toString());
+    data.contract = contract;
+    data.listId = item;
+    data.transaction = transaction;
+    data.logIndex = logIndex;
+    data.time = time;
+    data.save();
+}
+
+
+export function handleCancelListed (event : CancelListed): void {
+    let contract = event.address.toHex();
+    let item = event.params._itemId;
+    let to = event.params._receiver;
+    let transaction = event.transaction.hash.toHex();
+    let time = event.block.timestamp;
+    let logIndex = event.transactionLogIndex;
+
+    log.info('cancel list, listId: {}', [item.toString()]);
+
+
+    // for (let i = 0; i < length; i++) {
+        createCancelList(contract,item ,transaction,time,logIndex);
+    // }
+}

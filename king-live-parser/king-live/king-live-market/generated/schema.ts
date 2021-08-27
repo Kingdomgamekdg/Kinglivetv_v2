@@ -1452,6 +1452,23 @@ export class CancelListedLogs extends Entity {
     this.set("id", Value.fromString(value));
   }
 
+  get contract(): string | null {
+    let value = this.get("contract");
+    if (value === null) {
+      return null;
+    } else {
+      return value.toString();
+    }
+  }
+
+  set contract(value: string | null) {
+    if (value === null) {
+      this.unset("contract");
+    } else {
+      this.set("contract", Value.fromString(value as string));
+    }
+  }
+
   get listId(): BigInt | null {
     let value = this.get("listId");
     if (value === null) {
