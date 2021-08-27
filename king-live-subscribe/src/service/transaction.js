@@ -2,6 +2,8 @@ const BaseService = require('../cores/base-service')
 const Model = require('../models/Transactions')
 const RewardPercent = 5 // 5%
 
+const RewardQueue = global.Queue.createQueue('Reward')
+
 class TransactionService extends BaseService {
   calculateReward (amount) {
     return amount * (RewardPercent / 100)
@@ -15,13 +17,19 @@ class TransactionService extends BaseService {
 
     const amountReward = this.calculateReward(amount)
 
-    return this.create({
+    await this.create({
       from: _id,
       to: parent,
       type,
       value: amountReward
     })
+
+    await RewardQueue.addJob('INCREASE_REWARD', {
+      userId: parent,
+      point: amountReward
+    })
   }
+
 }
 
 module.exports = new TransactionService(Model)
