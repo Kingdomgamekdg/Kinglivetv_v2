@@ -24,21 +24,28 @@ module.exports = class {
       const { ...conditions } = queries
       const ids = conditions.ids ? conditions.ids.split(',') : []
 
-
+      const match = {}
+      if (conditions.mimetype) {
+        match['metadata.mimetype'] = {
+          $regex: conditions.mimetype.toLowerCase()
+        }
+        delete conditions.mimetype
+      }
 
       const data = await ListingAssetService.find({
         owner: _id,
         quantity: {
           $gt: 0
         },
-        _id: { $nin: ids}
+        _id: { $nin: ids }
       })
         .populate({
-          path: 'asset'
+          path: 'asset',
+          match
         })
 
       _res.status(200).json({
-        data
+        data: data.filter(i => i.asset)
       })
     } catch (e) {
       _res.status(400).json(e.message)

@@ -182,7 +182,7 @@ export default function NFT() {
             setIsApproval(true)
           }
         } 
-      if (account === item?.owner?.address) {
+      if (account?.toLowerCase() === item?.owner?.address) {
         setIsOwner(true)
       } else {
         setIsOwner(false)
@@ -741,7 +741,7 @@ export default function NFT() {
                       <img alt="" src={o.user?.kyc?.avatar?.path ? `${STORAGE_DOMAIN}${o.user?.kyc?.avatar?.path}` : avatarDefault} />
                     </span>
                     <span className='info'>
-                      <span className='name'>{o.user?.kyc?.last_name ? o.user?.kyc?.last_name + ' ' + o.user?.kyc?.first_name : ''}</span>
+                    <span className='name'>{o.user?.kyc?.last_name ? o.user?.kyc?.last_name + ' ' + o.user?.kyc?.first_name : '0x....' + o.user?.address.substring(o.user?.address.length - 8, o.user?.address.length)}</span>
                       <span className='quatity'>{new Decimal(o?.payment_amount).div(new Decimal(10).pow(18)).toString()} KGD</span>
                     </span>
                   </div>

@@ -1,4 +1,4 @@
-import '../../assets/css/home.css'
+import '../../assets/scss/home.scss'
 import banner01 from '../../assets/images/home/b01.jpg'
 import banner02 from '../../assets/images/home/b02.jpg'
 import banner03 from '../../assets/images/home/b03.jpg'
@@ -93,10 +93,11 @@ export default function Home() {
             <h3>For passionate community of streamers, gamers, fans & developers</h3>
 
             <ul className="home_navigator">
-              <li><span onClick={()=>history.push('/setup')} className='_transit'>Livestreaming</span><span className="shake"></span></li>
-              <li><span onClick={()=>history.push('/mint-nft')} className='_transit'>Mint NFT</span><span className="shake"></span></li>
-              <li><span onClick={()=>history.push('/live')} className='_transit'>Donate</span><span className="shake"></span></li>
-              <li><span onClick={()=>history.push('/nft-market')} className='_transit'>Buy/Sell/Auction NFT</span><span className="shake"></span></li>
+
+              <li><span onClick={()=>history.push('/setup')} className='options _transit'>Livestreaming</span><span className="shake"></span></li>
+              <li><span onClick={()=>history.push('/mint-nft')} className='options _transit'>Mint NFT</span><span className="shake"></span></li>
+              <li><span onClick={()=>history.push('/live')} className='options _transit'>Donate</span><span className="shake"></span></li>
+              <li><span onClick={()=>history.push('/nft-market')} className='options _transit'>Buy/Sell/Auction NFT</span><span className="shake"></span></li>
             </ul>
           </div>{/* --- e:split -----------------------*/}
 

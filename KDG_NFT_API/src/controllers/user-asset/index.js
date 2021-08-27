@@ -59,9 +59,9 @@ module.exports = class {
     }
 
     if (conditions.mimetype) {
-      const mimetype = conditions.mimetype.split(',').map(i => i.trim())
+      const mimetype = conditions.mimetype;
       match['metadata.mimetype'] = {
-        $in: mimetype
+        $regex : mimetype
       }
     }
 
@@ -75,9 +75,9 @@ module.exports = class {
       amount: { $gt: 0 }
     }
 
-    if (status === 0 && user?.isReviewer) {
-      delete filter.user
-    }
+    // if (status === 0 && user?.isReviewer) {
+    //   delete filter.user
+    // }
 
     const data = await UserAssetsService.getUserAssets({
       filter,

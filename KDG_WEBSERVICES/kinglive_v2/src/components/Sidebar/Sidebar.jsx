@@ -54,6 +54,8 @@ const page = [
     name: 'Swap',
     icon: swap,
     active: swapactive,
+    isDirectLink : true,
+    url:"https://pancakeswap.finance/swap#/swap?outputCurrency=0x87a2d9a9a6b2d61b2a57798f1b4b2ddd19458fb6"
   },
   {
     route: '/more',
@@ -64,14 +66,20 @@ const page = [
       {
         route: '/Audit',
         name: 'Audit',
+        isDirectLink : true,
+        url:"https://drive.google.com/file/d/1vuOCgZgXVZCwNtSOIGOeAMd-J2F_524r/view?usp=sharing"
       },
       {
         route: '/Docs',
         name: 'Docs',
+        isDirectLink : true,
+        url:"https://docs.kingdomgame.org/"
       },
       {
         route: '/Github',
         name: 'Github',
+        isDirectLink : true,
+        url:"https://github.com/Kingdomgamekdg"
       },
     ],
   },
@@ -111,7 +119,15 @@ export default function Sidebar({ IsOpenSidebar }) {
         {page.map((o) => (
           <div
             key={o.route}
-            onClick={() => history.push(o.route)}
+            onClick={() => 
+            {
+              if(!o.isDirectLink)
+              {
+                history.push(o.route)
+              }else{
+                window.open(o.url,'_blank')
+              }
+            }}
             className={`item _transit ${location.pathname === o.route ? 'active' : ''}`}
           >
             <img src={location.pathname === o.route ? o.active : o.icon} alt='' />
@@ -125,8 +141,14 @@ export default function Sidebar({ IsOpenSidebar }) {
                   <div
                     key={child.route}
                     onClick={(e) => {
-                      e.stopPropagation()
-                      history.push(child.route)
+                      if(!child.isDirectLink){
+                        e.stopPropagation()
+                        history.push(child.route)
+                      } else {
+                        e.stopPropagation()
+                        window.open(child.url,'_blank')
+                      }
+                   
                     }}
                     className='child-item _transit'
                   >

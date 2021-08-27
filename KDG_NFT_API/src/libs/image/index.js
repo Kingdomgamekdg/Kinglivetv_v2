@@ -58,15 +58,15 @@ class Image {
         const promises = []
 
         _widths.forEach((width) => {
-            if (_mimetype === 'image/gif') {
-                promises.push(
-                    new Promise((resolve, reject) => { gifResize({ width })(_image).then(data => { resolve(data) }) })
-                )
-            } else {
+            // if (_mimetype === 'image/gif') {
+            //     promises.push(
+            //         new Promise((resolve, reject) => { gifResize({ width })(_image).then(data => { resolve(data) }).catch(ex =>console.log("Ex",ex)) })
+            //     )
+            // } else {
                 promises.push(
                     sharp(_image).resize({ width, fit: 'inside' }).flatten({ background: '#ffffff' }).toBuffer()
                 )
-            }
+            // }
         })
 
         return await Promise.all(promises)

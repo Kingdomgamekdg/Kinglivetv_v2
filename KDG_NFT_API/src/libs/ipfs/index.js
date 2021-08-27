@@ -42,7 +42,7 @@ class IPFS {
                 promises.push(this._ipfs.files.add(file, _options))
             })
 
-            const result = await Promise.all(promises)
+            const result = await Promise.all(promises).catch(ex=>console.log(ex))
 
             const cid = []
 

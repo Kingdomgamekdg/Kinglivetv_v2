@@ -16,9 +16,8 @@ module.exports = class {
       const queries = _req.query
       const { ...conditions } = queries
       if (queries.mimetype) {
-        const mimetype = queries.mimetype.split(',').map(i => i.trim())
         conditions['metadata.mimetype'] = {
-          $in: mimetype
+          $regex: conditions.mimetype.toLowerCase()
         }
         delete conditions.mimetype
       }

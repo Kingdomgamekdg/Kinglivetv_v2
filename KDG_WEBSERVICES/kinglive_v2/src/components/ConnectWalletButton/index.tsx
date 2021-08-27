@@ -140,7 +140,7 @@ const UnlockButton: React.FC<ButtonProps> = (props) => {
                 }}
                 onClick={() =>
                   window.open(
-                    'https://bscscan.com/token/0x87A2d9a9A6b2D61B2a57798f1b4b2DDd19458Fb6',
+                    `https://bscscan.com/address/${account}`,
                     '_blank'
                   )
                 }

@@ -9,6 +9,7 @@ import callAPI from '../../axios'
 import {  addressKL1155 } from '../../contracts/KL1155'
 import { useContractKL1155, useContractERC20 } from '../../components/ConnectWalletButton/contract'
 import { useWeb3React } from '@web3-react/core'
+import {Decimal} from 'decimal.js'
 
 
 export default function MintNFT() {
@@ -32,7 +33,7 @@ export default function MintNFT() {
     async function getAllowance() {
       if(!account) return
         const allowance = await contractERC20?.allowance(account, addressKL1155)
-        if (Number(allowance.toString()) >= 20000000000000000000) {
+        if (new Decimal(allowance.toString()).gt(20000000000000000000)) {
           setIsApproval(true)
         }
     }
@@ -287,7 +288,7 @@ export default function MintNFT() {
             />
           </div>
 
-          <div className='upload__right'>
+          <div className='upload__right fbox_custom'>
             <div className='upload__label'>Name</div>
 
             <input
@@ -306,6 +307,15 @@ export default function MintNFT() {
               className='upload__textarea'
               placeholder='Enter description for video'
             ></textarea>
+
+            <input 
+              type="checkbox"
+              className="upload__checkbox"
+            />
+            <label>I declare that this is an original artwork.
+I understand that no plagiarism is allowed, and that the artwork can be removed anytime if detected.<br />
+            <span>*** Note: </span>Mint an NFT charges 5 KDG, please do not upload my sensitive content
+            </label>
           </div>
         </div>
 

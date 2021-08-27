@@ -1,7 +1,7 @@
 @charset "utf-8";
 @media screen and (max-width: 1540px) {
 	/* ------BODY------ */
-	body{background-size:1431px;}
+	.container {background-size:1431px;}
 	
 	/* ------MAIN-CONTAINER------ */
 	._cBlocks {width:80.56%; min-width:1160px;}/*width = 609 from 768*/
@@ -179,7 +179,7 @@
 
 @media screen and (max-width: 1280px) {
 	/* ------BODY------ */
-	body{background-size:1380px;}
+	.container {background-size:1380px;}
 	
 	/* ------MAIN-CONTAINER------ */
 	._cBlocks {width:78.44%; min-width:1004px;}/*width = 609 from 768*/
@@ -322,7 +322,7 @@
 
 @media screen and (max-width: 1010px) {
 	/* ------BODY------ */
-	body{background:#14151a url(../resources/images/main_bg_ipad.png) top center no-repeat;}
+	.container {background:#14151a url(../resources/images/main_bg_ipad.png) top center no-repeat;}
 	
 	/* ------MAIN-CONTAINER------ */
 	._cBlocks {width:79.3%;min-width:609px;}/*width = 609 from 768*/
@@ -519,7 +519,7 @@
 
 @media screen and (max-width:  767px) {
 	/* ------BODY------ */
-	body{background:#14151a url(../resources/images/main_bg_iphone.png) top center no-repeat;}
+	.container {background:#14151a url(../resources/images/main_bg_iphone.png) top center no-repeat;}
 	
 	/* ------MAIN-CONTAINER------ */
 	._cBlocks {width:80.53%;min-width:302px;}
@@ -573,7 +573,7 @@
 	.slider .pos3 {top:358px;left:97px;}
 	._dot_desc h3 {font-size:18px;}
 	._dot_desc h3 em {font-size:60%;line-height:29px;}
-	._dot_desc p {font-size:11px;max-width:39px;line-height:18px;}
+	._dot_desc p {font-size:11px;max-width:39px;line-height:18px;flex-wrap:wrap;}
 	.slider .pos1_desc,.slider .pos2_desc,.slider .pos3_desc {top:422px;}
 	.slider .pos2_desc {left:48px;}
 	.slider .pos3_desc {left:97px;}
@@ -678,7 +678,7 @@
 	.footer ._left_content ul {display:block;margin:0 auto;max-width:265px;}
 	/* ----FOOTER:right content ----*/
 	.footer ._right_content {width:100%;float:right;min-height:30px;padding-top:41px;}
-	.footer ._right_content ul li {font-size:16px;}
+	.footer ._right_content ul li {font-size:16px;height:4em;}
 	.footer ._right_content a {float:left;font-size:12px;text-align:left;min-width:0;box-sizing:border-box;}
 	.footer ._right_content a:hover, .footer ._right_content a:active {color:#FAC800;}
 	
