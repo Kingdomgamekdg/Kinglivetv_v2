@@ -1,31 +1,16 @@
 module.exports = {
     env: {
         commonjs: true,
-        es6: true,
+        es2021: true,
         node: true
     },
     extends: [
         'standard'
     ],
-    globals: {
-        Atomics: 'readonly',
-        SharedArrayBuffer: 'readonly'
-    },
     parserOptions: {
-        ecmaVersion: 2018
+        ecmaVersion: 12
     },
     rules: {
-        'indent': [
-            'error',
-            4
-        ],
-        'padded-blocks': [
-            "error",
-            { "classes": "always" }
-        ],
-        'semi': [
-            'error',
-            'always'
-        ]
+        indent: 0
     }
 }

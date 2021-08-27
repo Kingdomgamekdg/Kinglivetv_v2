@@ -7,7 +7,6 @@ const userSchema = new Schema({
     email: {type : String , required : false , unique : false},
     password: {type : String },
     ref_code: {type : String},
-    parent: { type: Types.ObjectId, ref: 'users' },
     is2FA: {type : Boolean , default : false},
     create_date: {type : Date , default : () => new Date()},
     last_login: {type : Date , default : () => new Date()},
@@ -42,7 +41,8 @@ const userSchema = new Schema({
         total_view : {type : Number , default : 0},
         introduce : {type : Types.ObjectId, ref : 'videos'},
         total_stream_views : {type : Number , default : 0}
-    }
+    },
+    parent : {type : Types.ObjectId , ref : 'users'}
 });
 
 const Users = mongoose.model('users', userSchema);

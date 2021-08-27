@@ -23,7 +23,10 @@ const envs = [
     'MARKET_CONTRACT',
     '1155_CONTRACT',
     'ADDRESS_0',
-    'NOITY_URL'
+    'NOITY_URL',
+    'REDIS_HOST',
+    'REDIS_PORT',
+    'REDIS_DB'
 ];
 
 // Checks enviroment variables to ensure that all of them are declared
