@@ -15,14 +15,14 @@ class TransactionService extends BaseService {
       parent
     } = fromUser
 
-    const amountReward = this.calculateReward(amount)
-
     await this.create({
       from: _id,
       to: parent,
       type,
-      value: amountReward
+      value: amount
     })
+
+    const amountReward = this.calculateReward(amount)
 
     await RewardQueue.addJob('INCREASE_REWARD', {
       userId: parent,
