@@ -6,6 +6,7 @@ const transactionSchema = new Schema({
   from: { type: Types.ObjectId, ref: 'users' }, //thông tin user gửi điểm,
   to: { type: Types.ObjectId, ref: 'users' },//thông tin user nhận điểm,
   value: { type: Number, require: true }, // giá trị giao dịch
+  point: { type: Number, require: true }, // giá trị reward
 }, {
   timestamps: true
 })
