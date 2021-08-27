@@ -11,12 +11,12 @@ contract KingLiveReferral is Ownable {
     }
 
     function setSotaMarket(address _marketAddress) public onlyOwner {
-        sotaMarket = _marketAddress;
+        kingLiveMarket = _marketAddress;
     }
 
     function getReferral(address _user) public view returns(address){
         if (referralData[_user] == address (0)) {
-            return sotaMarket;
+            return kingLiveMarket;
         }
         return referralData[_user];
     }
